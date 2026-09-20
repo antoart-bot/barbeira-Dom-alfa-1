@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="painel.css">
+
+    <<title>Painel — <span id="nomeBarbeariaTitulo">Barbearia</span></title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="cabecalho">
+
+        <div>
+            <h1 id="nomeBarbearia">Barbearia</h1>
+
+                <p class="subtitulo">
+                    Painel de agendamentos
+                </p>
+        </div>
+
+        <button id="sair" class="botao-sair">
+            Sair
+        </button>
+
+    </div>
+
+    <div class="filtros">
+
+        <input
+            type="date"
+            id="dataPainel"
+        >
+
+        <button id="atualizar">
+            Atualizar
+        </button>
+
+    </div>
+
+    <div class="resumo-painel">
+
+    <div class="resumo-card">
+        <span>Agendados</span>
+        <strong id="totalAgendados">0</strong>
+    </div>
+
+    <div class="resumo-card">
+        <span>Disponíveis</span>
+        <strong id="totalDisponiveis">0</strong>
+    </div>
+
+    <div class="resumo-card">
+        <span>Ocupados</span>
+        <strong id="totalOcupados">0</strong>
+    </div>
+
+</div>
+
+    <section class="secao">
+
+        <h2>Agendamentos</h2>
+
+        <div id="listaAgendamentos">
+            Carregando...
+        </div>
+
+    </section>
+
+    <section class="secao">
+
+        <h2>Horários do dia</h2>
+
+        <div
+            class="horarios"
+            id="listaHorarios"
+        >
+            Carregando...
+        </div>
+
+        <div class="adicionar">
+
+            <div class="adicionar-manual">
+
+                <input
+                    type="time"
+                    id="novoHorario"
+                >
+
+                <button id="adicionarHorario">
+                    + Adicionar horário
+                </button>
+
+            </div>
+
+            <div class="gerador-horarios">
+
+                <h3>Gerar horários automaticamente</h3>
+
+                <div class="campos-horario">
+
+                    <div>
+                        <label for="horaInicio">
+                            Começa às
+                        </label>
+
+                        <input
+                            type="time"
+                            id="horaInicio"
+                            value="08:00"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="horaFim">
+                            Termina às
+                        </label>
+
+                        <input
+                            type="time"
+                            id="horaFim"
+                            value="18:00"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="intervaloHorario">
+                            Intervalo entre clientes
+                        </label>
+
+                        <select id="intervaloHorario">
+
+                            <option
+                                value="30"
+                                selected
+                            >
+                                30 minutos
+                            </option>
+
+                            <option value="60">
+                                1 hora
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="pausaInicio">
+                            Início da pausa
+                        </label>
+
+                        <input
+                            type="time"
+                            id="pausaInicio"
+                            value="12:00"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="pausaFim">
+                            Fim da pausa
+                        </label>
+
+                        <input
+                            type="time"
+                            id="pausaFim"
+                            value="13:00"
+                        >
+                    </div>
+
+                </div>
+
+                <button id="gerarHorarios">
+                    Gerar horários
+                </button>
+
+            </div>
+
+        </div>
+
+        <p
+            class="mensagem"
+            id="mensagem"
+        ></p>
+
+    </section>
+
+</div>
+
+<script
+    type="module"
+    src="painel.js"
+></script>
+
+</body>
+
+</html>

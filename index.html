@@ -5,175 +5,384 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Barbearia | Seu estilo, sua identidade</title>
+    <title>Dom Alfa — Barbearia</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="agendamento.css">
+
+    <!-- FONTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <!-- CABEÇALHO -->
+    <!-- HEADER -->
+
     <header>
-        <div class="logo">
-            BARBEARIA
-        </div>
 
-        <nav>
-            <a href="#inicio">Início</a>
-            <a href="#servicos">Serviços</a>
-            <a href="#sobre">Sobre</a>
-            <a href="#contato">Contato</a>
-        </nav>
-    </header>
+        <div class="nav-wrapper">
 
+            <a href="#" class="logo" id="logoBarbearia">
+                    <span>DOM</span>
+                    ALFA
+                </a>
 
-    <!-- INÍCIO -->
-    <section class="hero" id="inicio">
+            <nav>
+                <a href="#servicos">Serviços</a>
+                <a href="#sobre">A barbearia</a>
+                <a href="#contato">Contato</a>
+            </nav>
 
-        <div class="hero-content">
-
-            <p class="hero-subtitle">ESTILO • PRECISÃO • QUALIDADE</p>
-
-            <h1>
-                SEU ESTILO<br>
-                <span>COMEÇA AQUI.</span>
-            </h1>
-
-            <p class="hero-text">
-                Cortes modernos, barba impecável e aquele atendimento
-                que faz você querer voltar.
-            </p>
-
-            <a href="#contato" class="button">
-                Agendar horário
+            <a href="#contato" class="book">
+                Agendar
+                <span>↗</span>
             </a>
 
         </div>
 
-    </section>
+    </header>
 
 
-    <!-- SERVIÇOS -->
-    <section class="services" id="servicos">
+    <!-- HERO -->
 
-        <div class="section-title">
-            <p>O QUE FAZEMOS</p>
-            <h2>Nossos serviços</h2>
-        </div>
+    <main>
 
-        <div class="services-list">
+        <section class="hero">
 
-            <div class="service">
-                <div>
-                    <span>01</span>
-                    <h3>Corte masculino</h3>
-                </div>
+            <div class="hero-image"></div>
 
-                <strong>R$ 30</strong>
+            <div class="hero-gradient"></div>
+
+            <div class="hero-top">
+
+                <span id="cidadeHero">PD / MA</span>
+
+                <span id="anoHero">EST. 2026</span>
+
             </div>
 
 
-            <div class="service">
-                <div>
-                    <span>02</span>
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    BARBEARIA & ESTILO
+                </p>
+
+                <h1>
+                    Corte.
+                    <br>
+                    <span>Presença.</span>
+                </h1>
+
+                <div class="hero-description">
+
+                    <p>
+                        Um espaço para quem entende que
+                        aparência também é identidade.
+                    </p>
+
+                    <a href="#servicos" class="circle-button">
+                        <span>↓</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INTRO -->
+
+        <section class="intro">
+
+            <div class="intro-number">
+                01
+            </div>
+
+            <div class="intro-content">
+
+                <p class="label">
+                    MAIS QUE UM CORTE
+                </p>
+
+                <h2>
+                    Seu visual não precisa
+                    <span>seguir o padrão.</span>
+                </h2>
+
+                <p class="intro-text">
+                Na <span id="nomeIntro">Dom Alfa</span>, cada atendimento começa entendendo
+                    você. Seu estilo, seu cabelo, sua rotina e aquilo
+                    que você quer transmitir.
+                  </p>            
+
+                <a href="#sobre" class="line-link">
+                    Conheça a Dom Alfa
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- SERVIÇOS -->
+
+        <section id="servicos" class="services">
+
+            <div class="section-top">
+
+                <span class="label">02 / SERVIÇOS</span>
+
+                <p>
+                    Serviços simples.
+                    Execução precisa.
+                </p>
+
+            </div>
+
+
+            <div class="service-list">
+
+                <a href="#contato" class="service">
+
+                    <span class="service-index">01</span>
+
+                    <h3>Corte</h3>
+
+                    <span class="service-price">R$ 40</span>
+
+                    <span class="service-arrow">↗</span>
+
+                </a>
+
+
+                <a href="#contato" class="service">
+
+                    <span class="service-index">02</span>
+
                     <h3>Barba</h3>
-                </div>
 
-                <strong>R$ 20</strong>
-            </div>
+                    <span class="service-price">R$ 30</span>
+
+                    <span class="service-arrow">↗</span>
+
+                </a>
 
 
-            <div class="service">
-                <div>
-                    <span>03</span>
+                <a href="#contato" class="service">
+
+                    <span class="service-index">03</span>
+
                     <h3>Corte + Barba</h3>
-                </div>
 
-                <strong>R$ 45</strong>
+                    <span class="service-price">R$ 65</span>
+
+                    <span class="service-arrow">↗</span>
+
+                </a>
+
+
+                <a href="#contato" class="service">
+
+                    <span class="service-index">04</span>
+
+                    <h3>Acabamento</h3>
+
+                    <span class="service-price">R$ 20</span>
+
+                    <span class="service-arrow">↗</span>
+
+                </a>
+
             </div>
 
+        </section>
 
-            <div class="service">
+
+        <!-- SOBRE -->
+
+        <section id="sobre" class="about">
+
+            <div class="about-image"></div>
+
+            <div class="about-content">
+
+                <span class="label">03 / A BARBEARIA</span>
+
+                <h2>
+                    O clássico,
+                    <br>
+                    <i>sem ser antigo.</i>
+                </h2>
+
+                <p>
+                    Criamos um ambiente onde o cuidado com o
+                    visual encontra uma experiência tranquila.
+                    Sem pressa. Sem exageros.
+                </p>
+
+                <p>
+                    Técnicas tradicionais, referências atuais
+                    e atenção aos detalhes.
+                </p>
+
+                <div class="about-signature" id="assinaturaBarbearia">
+    DOM ALFA
+</div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CTA -->
+
+        <section id="contato" class="contact">
+
+            <div class="contact-number">
+                04
+            </div>
+
+            <div class="contact-content">
+
+                <span class="label">
+                    SEU PRÓXIMO CORTE
+                </span>
+
+                <h2>
+                    Vamos marcar?
+                </h2>
+                <button class="big-button" id="abrirAgendamento">
+
+                    <span>Agendar horário</span>
+
+                    <strong>↗</strong>
+
+                </button>
+
+            </div>
+
+            <div class="contact-info">
+
                 <div>
-                    <span>04</span>
-                    <h3>Sobrancelha</h3>
+                    <span>HORÁRIO</span>
+                    <p>Seg — Sex / 08h — 19h</p>
+                    <p>Sáb / 08h — 17h</p>
                 </div>
 
-                <strong>R$ 10</strong>
+                <div>
+                    <span>LOCAL</span>
+                    <p>Presidente Dutra — MA</p>
+                </div>
+
             </div>
 
+        </section>
+
+        <section class="booking" id="agendamento">
+
+    <div class="booking-content">
+
+        <span class="label">AGENDAMENTO</span>
+
+        <h2>Escolha seu horário.</h2>
+
+        <div class="booking-form">
+
+            <label>
+                Seu nome
+                <input
+                    type="text"
+                    id="nomeCliente"
+                    placeholder="Digite seu nome"
+                >
+            </label>
+
+            <label>
+                WhatsApp
+                <input
+                    type="tel"
+                    id="telefoneCliente"
+                    placeholder="(99) 99999-9999"
+                >
+            </label>
+
+            <label>
+                Serviço
+                <select id="servicoCliente">
+                    <option value="">Escolha um serviço</option>
+                    <option value="corte">Corte — R$ 40</option>
+                    <option value="barba">Barba — R$ 30</option>
+                    <option value="corte_barba">Corte + Barba — R$ 65</option>
+                    <option value="acabamento">Acabamento — R$ 20</option>
+                </select>
+            </label>
+
+            <label>
+                Data
+                <input
+                    type="date"
+                    id="dataCliente"
+                    value="2026-09-20"
+                >
+            </label>
+
+            <div class="horarios-box">
+
+                <span>Horários disponíveis</span>
+
+                <div id="listaHorarios">
+                    Carregando horários...
+                </div>
+
+            </div>
+
+            <button id="confirmarAgendamento" class="confirm-booking">
+                Confirmar agendamento
+            </button>
+
+            <p id="mensagemAgendamento"></p>
+
         </div>
 
-    </section>
+    </div>
+
+</section>
+
+    </main>
 
 
-    <!-- SOBRE -->
-    <section class="about" id="sobre">
+    <!-- FOOTER -->
 
-        <div class="about-image"></div>
-
-        <div class="about-content">
-
-            <p>SOBRE NÓS</p>
-
-            <h2>
-                Mais que um corte.
-                <span>Uma experiência.</span>
-            </h2>
-
-            <p>
-                Somos uma barbearia dedicada a oferecer estilo,
-                qualidade e atendimento de excelência para cada cliente.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- CONTATO -->
-    <section class="contact" id="contato">
-
-        <p>FALE CONOSCO</p>
-
-        <h2>
-            Pronto para<br>
-            mudar o visual?
-        </h2>
-
-        <a
-            href="https://wa.me/559991493420"
-            target="_blank"
-            class="contact-button">
-
-            Agendar pelo WhatsApp ↗
-
-        </a>
-
-        <div class="contact-info">
-
-            <p><strong><a href="https://www.instagram.com/vitinhoar1/" target="_blank" rel="noopener noreferrer">Instagram</a></strong></p>
-            <p>@suabarbearia</p>
-
-            <p><strong>Endereço</strong></p>
-            <p>Rua Exemplo, 123</p>
-
-        </div>
-
-    </section>
-
-
-    <!-- RODAPÉ -->
     <footer>
 
-        <h2>BARBEARIA</h2>
+        <div class="footer-logo" id="footerLogo">
+    DOM ALFA
+</div>
 
-        <p>© 2026 Todos os direitos reservados.</p>
+        <div class="footer-bottom">
+
+            <span>© 2026 Dom Alfa</span>
+
+            <span><a href="https://www.instagram.com/vitinhoar1/" target="_blank" rel="noopener noreferrer">Instagram</a> ↗</span>
+
+            <span><a href="https://wa.me/559991493420" target="_blank" rel="noopener noreferrer">WhatsApp</a> ↗</span>
+
+        </div>
 
     </footer>
 
+<script src="script.js"></script>
 
-    <script src="script.js"></script>
+<script type="module" src="agendamento.js"></script>
+
+<script type="module" src="config-site.js"></script>
+
 
 </body>
 
