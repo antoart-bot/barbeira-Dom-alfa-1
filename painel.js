@@ -168,7 +168,20 @@ async function prepararFCM() {
             return;
         }
 
-        console.log("TOKEN FCM:", token);
+        await update(
+    ref(
+        db,
+        `${CAMINHO_BARBEIRO}/notificacoes`
+    ),
+    {
+        fcmToken: token
+    }
+);
+
+console.log(
+    "TOKEN FCM salvo no Firebase:",
+    token
+);
 
     } catch (erro) {
         console.error("Erro ao preparar FCM:", erro);
