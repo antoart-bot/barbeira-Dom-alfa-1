@@ -159,8 +159,7 @@ async function prepararFCM() {
         }
 
         const token = await getToken(messaging, {
-            vapidKey:
-    "BPS-q-s9W5SQ_aQBYeiHb-NNSsk_zdlzAJgSdlfY2zkv-BKk28DsuH_ajXdHwCD_Tf4z0j_H2_WGAlq9kshHd2w",
+            vapidKey:"BMlE30g7RCzkg0qauJHGOH3Mn7b6PUHIMnOmdynrL3rOHlez2__FXCXz7JW57KgSKdaQvRpGY77lX74JQT-FDFI",
             serviceWorkerRegistration: registroSW
         });
 
