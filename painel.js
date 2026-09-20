@@ -147,6 +147,8 @@ async function prepararFCM() {
     "./firebase-messaging-sw.js"
 );
 
+        await navigator.serviceWorker.ready;
+
         console.log("Service Worker registrado:", registroSW);
 
         const permissao = await Notification.requestPermission();
