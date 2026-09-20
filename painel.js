@@ -178,6 +178,16 @@ async function prepararFCM() {
     }
 );
 
+await update(
+    ref(
+        db,
+        `${CAMINHO_BARBEIRO}/notificacoes`
+    ),
+    {
+        fcmToken: token
+    }
+);
+
 console.log(
     "TOKEN FCM salvo no Firebase:",
     token
