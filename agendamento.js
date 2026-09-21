@@ -879,7 +879,7 @@ confirmar.addEventListener(
                 );
 
 
-            try {
+                       try {
 
                 await update(
                     novoAgendamento,
@@ -909,6 +909,70 @@ confirmar.addEventListener(
 
                     }
                 );
+
+
+                // ========================================
+                // ENVIAR NOTIFICAÇÃO PARA O BARBEIRO
+                // ========================================
+
+                try {
+
+                    const respostaNotificacao =
+                        await fetch(
+                            "https://plain-credit-3c23.vitorarthurxxx.workers.dev/",
+                            {
+
+                                method:
+                                    "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        nome:
+                                            nome,
+
+                                        servico:
+                                            servico,
+
+                                        data:
+                                            data,
+
+                                        horario:
+                                            horario
+
+                                    })
+
+                            }
+                        );
+
+
+                    const resultadoNotificacao =
+                        await respostaNotificacao.json();
+
+
+                    console.log(
+                        "Resultado da notificação:",
+                        resultadoNotificacao
+                    );
+
+
+                } catch (
+                    erroNotificacao
+                ) {
+
+                    console.error(
+                        "Erro ao enviar notificação:",
+                        erroNotificacao
+                    );
+
+                }
 
 
             } catch (
