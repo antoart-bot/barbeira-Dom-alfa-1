@@ -1,415 +1,426 @@
-    <!DOCTYPE html>
-    <html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
 
-        <title>Dom Alfa — Barbearia</title>
+    <meta charset="UTF-8">
 
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="agendamento.css">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Barbearia</title>
 
-        <link
-            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-            rel="stylesheet">
-    </head>
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    <body>
+    <link
+        rel="stylesheet"
+        href="agendamento.css"
+    >
 
-        <!-- HEADER -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-        <header>
-            <div class="nav-wrapper">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-                <a href="#" class="logo" id="logoBarbearia">
-                    <span>DOM</span>
-                    ALFA
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+<body>
+
+    <!-- ======================================== -->
+    <!-- HEADER -->
+    <!-- ======================================== -->
+
+    <header>
+
+        <div class="nav-wrapper">
+
+            <a
+                href="#"
+                class="logo"
+                id="logoBarbearia"
+            >
+                Barbearia
+            </a>
+
+            <nav>
+
+                <a href="#servicos">
+                    Serviços
                 </a>
 
-                <nav>
-                    <a href="#servicos">Serviços</a>
-                    <a href="#sobre">A barbearia</a>
-                    <a href="#contato">Contato</a>
-                </nav>
+                <a href="#sobre">
+                    A barbearia
+                </a>
 
-                <a href="#agendamento" class="book">
-                    Agendar
-                    <span>↗</span>
+                <a href="#contato">
+                    Contato
+                </a>
+
+            </nav>
+
+            <a
+                href="#agendamento"
+                class="book"
+            >
+                Agendar
+                <span>↗</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- ======================================== -->
+    <!-- HERO -->
+    <!-- ======================================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-image"></div>
+
+            <div class="hero-gradient"></div>
+
+            <div class="hero-top">
+
+                <span id="cidadeHero">
+                    Cidade
+                </span>
+
+                <span id="anoHero">
+                    EST. 2026
+                </span>
+
+            </div>
+
+            <div class="hero-content">
+
+                <p class="eyebrow">
+                    BARBEARIA & ESTILO
+                </p>
+
+                <h1>
+                    Corte.
+                    <br>
+                    <span>Presença.</span>
+                </h1>
+
+                <div class="hero-description">
+
+                    <p>
+                        Um espaço para quem entende que
+                        aparência também é identidade.
+                    </p>
+
+                    <a
+                        href="#servicos"
+                        class="circle-button"
+                    >
+                        <span>↓</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- INTRO -->
+        <!-- ======================================== -->
+
+        <section class="intro">
+
+            <div class="intro-number">
+                01
+            </div>
+
+            <div class="intro-content">
+
+                <p class="label">
+                    MAIS QUE UM CORTE
+                </p>
+
+                <h2>
+                    Seu visual não precisa
+                    <span>seguir o padrão.</span>
+                </h2>
+
+                <p class="intro-text">
+
+                    Na
+                    <span id="nomeIntro">
+                        Barbearia
+                    </span>,
+                    cada atendimento começa entendendo você.
+                    Seu estilo, seu cabelo, sua rotina e aquilo
+                    que você quer transmitir.
+
+                </p>
+
+                <a
+                    href="#sobre"
+                    class="line-link"
+                >
+                    Conheça a
+                    <span id="nomeIntroLink">
+                        barbearia
+                    </span>
+
+                    <span>→</span>
+
                 </a>
 
             </div>
-        </header>
+
+        </section>
 
 
-        <!-- HERO -->
+        <!-- ======================================== -->
+        <!-- SERVIÇOS -->
+        <!-- ======================================== -->
 
-        <main>
+        <section
+            id="servicos"
+            class="services"
+        >
 
-            <section class="hero">
+            <div class="section-top">
 
-                <div class="hero-image"></div>
-                <div class="hero-gradient"></div>
+                <span class="label">
+                    02 / SERVIÇOS
+                </span>
 
-                <div class="hero-top">
-                    <span id="cidadeHero">PD / MA</span>
-                    <span id="anoHero">EST. 2026</span>
+                <p>
+                    Serviços simples.
+                    <br>
+                    Execução precisa.
+                </p>
+
+            </div>
+
+            <!--
+                Os serviços são gerados automaticamente
+                pelo config-site.js usando CONFIG.servicos.
+            -->
+
+            <div class="service-list"></div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- SOBRE -->
+        <!-- ======================================== -->
+
+        <section
+            id="sobre"
+            class="about"
+        >
+
+            <div class="about-image"></div>
+
+            <div class="about-content">
+
+                <span class="label">
+                    03 / A BARBEARIA
+                </span>
+
+                <h2>
+                    O clássico,
+                    <br>
+                    <i>sem ser antigo.</i>
+                </h2>
+
+                <p>
+                    Criamos um ambiente onde o cuidado com o
+                    visual encontra uma experiência tranquila.
+                    Sem pressa. Sem exageros.
+                </p>
+
+                <p>
+                    Técnicas tradicionais, referências atuais
+                    e atenção aos detalhes.
+                </p>
+
+                <div
+                    class="about-signature"
+                    id="assinaturaBarbearia"
+                >
+                    BARBEARIA
                 </div>
 
-                <div class="hero-content">
+            </div>
 
-                    <p class="eyebrow">
-                        BARBEARIA & ESTILO
-                    </p>
-
-                    <h1>
-                        Corte.
-                        <br>
-                        <span>Presença.</span>
-                    </h1>
-
-                    <div class="hero-description">
-
-                        <p>
-                            Um espaço para quem entende que
-                            aparência também é identidade.
-                        </p>
-
-                        <a href="#servicos" class="circle-button">
-                            <span>↓</span>
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </section>
+        </section>
 
 
-            <!-- INTRO -->
+        <!-- ======================================== -->
+        <!-- CTA / CONTATO -->
+        <!-- ======================================== -->
 
-            <section class="intro">
+        <section
+            id="contato"
+            class="contact"
+        >
 
-                <div class="intro-number">
-                    01
-                </div>
+            <div class="contact-number">
+                04
+            </div>
 
-                <div class="intro-content">
+            <div class="contact-content">
 
-                    <p class="label">
-                        MAIS QUE UM CORTE
-                    </p>
+                <span class="label">
+                    SEU PRÓXIMO CORTE
+                </span>
 
-                    <h2>
-                        Seu visual não precisa
-                        <span>seguir o padrão.</span>
-                    </h2>
+                <h2>
+                    Vamos marcar?
+                </h2>
 
-                    <p class="intro-text">
-                        Na <span id="nomeIntro">Dom Alfa</span>, cada atendimento começa
-                        entendendo você. Seu estilo, seu cabelo, sua rotina e aquilo
-                        que você quer transmitir.
-                    </p>
+                <button
+                    class="big-button"
+                    id="abrirAgendamento"
+                >
 
-                    <a href="#sobre" class="line-link">
-                        Conheça a Dom Alfa
-                        <span>→</span>
-                    </a>
+                    <span>
+                        Agendar horário
+                    </span>
 
-                </div>
+                    <strong>
+                        ↗
+                    </strong>
 
-            </section>
+                </button>
 
+            </div>
 
-            <!-- SERVIÇOS -->
+            <div class="contact-info">
 
-            <section id="servicos" class="services">
+                <div>
 
-                <div class="section-top">
+                    <span>
+                        HORÁRIO
+                    </span>
 
-                    <span class="label">02 / SERVIÇOS</span>
+                    <p></p>
 
-                    <p>
-                        Serviços simples.<br>
-                        Execução precisa.
-                    </p>
-
-                </div>
-
-                <div class="service-list">
-
-                    <a href="#agendamento" class="service">
-
-                        <span class="service-index">01</span>
-
-                        <h3>Corte</h3>
-
-                        <span class="service-price">R$ 40</span>
-
-                        <span class="service-arrow">↗</span>
-
-                    </a>
-
-
-                    <a href="#agendamento" class="service">
-
-                        <span class="service-index">02</span>
-
-                        <h3>Barba</h3>
-
-                        <span class="service-price">R$ 30</span>
-
-                        <span class="service-arrow">↗</span>
-
-                    </a>
-
-
-                    <a href="#agendamento" class="service">
-
-                        <span class="service-index">03</span>
-
-                        <h3>Corte + Barba</h3>
-
-                        <span class="service-price">R$ 65</span>
-
-                        <span class="service-arrow">↗</span>
-
-                    </a>
-
-
-                    <a href="#agendamento" class="service">
-
-                        <span class="service-index">04</span>
-
-                        <h3>Acabamento</h3>
-
-                        <span class="service-price">R$ 20</span>
-
-                        <span class="service-arrow">↗</span>
-
-                    </a>
+                    <p></p>
 
                 </div>
 
-            </section>
+                <div>
+
+                    <span>
+                        LOCAL
+                    </span>
+
+                    <p></p>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
-            <!-- SOBRE -->
+        <!-- ======================================== -->
+        <!-- AGENDAMENTO -->
+        <!-- ======================================== -->
 
-            <section id="sobre" class="about">
+        <section
+            class="booking"
+            id="agendamento"
+        >
 
-                <div class="about-image"></div>
+            <div class="booking-heading">
 
-                <div class="about-content">
+                <div>
 
                     <span class="label">
-                        03 / A BARBEARIA
+                        05 / AGENDAMENTO
                     </span>
 
                     <h2>
-                        O clássico,
+                        Seu próximo corte
                         <br>
-                        <i>sem ser antigo.</i>
+                        <span>começa aqui.</span>
                     </h2>
 
-                    <p>
-                        Criamos um ambiente onde o cuidado com o
-                        visual encontra uma experiência tranquila.
-                        Sem pressa. Sem exageros.
-                    </p>
-
-                    <p>
-                        Técnicas tradicionais, referências atuais
-                        e atenção aos detalhes.
-                    </p>
-
-                    <div class="about-signature" id="assinaturaBarbearia">
-                        DOM ALFA
-                    </div>
-
                 </div>
 
-            </section>
+                <p>
+                    Escolha o serviço, informe seus dados
+                    e encontre um horário disponível.
+                </p>
+
+            </div>
 
 
-            <!-- CTA -->
-
-            <section id="contato" class="contact">
-
-                <div class="contact-number">
-                    04
-                </div>
-
-                <div class="contact-content">
-
-                    <span class="label">
-                        SEU PRÓXIMO CORTE
-                    </span>
-
-                    <h2>
-                        Vamos marcar?
-                    </h2>
-
-                    <button class="big-button" id="abrirAgendamento">
-
-                        <span>Agendar horário</span>
-
-                        <strong>↗</strong>
-
-                    </button>
-
-                </div>
-
-                <div class="contact-info">
-
-                    <div>
-                        <span>HORÁRIO</span>
-                        <p>Seg — Sex / 08h — 19h</p>
-                        <p>Sáb / 08h — 17h</p>
-                    </div>
-
-                    <div>
-                        <span>LOCAL</span>
-                        <p>Presidente Dutra — MA</p>
-                    </div>
-
-                </div>
-
-            </section>
+            <div class="booking-card">
 
 
-            <!-- AGENDAMENTO -->
+                <!-- ======================================== -->
+                <!-- DADOS DO CLIENTE -->
+                <!-- ======================================== -->
 
-            <section class="booking" id="agendamento">
+                <div class="booking-side">
 
-                <div class="booking-heading">
+                    <div class="booking-side-header">
 
-                    <div>
-                        <span class="label">
-                            05 / AGENDAMENTO
+                        <span>
+                            01
                         </span>
 
-                        <h2>
-                            Seu próximo corte<br>
-                            <span>começa aqui.</span>
-                        </h2>
-                    </div>
+                        <div>
 
-                    <p>
-                        Escolha o serviço, informe seus dados
-                        e encontre um horário disponível.
-                    </p>
+                            <small>
+                                SEUS DADOS
+                            </small>
 
-                </div>
-
-
-                <div class="booking-card">
-
-                    <!-- DADOS -->
-
-                    <div class="booking-side">
-
-                        <div class="booking-side-header">
-                            <span>01</span>
-
-                            <div>
-                                <small>SEUS DADOS</small>
-                                <h3>Quem está agendando?</h3>
-                            </div>
-                        </div>
-
-
-                        <div class="booking-form">
-
-                            <label>
-                                <span>Seu nome</span>
-
-                                <div class="input-wrap">
-                                    <input
-                                        type="text"
-                                        id="nomeCliente"
-                                        placeholder="Digite seu nome"
-                                        autocomplete="name"
-                                    >
-                                </div>
-                            </label>
-
-
-                            <label>
-                                <span>WhatsApp</span>
-
-                                <div class="input-wrap">
-                                    <input
-                                        type="tel"
-                                        id="telefoneCliente"
-                                        placeholder="(99) 99999-9999"
-                                        autocomplete="tel"
-                                    >
-                                </div>
-                            </label>
-
-
-                            <label>
-                                <span>Serviço</span>
-
-                                <div class="input-wrap select-wrap">
-                                    <select id="servicoCliente">
-
-                                        <option value="">
-                                            Escolha um serviço
-                                        </option>
-
-                                        <option value="corte">
-                                            Corte — R$ 40
-                                        </option>
-
-                                        <option value="barba">
-                                            Barba — R$ 30
-                                        </option>
-
-                                        <option value="corte_barba">
-                                            Corte + Barba — R$ 65
-                                        </option>
-
-                                        <option value="acabamento">
-                                            Acabamento — R$ 20
-                                        </option>
-
-                                    </select>
-                                </div>
-                            </label>
+                            <h3>
+                                Quem está agendando?
+                            </h3>
 
                         </div>
 
                     </div>
 
 
-                    <!-- HORÁRIO -->
+                    <div class="booking-form">
 
-                    <div class="booking-side booking-time">
+                        <label>
 
-                        <div class="booking-side-header">
-                            <span>02</span>
+                            <span>
+                                Seu nome
+                            </span>
 
-                            <div>
-                                <small>HORÁRIO</small>
-                                <h3>Quando você vem?</h3>
-                            </div>
-                        </div>
-
-
-                        <label class="date-label">
-
-                            <span>Escolha uma data</span>
-
-                            <div class="input-wrap date-wrap">
+                            <div class="input-wrap">
 
                                 <input
-                                    type="date"
-                                    id="dataCliente"
+                                    type="text"
+                                    id="nomeCliente"
+                                    placeholder="Digite seu nome"
+                                    autocomplete="name"
                                 >
 
                             </div>
@@ -417,26 +428,116 @@
                         </label>
 
 
-                        <div class="horarios-box">
+                        <label>
 
-                            <div class="horarios-header">
+                            <span>
+                                WhatsApp
+                            </span>
 
-                                <span>
-                                    Horários disponíveis
-                                </span>
+                            <div class="input-wrap">
 
-                                <span class="status-dot">
-                                    Disponível
-                                </span>
+                                <input
+                                    type="tel"
+                                    id="telefoneCliente"
+                                    placeholder="(99) 99999-9999"
+                                    autocomplete="tel"
+                                >
 
                             </div>
 
+                        </label>
 
-                            <div id="listaHorarios">
-                                <span class="loading-hours">
-                                    Carregando horários...
-                                </span>
+
+                        <label>
+
+                            <span>
+                                Serviço
+                            </span>
+
+                            <div class="input-wrap select-wrap">
+
+                                <select id="servicoCliente">
+
+                                    <option value="">
+                                        Escolha um serviço
+                                    </option>
+
+                                </select>
+
                             </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ======================================== -->
+                <!-- HORÁRIO -->
+                <!-- ======================================== -->
+
+                <div class="booking-side booking-time">
+
+                    <div class="booking-side-header">
+
+                        <span>
+                            02
+                        </span>
+
+                        <div>
+
+                            <small>
+                                HORÁRIO
+                            </small>
+
+                            <h3>
+                                Quando você vem?
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="date-label">
+
+                        <span>
+                            Escolha uma data
+                        </span>
+
+                        <div class="input-wrap date-wrap">
+
+                            <input
+                                type="date"
+                                id="dataCliente"
+                            >
+
+                        </div>
+
+                    </label>
+
+
+                    <div class="horarios-box">
+
+                        <div class="horarios-header">
+
+                            <span>
+                                Horários disponíveis
+                            </span>
+
+                            <span class="status-dot">
+                                Disponível
+                            </span>
+
+                        </div>
+
+
+                        <div id="listaHorarios">
+
+                            <span class="loading-hours">
+                                Carregando horários...
+                            </span>
 
                         </div>
 
@@ -444,95 +545,127 @@
 
                 </div>
 
-
-                <!-- CONFIRMAÇÃO -->
-
-                <div class="booking-bottom">
-
-                    <div class="booking-note">
-                        <span>✓</span>
-
-                        <p>
-                            Seu horário será reservado após
-                            a confirmação do agendamento.
-                        </p>
-                    </div>
+            </div>
 
 
-                    <button
-                        id="confirmarAgendamento"
-                        class="confirm-booking"
-                    >
-                        <span>Confirmar agendamento</span>
-                        <strong>↗</strong>
-                    </button>
+            <!-- ======================================== -->
+            <!-- CONFIRMAÇÃO -->
+            <!-- ======================================== -->
+
+            <div class="booking-bottom">
+
+                <div class="booking-note">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <p>
+                        Seu horário será reservado após
+                        a confirmação do agendamento.
+                    </p>
 
                 </div>
 
 
-                <p
-                    id="mensagemAgendamento"
-                    class="booking-message"
-                ></p>
+                <button
+                    id="confirmarAgendamento"
+                    class="confirm-booking"
+                >
 
-            </section>
+                    <span>
+                        Confirmar agendamento
+                    </span>
 
-        </main>
+                    <strong>
+                        ↗
+                    </strong>
 
-
-        <!-- FOOTER -->
-
-        <footer>
-
-            <div class="footer-logo" id="footerLogo">
-                DOM ALFA
-            </div>
-
-            <div class="footer-bottom">
-
-                <span>
-                    © 2026 Dom Alfa
-                </span>
-
-                <span>
-                    <a
-                        href="https://www.instagram.com/vitinhoar1/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Instagram
-                    </a>
-                    ↗
-                </span>
-
-                <span>
-                    <a
-                        href="https://wa.me/559991493420"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        WhatsApp
-                    </a>
-                    ↗
-                </span>
+                </button>
 
             </div>
 
-        </footer>
+
+            <p
+                id="mensagemAgendamento"
+                class="booking-message"
+            ></p>
+
+        </section>
+
+    </main>
 
 
-        <script src="script.js"></script>
+    <!-- ======================================== -->
+    <!-- FOOTER -->
+    <!-- ======================================== -->
 
-        <script
-            type="module"
-            src="agendamento.js"
-        ></script>
+    <footer>
 
-        <script
-            type="module"
-            src="config-site.js"
-        ></script>
+        <div
+            class="footer-logo"
+            id="footerLogo"
+        >
+            BARBEARIA
+        </div>
 
-    </body>
+        <div class="footer-bottom">
 
-    </html>
+            <span></span>
+
+
+            <span>
+
+                <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="instagramLink"
+                >
+                    Instagram
+                </a>
+
+                ↗
+
+            </span>
+
+
+            <span>
+
+                <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="whatsappLink"
+                >
+                    WhatsApp
+                </a>
+
+                ↗
+
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ======================================== -->
+    <!-- SCRIPTS -->
+    <!-- ======================================== -->
+
+    <script src="script.js"></script>
+
+    <script
+        type="module"
+        src="agendamento.js"
+    ></script>
+
+    <script
+        type="module"
+        src="config-site.js"
+    ></script>
+
+</body>
+
+</html>

@@ -146,8 +146,8 @@ if (horarioDivs.length >= 2) {
 // ========================================
 
 const instagram =
-    document.querySelector(
-        'a[href*="instagram.com"]'
+    document.getElementById(
+        "instagramLink"
     );
 
 if (
@@ -166,18 +166,19 @@ if (
 // ========================================
 
 const whatsapp =
-    document.querySelector(
-        'a[href*="wa.me"]'
+    document.getElementById(
+        "whatsappLink"
     );
 
-if (whatsapp) {
+if (
+    whatsapp &&
+    CONFIG.whatsapp
+) {
 
     whatsapp.href =
         `https://wa.me/${CONFIG.whatsapp}`;
 
 }
-
-
 // ========================================
 // COPYRIGHT
 // ========================================

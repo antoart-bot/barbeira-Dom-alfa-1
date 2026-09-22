@@ -1,127 +1,125 @@
-    import {
-        ref,
-        get,
-        update,
-        remove,
-        onValue
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+import {
+    ref,
+    get,
+    update,
+    remove,
+    onValue
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-    import {
-        onAuthStateChanged,
-        signOut
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
     db,
-    auth,
-    app
-} from "./firebase.js"; 
+    auth
+} from "./firebase.js";
 
-    import { CONFIG } from "./config.js";
-
+import { CONFIG } from "./config.js";
 
 
-    const CAMINHO_BARBEIRO =
-        `barbeiros/${CONFIG.id}`;
+const CAMINHO_BARBEIRO =
+    `barbeiros/${CONFIG.id}`;
 
 
-    // ========================================
-    // ELEMENTOS
-    // ========================================
+// ========================================
+// ELEMENTOS
+// ========================================
 
-    const dataPainel =
-        document.getElementById("dataPainel");
+const dataPainel =
+    document.getElementById("dataPainel");
 
-    const atualizar =
-        document.getElementById("atualizar");
+const atualizar =
+    document.getElementById("atualizar");
 
-    const totalAgendados =
-        document.getElementById("totalAgendados");
+const totalAgendados =
+    document.getElementById("totalAgendados");
 
-    const totalDisponiveis =
-        document.getElementById("totalDisponiveis");
+const totalDisponiveis =
+    document.getElementById("totalDisponiveis");
 
-    const totalOcupados =
-        document.getElementById("totalOcupados");
+const totalOcupados =
+    document.getElementById("totalOcupados");
 
-    const listaAgendamentos =
-        document.getElementById("listaAgendamentos");
+const listaAgendamentos =
+    document.getElementById("listaAgendamentos");
 
-    const listaHorarios =
-        document.getElementById("listaHorarios");
+const listaHorarios =
+    document.getElementById("listaHorarios");
 
-    const novoHorario =
-        document.getElementById("novoHorario");
+const novoHorario =
+    document.getElementById("novoHorario");
 
-    const adicionarHorario =
-        document.getElementById("adicionarHorario");
+const adicionarHorario =
+    document.getElementById("adicionarHorario");
 
-    const mensagem =
-        document.getElementById("mensagem");
+const mensagem =
+    document.getElementById("mensagem");
 
-    const sair =
-        document.getElementById("sair");
+const sair =
+    document.getElementById("sair");
 
-    const horaInicio =
-        document.getElementById("horaInicio");
+const horaInicio =
+    document.getElementById("horaInicio");
 
-    const horaFim =
-        document.getElementById("horaFim");
+const horaFim =
+    document.getElementById("horaFim");
 
-    const intervaloHorario =
-        document.getElementById("intervaloHorario");
+const intervaloHorario =
+    document.getElementById("intervaloHorario");
 
-    const pausaInicio =
-        document.getElementById("pausaInicio");
+const pausaInicio =
+    document.getElementById("pausaInicio");
 
-    const pausaFim =
-        document.getElementById("pausaFim");
+const pausaFim =
+    document.getElementById("pausaFim");
 
-    const gerarHorarios =
-        document.getElementById("gerarHorarios");
-
-        // ========================================
-    // CONFIGURAÇÃO DA BARBEARIA
-    // ========================================
-
-    const nomeBarbearia =
-        document.getElementById("nomeBarbearia");
-
-    if (nomeBarbearia) {
-
-        nomeBarbearia.textContent =
-            CONFIG.nome;
-
-    }
-
-    document.title =
-        `Painel — ${CONFIG.nome}`;
+const gerarHorarios =
+    document.getElementById("gerarHorarios");
 
 
-    // ========================================
-    // DATA DE HOJE
-    // ========================================
+// ========================================
+// CONFIGURAÇÃO DA BARBEARIA
+// ========================================
 
-    function obterDataHoje() {
+const nomeBarbearia =
+    document.getElementById("nomeBarbearia");
 
-        const hoje = new Date();
+if (nomeBarbearia) {
 
-        const ano =
-            hoje.getFullYear();
+    nomeBarbearia.textContent =
+        CONFIG.nome;
 
-        const mes =
-            String(
-                hoje.getMonth() + 1
-            ).padStart(2, "0");
+}
 
-        const dia =
-            String(
-                hoje.getDate()
-            ).padStart(2, "0");
+document.title =
+    `Painel — ${CONFIG.nome}`;
 
-        return `${ano}-${mes}-${dia}`;
-    }
 
+// ========================================
+// DATA DE HOJE
+// ========================================
+
+function obterDataHoje() {
+
+    const hoje = new Date();
+
+    const ano =
+        hoje.getFullYear();
+
+    const mes =
+        String(
+            hoje.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            hoje.getDate()
+        ).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}`;
+}
 
 
 // ========================================
@@ -131,24 +129,28 @@ import {
 
 async function limparHorariosPassados() {
 
-    const hoje = obterDataHoje();
+    const hoje =
+        obterDataHoje();
 
     try {
 
-        const horariosRef = ref(
-            db,
-            `${CAMINHO_BARBEIRO}/horarios`
-        );
+        const horariosRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/horarios`
+            );
 
-        const snapshot = await get(
-            horariosRef
-        );
+        const snapshot =
+            await get(
+                horariosRef
+            );
 
         if (!snapshot.exists()) {
             return;
         }
 
-        const horarios = snapshot.val();
+        const horarios =
+            snapshot.val();
 
         const exclusoes = {};
 
@@ -157,19 +159,25 @@ async function limparHorariosPassados() {
 
                 if (data < hoje) {
 
-                    exclusoes[data] = null;
+                    exclusoes[data] =
+                        null;
 
                 }
 
             }
         );
 
-        if (Object.keys(exclusoes).length === 0) {
+        if (
+            Object.keys(exclusoes).length === 0
+        ) {
             return;
         }
 
         await update(
-            ref(db, `${CAMINHO_BARBEIRO}/horarios`),
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/horarios`
+            ),
             exclusoes
         );
 
@@ -185,76 +193,90 @@ async function limparHorariosPassados() {
         );
 
     }
+
 }
 
-    const dataHoje = obterDataHoje();
+
+const dataHoje =
+    obterDataHoje();
 
 if (dataPainel) {
-    dataPainel.min = dataHoje;
-    dataPainel.value = dataHoje;
+
+    dataPainel.min =
+        dataHoje;
+
+    dataPainel.value =
+        dataHoje;
+
 }
 
 
-    // ========================================
-    // LOGIN / AUTENTICAÇÃO
-    // ========================================
+// ========================================
+// NOTIFICAÇÕES
+// ========================================
+
+let idsAgendamentosConhecidos =
+    new Set();
+
+let primeiraLeituraAgendamentos =
+    true;
+
+let notificacoesAtivas =
+    false;
 
 
-    // ========================================
-    // NOTIFICAÇÕES DE NOVOS AGENDAMENTOS
-    // ========================================
+// ========================================
+// PEDIR PERMISSÃO PARA NOTIFICAÇÕES
+// ========================================
 
-    let idsAgendamentosConhecidos = new Set();
-    let primeiraLeituraAgendamentos = true;
-    let notificacoesAtivas = false;
+async function prepararNotificacoes() {
 
+    if (!("Notification" in window)) {
 
-    // ========================================
-    // PEDIR PERMISSÃO
-    // ========================================
+        console.log(
+            "Este navegador não suporta notificações."
+        );
 
-    async function prepararNotificacoes() {
+        return;
+    }
 
-        if (!("Notification" in window)) {
+    if (
+        Notification.permission ===
+        "default"
+    ) {
 
-            console.log(
-                "Este navegador não suporta notificações."
-            );
+        const permissao =
+            await Notification.requestPermission();
 
-            return;
-
-        }
-
-
-        if (Notification.permission === "default") {
-
-            const permissao =
-                await Notification.requestPermission();
-
-            console.log(
-                "Permissão para notificações:",
-                permissao
-            );
-
-        }
-
-
-        notificacoesAtivas =
-    Notification.permission === "granted";
-
-console.log(
-    "NOTIFICAÇÕES ATIVAS:",
-    notificacoesAtivas
-);
-
-console.log(
-    "PERMISSÃO:",
-    Notification.permission
-);
+        console.log(
+            "Permissão para notificações:",
+            permissao
+        );
 
     }
 
-    onAuthStateChanged(
+    notificacoesAtivas =
+        Notification.permission ===
+        "granted";
+
+    console.log(
+        "NOTIFICAÇÕES ATIVAS:",
+        notificacoesAtivas
+    );
+
+    console.log(
+        "PERMISSÃO:",
+        Notification.permission
+    );
+
+}
+
+
+// ========================================
+// AUTENTICAÇÃO
+// ========================================
+
+onAuthStateChanged(
     auth,
     async (usuario) => {
 
@@ -268,19 +290,19 @@ console.log(
 
         await prepararNotificacoes();
 
-console.log(
-    "AUTH OK — preparando painel e notificações"
-);
+        console.log(
+            "AUTH OK — preparando painel e notificações"
+        );
 
-console.log(
-    "TESTE NOTIFICAÇÃO:",
-    Notification.permission
-);
+        console.log(
+            "TESTE NOTIFICAÇÃO:",
+            Notification.permission
+        );
 
-console.log(
-    "notificacoesAtivas:",
-    notificacoesAtivas
-);
+        console.log(
+            "notificacoesAtivas:",
+            notificacoesAtivas
+        );
 
         await limparHorariosPassados();
 
@@ -294,42 +316,58 @@ console.log(
 );
 
 
-    // ========================================
-    // MOSTRAR NOTIFICAÇÃO
-    // ========================================
+// ========================================
+// MOSTRAR NOTIFICAÇÃO
+// ========================================
 
-    function mostrarNotificacaoAgendamento(agendamento) {
+function mostrarNotificacaoAgendamento(
+    agendamento
+) {
 
-    console.log("1 - FUNÇÃO DE NOTIFICAÇÃO INICIADA");
+    if (!notificacoesAtivas) {
+
+        console.log(
+            "NOTIFICAÇÕES DESATIVADAS"
+        );
+
+        return;
+    }
 
     console.log(
-        "2 - Notification:",
-        typeof Notification
-    );
-
-    console.log(
-        "3 - Permission:",
-        Notification.permission
+        "MOSTRANDO NOTIFICAÇÃO REAL:",
+        agendamento
     );
 
     try {
 
-        const notificacao = new Notification(
-    "TESTE — Dom Alfa",
-    {
-        body: "Se você está vendo isso, a notificação funcionou.",
-        requireInteraction: true
-    }
-);
+        const titulo =
+            `✂️ Novo agendamento — ${CONFIG.nome}`;
+
+        const corpo =
+            `${agendamento.nome} agendou ${agendamento.servico} às ${agendamento.horario}.`;
+
+        const notificacao =
+            new Notification(
+                titulo,
+                {
+                    body: corpo,
+
+                    tag:
+                        `novo-${agendamento.data}-${agendamento.horario}-${Date.now()}`,
+
+                    renotify: true
+                }
+            );
 
         console.log(
-            "4 - NOTIFICAÇÃO CRIADA:",
+            "✅ NOTIFICAÇÃO CRIADA:",
             notificacao
         );
 
         notificacao.onclick = () => {
 
             window.focus();
+
             notificacao.close();
 
         };
@@ -337,740 +375,748 @@ console.log(
     } catch (erro) {
 
         console.error(
-            "5 - ERRO AO CRIAR NOTIFICAÇÃO:",
+            "💥 ERRO AO CRIAR NOTIFICAÇÃO:",
             erro
         );
 
     }
+
 }
 
-    // ========================================
-    // MONITORAR NOVOS AGENDAMENTOS
-    // ========================================
 
-    function monitorarNovosAgendamentos() {
+// ========================================
+// MONITORAR NOVOS AGENDAMENTOS
+// ========================================
 
-        const agendamentosRef =
+function monitorarNovosAgendamentos() {
+
+    const agendamentosRef =
         ref(
             db,
             `${CAMINHO_BARBEIRO}/agendamentos`
         );
 
-
-        onValue(
-            agendamentosRef,
-            (snapshot) => {
-
-                if (!snapshot.exists()) {
-
-                    idsAgendamentosConhecidos =
-                        new Set();
-
-                    return;
-
-                }
-
-
-                const dados =
-                    snapshot.val();
-
-
-                const idsAtuais =
-                    new Set(
-                        Object.keys(dados)
-                    );
-
-
-                // ========================================
-                // PRIMEIRA LEITURA
-                // Não notificar agendamentos antigos
-                // ========================================
-
-                if (primeiraLeituraAgendamentos) {
-
-                    idsAgendamentosConhecidos =
-                        idsAtuais;
-
-                    primeiraLeituraAgendamentos =
-                        false;
-
-                    console.log(
-                        "Monitoramento de agendamentos iniciado."
-                    );
-
-                    return;
-
-                }
-
-
-                // ========================================
-                // PROCURAR NOVOS
-                // ========================================
-
-                idsAtuais.forEach(
-                    (id) => {
-
-                        if (
-                            !idsAgendamentosConhecidos.has(
-                                id
-                            )
-                        ) {
-
-                            const agendamento =
-                                dados[id];
-
-
-                            if (
-                                agendamento &&
-                                agendamento.status ===
-                                    "confirmado"
-                            ) {
-
-                                console.log(
-                                    "NOVO AGENDAMENTO:",
-                                    agendamento
-                                );
-
-
-                                mostrarNotificacaoAgendamento(
-                                    agendamento
-                                );
-
-
-                                // Atualizar painel
-                                carregarAgendamentos();
-                                carregarHorarios();
-
-                            }
-
-                        }
-
-                    }
-                );
-
-
-                idsAgendamentosConhecidos =
-                    idsAtuais;
-
-            },
-            (erro) => {
-
-                console.error(
-                    "Erro ao monitorar agendamentos:",
-                    erro
-                );
-
-            }
-        );
-
-    }
-
-    // ========================================
-    // SAIR
-    // ========================================
-
-    if (sair) {
-
-        sair.addEventListener(
-            "click",
-            async () => {
-
-                try {
-
-                    await signOut(auth);
-
-                    window.location.href =
-                        "index.html";
-
-                } catch (erro) {
-
-                    console.error(
-                        "Erro ao sair:",
-                        erro
-                    );
-
-                    mensagem.textContent =
-                        "Erro ao sair da conta.";
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ========================================
-    // CARREGAR AGENDAMENTOS
-    // ========================================
-
-    async function carregarAgendamentos() {
-
-        const data =
-            dataPainel.value;
-
-        listaAgendamentos.innerHTML =
-            "<p class='vazio'>Carregando...</p>";
-
-        try {
-
-            const snapshot =
-        await get(
-            ref(
-                db,
-                `${CAMINHO_BARBEIRO}/agendamentos`
-            )
-        );
-
-
-            // ========================================
-            // NENHUM AGENDAMENTO NO BANCO
-            // ========================================
+    onValue(
+        agendamentosRef,
+        (snapshot) => {
 
             if (!snapshot.exists()) {
 
-                listaAgendamentos.innerHTML =
-                    "<p class='vazio'>Nenhum agendamento.</p>";
-
-                if (totalAgendados) {
-
-                    totalAgendados.textContent =
-                        "0";
-
-                }
+                idsAgendamentosConhecidos =
+                    new Set();
 
                 return;
             }
-
 
             const dados =
                 snapshot.val();
 
+            const idsAtuais =
+                new Set(
+                    Object.keys(dados)
+                );
+
 
             // ========================================
-            // FILTRAR PELA DATA
+            // PRIMEIRA LEITURA
+            // NÃO NOTIFICAR AGENDAMENTOS ANTIGOS
             // ========================================
 
-            const agendamentos =
-                Object.entries(dados)
+            if (
+                primeiraLeituraAgendamentos
+            ) {
 
-                    .filter(
-                        ([id, agendamento]) => {
+                idsAgendamentosConhecidos =
+                    idsAtuais;
 
-                            return (
-                                agendamento.data === data &&
-                                agendamento.status !== "cancelado"
+                primeiraLeituraAgendamentos =
+                    false;
+
+                console.log(
+                    "Monitoramento de agendamentos iniciado."
+                );
+
+                return;
+            }
+
+
+            // ========================================
+            // PROCURAR NOVOS
+            // ========================================
+
+            idsAtuais.forEach(
+                (id) => {
+
+                    if (
+                        !idsAgendamentosConhecidos.has(
+                            id
+                        )
+                    ) {
+
+                        const agendamento =
+                            dados[id];
+
+                        if (
+                            agendamento &&
+                            agendamento.status ===
+                                "confirmado"
+                        ) {
+
+                            console.log(
+                                "NOVO AGENDAMENTO:",
+                                agendamento
                             );
 
-                        }
-                    )
-
-                    .sort(
-                        ([idA, a], [idB, b]) => {
-
-                            return String(
-                                a.horario
-                            ).localeCompare(
-                                String(b.horario)
+                            mostrarNotificacaoAgendamento(
+                                agendamento
                             );
 
+                            carregarAgendamentos();
+
+                            carregarHorarios();
+
                         }
-                    );
+
+                    }
+
+                }
+            );
 
 
-            // ========================================
-            // TOTAL DE AGENDADOS
-            // ========================================
+            idsAgendamentosConhecidos =
+                idsAtuais;
+
+        },
+        (erro) => {
+
+            console.error(
+                "Erro ao monitorar agendamentos:",
+                erro
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// SAIR
+// ========================================
+
+if (sair) {
+
+    sair.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "index.html";
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao sair:",
+                    erro
+                );
+
+                mensagem.textContent =
+                    "Erro ao sair da conta.";
+
+            }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// CARREGAR AGENDAMENTOS
+// ========================================
+
+async function carregarAgendamentos() {
+
+    const data =
+        dataPainel.value;
+
+    listaAgendamentos.innerHTML =
+        "<p class='vazio'>Carregando...</p>";
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/agendamentos`
+                )
+            );
+
+
+        // ========================================
+        // NENHUM AGENDAMENTO
+        // ========================================
+
+        if (!snapshot.exists()) {
+
+            listaAgendamentos.innerHTML =
+                "<p class='vazio'>Nenhum agendamento.</p>";
 
             if (totalAgendados) {
 
                 totalAgendados.textContent =
-                    agendamentos.length;
+                    "0";
 
             }
 
-
-            // ========================================
-            // NENHUM AGENDAMENTO NA DATA
-            // ========================================
-
-            if (
-                agendamentos.length === 0
-            ) {
-
-                listaAgendamentos.innerHTML =
-                    "<p class='vazio'>Nenhum agendamento para esta data.</p>";
-
-                if (totalAgendados) {
-
-                    totalAgendados.textContent =
-                        "0";
-
-                }
-
-                return;
-            }
+            return;
+        }
 
 
-            listaAgendamentos.innerHTML =
-                "";
+        const dados =
+            snapshot.val();
 
 
-            // ========================================
-            // CRIAR CARDS
-            // ========================================
+        // ========================================
+        // FILTRAR PELA DATA
+        // ========================================
 
-            agendamentos.forEach(
-                ([id, agendamento]) => {
+        const agendamentos =
+            Object.entries(dados)
 
-                    const card =
-                        document.createElement(
-                            "div"
+                .filter(
+                    ([id, agendamento]) => {
+
+                        return (
+                            agendamento.data ===
+                                data &&
+                            agendamento.status !==
+                                "cancelado"
                         );
 
-                    card.className =
-                        "agendamento";
+                    }
+                )
 
+                .sort(
+                    ([idA, a], [idB, b]) => {
 
-                    // ========================================
-                    // TELEFONE
-                    // ========================================
-
-                    const telefone =
-                        String(
-                            agendamento.telefone || ""
-                        ).replace(
-                            /\D/g,
-                            ""
+                        return String(
+                            a.horario
+                        ).localeCompare(
+                            String(
+                                b.horario
+                            )
                         );
 
-
-                    const whatsapp =
-                        telefone.startsWith("55")
-                            ? telefone
-                            : "55" + telefone;
+                    }
+                );
 
 
-                    // ========================================
-                    // CARD
-                    // ========================================
+        // ========================================
+        // TOTAL DE AGENDADOS
+        // ========================================
 
-                 card.innerHTML = `
+        if (totalAgendados) {
 
-    <div class="horario">
-        ${agendamento.horario}
-    </div>
-
-    <div class="cliente">
-        ${agendamento.nome}
-    </div>
-
-    <div class="detalhes-agendamento">
-
-        <div>
-            <span>Serviço</span>
-            <strong>${agendamento.servico}</strong>
-        </div>
-
-        <div>
-            <span>WhatsApp</span>
-            <strong>${agendamento.telefone}</strong>
-        </div>
-
-    </div>
-
-    <div class="botoes">
-
-        <a
-            class="whatsapp"
-            href="https://wa.me/${whatsapp}"
-            target="_blank"
-            rel="noopener"
-        >
-            WhatsApp ↗
-        </a>
-
-        <button
-            class="cancelar"
-            type="button"
-        >
-            Cancelar
-        </button>
-
-    </div>
-
-`;
-
-                    // ========================================
-                    // BOTÃO CANCELAR
-                    // ========================================
-
-                    const botaoCancelar =
-                        card.querySelector(
-                            ".cancelar"
-                        );
-
-
-                    botaoCancelar.addEventListener(
-                        "click",
-                        () => {
-
-                            cancelarAgendamento(
-                                id,
-                                agendamento.data,
-                                agendamento.horario
-                            );
-
-                        }
-                    );
-
-
-                    listaAgendamentos.appendChild(
-                        card
-                    );
-
-                }
-            );
-
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar agendamentos:",
-                erro
-            );
-
-            listaAgendamentos.innerHTML =
-                "<p class='vazio'>Erro ao carregar agendamentos.</p>";
+            totalAgendados.textContent =
+                agendamentos.length;
 
         }
 
-    }
+
+        // ========================================
+        // NENHUM AGENDAMENTO NA DATA
+        // ========================================
+
+        if (
+            agendamentos.length === 0
+        ) {
+
+            listaAgendamentos.innerHTML =
+                "<p class='vazio'>Nenhum agendamento para esta data.</p>";
+
+            if (totalAgendados) {
+
+                totalAgendados.textContent =
+                    "0";
+
+            }
+
+            return;
+        }
 
 
-    // ========================================
-    // CARREGAR HORÁRIOS
-    // ========================================
-
-    async function carregarHorarios() {
-
-        const data =
-            dataPainel.value;
+        listaAgendamentos.innerHTML =
+            "";
 
 
-        listaHorarios.innerHTML =
-            "<p class='vazio'>Carregando...</p>";
+        // ========================================
+        // CRIAR CARDS
+        // ========================================
 
+        agendamentos.forEach(
+            ([id, agendamento]) => {
 
-        try {
-
-            // ========================================
-            // BUSCAR HORÁRIOS
-            // ========================================
-
-            const horariosSnapshot =
-        await get(
-            ref(
-                db,
-                `${CAMINHO_BARBEIRO}/horarios/${data}`
-            )
-        );
-
-
-            // ========================================
-            // BUSCAR AGENDAMENTOS
-            // ========================================
-
-            const agendamentosSnapshot =
-        await get(
-            ref(
-                db,
-                `${CAMINHO_BARBEIRO}/agendamentos`
-            )
-        );
-
-
-            const horarios =
-                horariosSnapshot.exists()
-                    ? Object.entries(
-                        horariosSnapshot.val()
-                    )
-                    : [];
-
-
-            const agendamentos =
-                agendamentosSnapshot.exists()
-                    ? Object.values(
-                        agendamentosSnapshot.val()
-                    )
-                    : [];
-
-
-            // ========================================
-            // HORÁRIOS OCUPADOS
-            // ========================================
-
-            const horariosOcupados =
-                agendamentos
-
-                    .filter(
-                        (agendamento) => {
-
-                            return (
-                                agendamento.data === data &&
-                                agendamento.status === "confirmado"
-                            );
-
-                        }
-                    )
-
-                    .map(
-                        (agendamento) => {
-
-                            return String(
-                                agendamento.horario
-                            );
-
-                        }
+                const card =
+                    document.createElement(
+                        "div"
                     );
 
+                card.className =
+                    "agendamento";
 
-            // ========================================
-            // ORDENAR HORÁRIOS
-            // ========================================
 
-            horarios.sort(
-                ([horarioA], [horarioB]) => {
+                // ========================================
+                // TELEFONE
+                // ========================================
 
-                    const [horaA, minutoA] =
-                        horarioA
-                            .split(":")
-                            .map(Number);
-
-                    const [horaB, minutoB] =
-                        horarioB
-                            .split(":")
-                            .map(Number);
-
-                    const minutosA =
-                        horaA * 60 +
-                        minutoA;
-
-                    const minutosB =
-                        horaB * 60 +
-                        minutoB;
-
-                    return (
-                        minutosA -
-                        minutosB
+                const telefone =
+                    String(
+                        agendamento.telefone ||
+                            ""
+                    ).replace(
+                        /\D/g,
+                        ""
                     );
 
-                }
-            );
+                const whatsapp =
+                    telefone.startsWith("55")
+                        ? telefone
+                        : "55" + telefone;
 
 
-            // ========================================
-            // CONTADORES
-            // ========================================
+                // ========================================
+                // CARD
+                // ========================================
 
-            let quantidadeDisponiveis =
-                0;
+                card.innerHTML = `
 
-            let quantidadeOcupados =
-                0;
+                    <div class="horario">
+                        ${agendamento.horario}
+                    </div>
+
+                    <div class="cliente">
+                        ${agendamento.nome}
+                    </div>
+
+                    <div class="detalhes-agendamento">
+
+                        <div>
+                            <span>Serviço</span>
+                            <strong>
+                                ${agendamento.servico}
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>WhatsApp</span>
+                            <strong>
+                                ${agendamento.telefone}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="botoes">
+
+                        <a
+                            class="whatsapp"
+                            href="https://wa.me/${whatsapp}"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            WhatsApp ↗
+                        </a>
+
+                        <button
+                            class="cancelar"
+                            type="button"
+                        >
+                            Cancelar
+                        </button>
+
+                    </div>
+
+                `;
 
 
-            horarios.forEach(
-                ([horario, dados]) => {
+                // ========================================
+                // BOTÃO CANCELAR
+                // ========================================
 
-                    const ocupado =
-                        horariosOcupados.includes(
-                            String(horario)
+                const botaoCancelar =
+                    card.querySelector(
+                        ".cancelar"
+                    );
+
+                botaoCancelar.addEventListener(
+                    "click",
+                    () => {
+
+                        cancelarAgendamento(
+                            id,
+                            agendamento.data,
+                            agendamento.horario
                         );
-
-
-                    const disponivel =
-                        !ocupado &&
-                        dados &&
-                        dados.disponivel === true;
-
-
-                    if (disponivel) {
-
-                        quantidadeDisponiveis++;
-
-                    } else {
-
-                        quantidadeOcupados++;
 
                     }
+                );
 
-                }
+
+                listaAgendamentos.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar agendamentos:",
+            erro
+        );
+
+        listaAgendamentos.innerHTML =
+            "<p class='vazio'>Erro ao carregar agendamentos.</p>";
+
+    }
+
+}
+
+
+// ========================================
+// CARREGAR HORÁRIOS
+// ========================================
+
+async function carregarHorarios() {
+
+    const data =
+        dataPainel.value;
+
+    listaHorarios.innerHTML =
+        "<p class='vazio'>Carregando...</p>";
+
+    try {
+
+        // ========================================
+        // BUSCAR HORÁRIOS
+        // ========================================
+
+        const horariosSnapshot =
+            await get(
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/horarios/${data}`
+                )
             );
 
 
-            // ========================================
-            // ATUALIZAR RESUMO
-            // ========================================
+        // ========================================
+        // BUSCAR AGENDAMENTOS
+        // ========================================
 
-            if (totalDisponiveis) {
+        const agendamentosSnapshot =
+            await get(
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/agendamentos`
+                )
+            );
 
-                totalDisponiveis.textContent =
-                    quantidadeDisponiveis;
+
+        const horarios =
+            horariosSnapshot.exists()
+                ? Object.entries(
+                    horariosSnapshot.val()
+                )
+                : [];
+
+
+        const agendamentos =
+            agendamentosSnapshot.exists()
+                ? Object.values(
+                    agendamentosSnapshot.val()
+                )
+                : [];
+
+
+        // ========================================
+        // HORÁRIOS OCUPADOS
+        // ========================================
+
+        const horariosOcupados =
+            agendamentos
+
+                .filter(
+                    (agendamento) => {
+
+                        return (
+                            agendamento.data ===
+                                data &&
+                            agendamento.status ===
+                                "confirmado"
+                        );
+
+                    }
+                )
+
+                .map(
+                    (agendamento) => {
+
+                        return String(
+                            agendamento.horario
+                        );
+
+                    }
+                );
+
+
+        // ========================================
+        // ORDENAR HORÁRIOS
+        // ========================================
+
+        horarios.sort(
+            ([horarioA], [horarioB]) => {
+
+                const [
+                    horaA,
+                    minutoA
+                ] =
+                    horarioA
+                        .split(":")
+                        .map(Number);
+
+                const [
+                    horaB,
+                    minutoB
+                ] =
+                    horarioB
+                        .split(":")
+                        .map(Number);
+
+                const minutosA =
+                    horaA * 60 +
+                    minutoA;
+
+                const minutosB =
+                    horaB * 60 +
+                    minutoB;
+
+                return (
+                    minutosA -
+                    minutosB
+                );
 
             }
+        );
 
 
-            if (totalOcupados) {
+        // ========================================
+        // CONTADORES
+        // ========================================
 
-                totalOcupados.textContent =
-                    quantidadeOcupados;
+        let quantidadeDisponiveis =
+            0;
+
+        let quantidadeOcupados =
+            0;
+
+
+        horarios.forEach(
+            ([horario, dados]) => {
+
+                const ocupado =
+                    horariosOcupados.includes(
+                        String(horario)
+                    );
+
+                const disponivel =
+                    !ocupado &&
+                    dados &&
+                    dados.disponivel === true;
+
+
+                if (disponivel) {
+
+                    quantidadeDisponiveis++;
+
+                } else {
+
+                    quantidadeOcupados++;
+
+                }
 
             }
+        );
 
 
-            // ========================================
-            // LIMPAR LISTA
-            // ========================================
+        // ========================================
+        // ATUALIZAR RESUMO
+        // ========================================
+
+        if (totalDisponiveis) {
+
+            totalDisponiveis.textContent =
+                quantidadeDisponiveis;
+
+        }
+
+        if (totalOcupados) {
+
+            totalOcupados.textContent =
+                quantidadeOcupados;
+
+        }
+
+
+        // ========================================
+        // LIMPAR LISTA
+        // ========================================
+
+        listaHorarios.innerHTML =
+            "";
+
+
+        // ========================================
+        // NENHUM HORÁRIO
+        // ========================================
+
+        if (
+            horarios.length === 0
+        ) {
 
             listaHorarios.innerHTML =
-                "";
+                "<p class='vazio'>Nenhum horário cadastrado para esta data.</p>";
+
+            return;
+        }
 
 
-            // ========================================
-            // NENHUM HORÁRIO
-            // ========================================
+        // ========================================
+        // MOSTRAR HORÁRIOS
+        // ========================================
 
-            if (
-                horarios.length === 0
-            ) {
+        horarios.forEach(
+            ([horario, dados]) => {
 
-                listaHorarios.innerHTML =
-                    "<p class='vazio'>Nenhum horário cadastrado para esta data.</p>";
+                const ocupado =
+                    horariosOcupados.includes(
+                        String(horario)
+                    );
 
-                return;
-            }
-
-
-            // ========================================
-            // MOSTRAR HORÁRIOS
-            // ========================================
-
-            horarios.forEach(
-                ([horario, dados]) => {
-
-                    const ocupado =
-                        horariosOcupados.includes(
-                            String(horario)
-                        );
+                const disponivel =
+                    !ocupado &&
+                    dados &&
+                    dados.disponivel === true;
 
 
-                    const disponivel =
-                        !ocupado &&
-                        dados &&
-                        dados.disponivel === true;
+                // ========================================
+                // CRIAR CARD
+                // ========================================
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "horario-card";
 
 
-                    // ========================================
-                    // CRIAR CARD
-                    // ========================================
+                card.innerHTML = `
 
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
+                    <strong>
+                        ${horario}
+                    </strong>
 
-                    card.className =
-                        "horario-card";
-
-
-                    card.innerHTML = `
-
-                        <strong>
-                            ${horario}
-                        </strong>
-
-                        <span class="${
-                            disponivel
-                                ? "disponivel"
-                                : "ocupado"
-                        }">
-
-                            ${
-                                disponivel
-                                    ? "Disponível"
-                                    : "Ocupado"
-                            }
-
-                        </span>
+                    <span class="${
+                        disponivel
+                            ? "disponivel"
+                            : "ocupado"
+                    }">
 
                         ${
                             disponivel
-                                ? `
-                                    <button
-                                        class="remover-horario"
-                                        type="button"
-                                    >
-                                        Remover
-                                    </button>
-                                `
-                                : ""
+                                ? "Disponível"
+                                : "Ocupado"
                         }
 
-                    `;
+                    </span>
+
+                    ${
+                        disponivel
+                            ? `
+                                <button
+                                    class="remover-horario"
+                                    type="button"
+                                >
+                                    Remover
+                                </button>
+                            `
+                            : ""
+                    }
+
+                `;
 
 
-                    listaHorarios.appendChild(
-                        card
+                listaHorarios.appendChild(
+                    card
+                );
+
+
+                // ========================================
+                // REMOVER HORÁRIO
+                // ========================================
+
+                const botaoRemover =
+                    card.querySelector(
+                        ".remover-horario"
                     );
 
 
-                    // ========================================
-                    // REMOVER HORÁRIO
-                    // ========================================
+                if (botaoRemover) {
 
-                    const botaoRemover =
-                        card.querySelector(
-                            ".remover-horario"
-                        );
+                    botaoRemover.addEventListener(
+                        "click",
+                        () => {
 
+                            removerHorario(
+                                data,
+                                horario
+                            );
 
-                    if (botaoRemover) {
-
-                        botaoRemover.addEventListener(
-                            "click",
-                            () => {
-
-                                removerHorario(
-                                    data,
-                                    horario
-                                );
-
-                            }
-                        );
-
-                    }
+                        }
+                    );
 
                 }
-            );
+
+            }
+        );
 
 
-        } catch (erro) {
+    } catch (erro) {
 
-            console.error(
-                "Erro ao carregar horários:",
-                erro
-            );
+        console.error(
+            "Erro ao carregar horários:",
+            erro
+        );
 
-            listaHorarios.innerHTML =
-                "<p class='vazio'>Erro ao carregar horários.</p>";
-
-        }
+        listaHorarios.innerHTML =
+            "<p class='vazio'>Erro ao carregar horários.</p>";
 
     }
 
+}
 
-    // ========================================
+
+// ========================================
 // CANCELAR AGENDAMENTO
 // ========================================
 
@@ -1084,7 +1130,6 @@ async function cancelarAgendamento(
         confirm(
             "Cancelar este agendamento?"
         );
-
 
     if (!confirmar) {
         return;
@@ -1128,6 +1173,7 @@ async function cancelarAgendamento(
 
 
         await carregarAgendamentos();
+
         await carregarHorarios();
 
 
@@ -1145,537 +1191,535 @@ async function cancelarAgendamento(
 
 }
 
-    // ========================================
-    // ADICIONAR HORÁRIO MANUALMENTE
-    // ========================================
 
-    if (adicionarHorario) {
+// ========================================
+// ADICIONAR HORÁRIO MANUALMENTE
+// ========================================
 
-        adicionarHorario.addEventListener(
-            "click",
-            async () => {
+if (adicionarHorario) {
 
-                const data =
-                    dataPainel.value;
+    adicionarHorario.addEventListener(
+        "click",
+        async () => {
 
-                const horario =
-                    novoHorario.value;
+            const data =
+                dataPainel.value;
 
+            const horario =
+                novoHorario.value;
 
-                if (!data || !horario) {
 
-                    mensagem.textContent =
-                        "Escolha um horário.";
-
-                    return;
-                }
-
-
-                try {
-
-                    const horarioRef =
-        ref(
-            db,
-            `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
-        );
-
-
-                    const snapshot =
-                        await get(
-                            horarioRef
-                        );
-
-
-                    if (snapshot.exists()) {
-
-                        mensagem.textContent =
-                            "Esse horário já existe.";
-
-                        return;
-                    }
-
-
-                    await update(
-                        horarioRef,
-                        {
-                            disponivel: true
-                        }
-                    );
-
-
-                    novoHorario.value =
-                        "";
-
-
-                    mensagem.textContent =
-                        "✓ Horário adicionado.";
-
-
-                    await carregarHorarios();
-
-
-                } catch (erro) {
-
-                    console.error(
-                        "Erro ao adicionar horário:",
-                        erro
-                    );
-
-                    mensagem.textContent =
-                        "Erro ao adicionar horário.";
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ========================================
-    // GERAR HORÁRIOS AUTOMATICAMENTE
-    // ========================================
-
-    if (gerarHorarios) {
-
-        gerarHorarios.addEventListener(
-            "click",
-            async () => {
-
-                const inicio =
-                    horaInicio.value;
-
-                const fim =
-                    horaFim.value;
-
-                const intervalo =
-                    Number(
-                        intervaloHorario.value
-                    );
-
-                const pausaInicioValor =
-                    pausaInicio.value;
-
-                const pausaFimValor =
-                    pausaFim.value;
-
-
-                // ========================================
-                // VALIDAÇÕES
-                // ========================================
-
-                if (!inicio || !fim) {
-
-                    mensagem.textContent =
-                        "Preencha o início e o fim.";
-
-                    return;
-                }
-
-
-                if (
-                    !intervalo ||
-                    intervalo <= 0
-                ) {
-
-                    mensagem.textContent =
-                        "Escolha um intervalo válido.";
-
-                    return;
-                }
-
-
-                const inicioPartes =
-                    inicio
-                        .split(":")
-                        .map(Number);
-
-                const fimPartes =
-                    fim
-                        .split(":")
-                        .map(Number);
-
-
-                const inicioMinutos =
-                    inicioPartes[0] * 60 +
-                    inicioPartes[1];
-
-                const fimMinutos =
-                    fimPartes[0] * 60 +
-                    fimPartes[1];
-
-
-                if (
-                    inicioMinutos >=
-                    fimMinutos
-                ) {
-
-                    mensagem.textContent =
-                        "O horário final deve ser maior que o inicial.";
-
-                    return;
-                }
-
-
-                // ========================================
-                // PAUSA
-                // ========================================
-
-                let pausaInicioMinutos =
-                    null;
-
-                let pausaFimMinutos =
-                    null;
-
-
-                if (
-                    pausaInicioValor &&
-                    pausaFimValor
-                ) {
-
-                    const pausaInicioPartes =
-                        pausaInicioValor
-                            .split(":")
-                            .map(Number);
-
-                    const pausaFimPartes =
-                        pausaFimValor
-                            .split(":")
-                            .map(Number);
-
-
-                    pausaInicioMinutos =
-                        pausaInicioPartes[0] * 60 +
-                        pausaInicioPartes[1];
-
-
-                    pausaFimMinutos =
-                        pausaFimPartes[0] * 60 +
-                        pausaFimPartes[1];
-
-
-                    if (
-                        pausaInicioMinutos >=
-                        pausaFimMinutos
-                    ) {
-
-                        mensagem.textContent =
-                            "O fim da pausa deve ser maior que o início.";
-
-                        return;
-                    }
-
-                }
-
-
-                // ========================================
-                // GERAR
-                // ========================================
-
-                try {
-
-                    gerarHorarios.disabled =
-                        true;
-
-
-                    mensagem.textContent =
-                        "Gerando horários para 7 dias...";
-
-
-                    const atualizacoes = {};
-
-                    let totalHorarios = 0;
-
-
-                    // ========================================
-                    // DATA DE HOJE
-                    // ========================================
-
-                    const hoje =
-                        new Date();
-
-
-                    hoje.setHours(
-                        0,
-                        0,
-                        0,
-                        0
-                    );
-
-
-                    // ========================================
-                    // 7 DIAS
-                    // ========================================
-
-                    for (
-                        let dia = 0;
-                        dia < 7;
-                        dia++
-                    ) {
-
-                        const data =
-                            new Date(hoje);
-
-
-                        data.setDate(
-                            hoje.getDate() +
-                            dia
-                        );
-
-
-                        const ano =
-                            data.getFullYear();
-
-
-                        const mes =
-                            String(
-                                data.getMonth() + 1
-                            ).padStart(
-                                2,
-                                "0"
-                            );
-
-
-                        const numeroDia =
-                            String(
-                                data.getDate()
-                            ).padStart(
-                                2,
-                                "0"
-                            );
-
-
-                        const dataFirebase =
-                            `${ano}-${mes}-${numeroDia}`;
-
-
-                        // ========================================
-                        // HORÁRIOS DO DIA
-                        // ========================================
-
-                        for (
-                            let minutos =
-                                inicioMinutos;
-
-                            minutos <
-                                fimMinutos;
-
-                            minutos +=
-                                intervalo
-                        ) {
-
-                            // ========================================
-                            // PAUSA
-                            // ========================================
-
-                            if (
-                                pausaInicioMinutos !== null &&
-                                pausaFimMinutos !== null &&
-                                minutos >=
-                                    pausaInicioMinutos &&
-                                minutos <
-                                    pausaFimMinutos
-                            ) {
-
-                                continue;
-
-                            }
-
-
-                            const hora =
-                                Math.floor(
-                                    minutos / 60
-                                );
-
-
-                            const minuto =
-                                minutos % 60;
-
-
-                            const horario =
-                                `${String(hora).padStart(2, "0")}:${String(minuto).padStart(2, "0")}`;
-
-
-                            // ========================================
-                            // CAMINHO FIREBASE
-                            // ========================================
-
-                            const caminho =
-                            `${CAMINHO_BARBEIRO}/horarios/${dataFirebase}/${horario}/disponivel`;
-
-
-                            atualizacoes[caminho] =
-                                true;
-
-
-                            totalHorarios++;
-
-                        }
-
-                    }
-
-
-                    // ========================================
-                    // ENVIAR TUDO DE UMA VEZ
-                    // ========================================
-
-                    await update(
-                        ref(db),
-                        atualizacoes
-                    );
-
-
-                    mensagem.textContent =
-                        `✓ 7 dias gerados com sucesso. ${totalHorarios} horários criados.`;
-
-
-                    // ========================================
-                    // ATUALIZAR PAINEL
-                    // ========================================
-
-                    await carregarAgendamentos();
-
-                    await carregarHorarios();
-
-
-                } catch (erro) {
-
-                    console.error(
-                        "ERRO AO GERAR:",
-                        erro
-                    );
-
-
-                    mensagem.textContent =
-                        "Erro ao gerar os horários. Veja o console.";
-
-                } finally {
-
-                    gerarHorarios.disabled =
-                        false;
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // ========================================
-    // BOTÃO ATUALIZAR
-    // ========================================
-
-    if (atualizar) {
-
-        atualizar.addEventListener(
-            "click",
-            () => {
-
-                carregarAgendamentos();
-
-                carregarHorarios();
-
-            }
-        );
-
-    }
-
-
-    // ========================================
-    // TROCAR DATA
-    // ========================================
-
-    if (dataPainel) {
-
-        dataPainel.addEventListener(
-            "change",
-            () => {
-
-                carregarAgendamentos();
-
-                carregarHorarios();
-
-            }
-        );
-
-    }
-
-
-    // ========================================
-    // REMOVER HORÁRIO
-    // ========================================
-
-    async function removerHorario(
-        data,
-        horario
-    ) {
-
-        const confirmar =
-            confirm(
-                `Remover o horário ${horario}?`
-            );
-
-
-        if (!confirmar) {
-
-            return;
-
-        }
-
-
-        try {
-
-            const horarioRef =
-        ref(
-            db,
-            `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
-        );
-
-
-            await remove(
-                horarioRef
-            );
-
-
-            // ========================================
-            // VERIFICAR SE REALMENTE FOI REMOVIDO
-            // ========================================
-
-            const verificar =
-                await get(
-                    horarioRef
-                );
-
-
-            if (
-                verificar.exists()
-            ) {
+            if (!data || !horario) {
 
                 mensagem.textContent =
-                    "Não foi possível remover o horário.";
+                    "Escolha um horário.";
 
                 return;
             }
 
 
-            mensagem.textContent =
-                "✓ Horário removido.";
+            try {
+
+                const horarioRef =
+                    ref(
+                        db,
+                        `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
+                    );
 
 
-            await carregarHorarios();
+                const snapshot =
+                    await get(
+                        horarioRef
+                    );
 
 
-        } catch (erro) {
+                if (snapshot.exists()) {
 
-            console.error(
-                "Erro ao remover horário:",
-                erro
-            );
+                    mensagem.textContent =
+                        "Esse horário já existe.";
 
-            mensagem.textContent =
-                "Erro ao remover horário.";
+                    return;
+                }
+
+
+                await update(
+                    horarioRef,
+                    {
+                        disponivel: true
+                    }
+                );
+
+
+                novoHorario.value =
+                    "";
+
+                mensagem.textContent =
+                    "✓ Horário adicionado.";
+
+
+                await carregarHorarios();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao adicionar horário:",
+                    erro
+                );
+
+                mensagem.textContent =
+                    "Erro ao adicionar horário.";
+
+            }
 
         }
+    );
+
+}
+
+
+// ========================================
+// GERAR HORÁRIOS AUTOMATICAMENTE
+// ========================================
+
+if (gerarHorarios) {
+
+    gerarHorarios.addEventListener(
+        "click",
+        async () => {
+
+            const inicio =
+                horaInicio.value;
+
+            const fim =
+                horaFim.value;
+
+            const intervalo =
+                Number(
+                    intervaloHorario.value
+                );
+
+            const pausaInicioValor =
+                pausaInicio.value;
+
+            const pausaFimValor =
+                pausaFim.value;
+
+
+            // ========================================
+            // VALIDAÇÕES
+            // ========================================
+
+            if (!inicio || !fim) {
+
+                mensagem.textContent =
+                    "Preencha o início e o fim.";
+
+                return;
+            }
+
+
+            if (
+                !intervalo ||
+                intervalo <= 0
+            ) {
+
+                mensagem.textContent =
+                    "Escolha um intervalo válido.";
+
+                return;
+            }
+
+
+            const inicioPartes =
+                inicio
+                    .split(":")
+                    .map(Number);
+
+            const fimPartes =
+                fim
+                    .split(":")
+                    .map(Number);
+
+
+            const inicioMinutos =
+                inicioPartes[0] * 60 +
+                inicioPartes[1];
+
+            const fimMinutos =
+                fimPartes[0] * 60 +
+                fimPartes[1];
+
+
+            if (
+                inicioMinutos >=
+                fimMinutos
+            ) {
+
+                mensagem.textContent =
+                    "O horário final deve ser maior que o inicial.";
+
+                return;
+            }
+
+
+            // ========================================
+            // PAUSA
+            // ========================================
+
+            let pausaInicioMinutos =
+                null;
+
+            let pausaFimMinutos =
+                null;
+
+
+            if (
+                pausaInicioValor &&
+                pausaFimValor
+            ) {
+
+                const pausaInicioPartes =
+                    pausaInicioValor
+                        .split(":")
+                        .map(Number);
+
+                const pausaFimPartes =
+                    pausaFimValor
+                        .split(":")
+                        .map(Number);
+
+
+                pausaInicioMinutos =
+                    pausaInicioPartes[0] * 60 +
+                    pausaInicioPartes[1];
+
+
+                pausaFimMinutos =
+                    pausaFimPartes[0] * 60 +
+                    pausaFimPartes[1];
+
+
+                if (
+                    pausaInicioMinutos >=
+                    pausaFimMinutos
+                ) {
+
+                    mensagem.textContent =
+                        "O fim da pausa deve ser maior que o início.";
+
+                    return;
+                }
+
+            }
+
+
+            // ========================================
+            // GERAR
+            // ========================================
+
+            try {
+
+                gerarHorarios.disabled =
+                    true;
+
+
+                mensagem.textContent =
+                    "Gerando horários para 7 dias...";
+
+
+                const atualizacoes = {};
+
+                let totalHorarios =
+                    0;
+
+
+                // ========================================
+                // DATA DE HOJE
+                // ========================================
+
+                const hoje =
+                    new Date();
+
+                hoje.setHours(
+                    0,
+                    0,
+                    0,
+                    0
+                );
+
+
+                // ========================================
+                // 7 DIAS
+                // ========================================
+
+                for (
+                    let dia = 0;
+                    dia < 7;
+                    dia++
+                ) {
+
+                    const data =
+                        new Date(hoje);
+
+
+                    data.setDate(
+                        hoje.getDate() +
+                        dia
+                    );
+
+
+                    const ano =
+                        data.getFullYear();
+
+
+                    const mes =
+                        String(
+                            data.getMonth() + 1
+                        ).padStart(
+                            2,
+                            "0"
+                        );
+
+
+                    const numeroDia =
+                        String(
+                            data.getDate()
+                        ).padStart(
+                            2,
+                            "0"
+                        );
+
+
+                    const dataFirebase =
+                        `${ano}-${mes}-${numeroDia}`;
+
+
+                    // ========================================
+                    // HORÁRIOS DO DIA
+                    // ========================================
+
+                    for (
+                        let minutos =
+                            inicioMinutos;
+
+                        minutos <
+                            fimMinutos;
+
+                        minutos +=
+                            intervalo
+                    ) {
+
+
+                        // ========================================
+                        // PAUSA
+                        // ========================================
+
+                        if (
+                            pausaInicioMinutos !== null &&
+                            pausaFimMinutos !== null &&
+                            minutos >=
+                                pausaInicioMinutos &&
+                            minutos <
+                                pausaFimMinutos
+                        ) {
+
+                            continue;
+
+                        }
+
+
+                        const hora =
+                            Math.floor(
+                                minutos / 60
+                            );
+
+
+                        const minuto =
+                            minutos % 60;
+
+
+                        const horario =
+                            `${String(hora).padStart(2, "0")}:${String(minuto).padStart(2, "0")}`;
+
+
+                        // ========================================
+                        // CAMINHO FIREBASE
+                        // ========================================
+
+                        const caminho =
+                            `${CAMINHO_BARBEIRO}/horarios/${dataFirebase}/${horario}/disponivel`;
+
+
+                        atualizacoes[caminho] =
+                            true;
+
+
+                        totalHorarios++;
+
+                    }
+
+                }
+
+
+                // ========================================
+                // ENVIAR TUDO DE UMA VEZ
+                // ========================================
+
+                await update(
+                    ref(db),
+                    atualizacoes
+                );
+
+
+                mensagem.textContent =
+                    `✓ 7 dias gerados com sucesso. ${totalHorarios} horários criados.`;
+
+
+                // ========================================
+                // ATUALIZAR PAINEL
+                // ========================================
+
+                await carregarAgendamentos();
+
+                await carregarHorarios();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "ERRO AO GERAR:",
+                    erro
+                );
+
+                mensagem.textContent =
+                    "Erro ao gerar os horários. Veja o console.";
+
+            } finally {
+
+                gerarHorarios.disabled =
+                    false;
+
+            }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// BOTÃO ATUALIZAR
+// ========================================
+
+if (atualizar) {
+
+    atualizar.addEventListener(
+        "click",
+        () => {
+
+            carregarAgendamentos();
+
+            carregarHorarios();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// TROCAR DATA
+// ========================================
+
+if (dataPainel) {
+
+    dataPainel.addEventListener(
+        "change",
+        () => {
+
+            carregarAgendamentos();
+
+            carregarHorarios();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// REMOVER HORÁRIO
+// ========================================
+
+async function removerHorario(
+    data,
+    horario
+) {
+
+    const confirmar =
+        confirm(
+            `Remover o horário ${horario}?`
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    try {
+
+        const horarioRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
+            );
+
+
+        await remove(
+            horarioRef
+        );
+
+
+        // ========================================
+        // VERIFICAR SE REALMENTE FOI REMOVIDO
+        // ========================================
+
+        const verificar =
+            await get(
+                horarioRef
+            );
+
+
+        if (
+            verificar.exists()
+        ) {
+
+            mensagem.textContent =
+                "Não foi possível remover o horário.";
+
+            return;
+        }
+
+
+        mensagem.textContent =
+            "✓ Horário removido.";
+
+
+        await carregarHorarios();
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao remover horário:",
+            erro
+        );
+
+        mensagem.textContent =
+            "Erro ao remover horário.";
 
     }
+
+}

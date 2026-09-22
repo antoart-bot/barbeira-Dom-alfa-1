@@ -14,9 +14,18 @@
 
     <style>
 
+        /* =====================================================
+           RESET
+           ===================================================== */
+
         * {
             box-sizing: border-box;
         }
+
+
+        /* =====================================================
+           BODY
+           ===================================================== */
 
         body {
 
@@ -30,109 +39,342 @@
 
             justify-content: center;
 
-            background: #111;
+            padding: 25px;
 
-            color: white;
+            font-family:
+                "DM Sans",
+                "Inter",
+                Arial,
+                sans-serif;
 
-            font-family: Arial, sans-serif;
+            color: #f4f0e8;
 
-            padding: 20px;
+            background:
+
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(185, 138, 82, 0.14),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at 0% 100%,
+                    rgba(185, 138, 82, 0.05),
+                    transparent 30%
+                ),
+
+                #090909;
         }
+
+
+        /* =====================================================
+           CONTAINER
+           ===================================================== */
 
         .login {
 
             width: 100%;
 
-            max-width: 400px;
+            max-width: 430px;
 
-            background: #1b1b1b;
+            padding: 38px;
 
-            border: 1px solid #333;
+            background:
+                linear-gradient(
+                    145deg,
+                    #171717,
+                    #101010
+                );
 
-            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
 
-            padding: 30px;
+            border-radius: 14px;
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.45);
+
+            position: relative;
+
+            overflow: hidden;
         }
+
+
+        /* linha dourada superior */
+
+        .login::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 3px;
+
+            background: #b98a52;
+        }
+
+
+        /* =====================================================
+           LOGO
+           ===================================================== */
 
         .logo {
 
-            font-size: 28px;
+            margin-bottom: 7px;
 
-            font-weight: bold;
+            color: #f5f1e9;
 
-            margin-bottom: 5px;
+            font-size: 32px;
+
+            line-height: 1;
+
+            font-weight: 900;
+
+            letter-spacing: -0.045em;
         }
+
+
+        /* detalhe dourado */
+
+        .logo::after {
+
+            content: "";
+
+            display: block;
+
+            width: 32px;
+            height: 3px;
+
+            margin-top: 12px;
+
+            background: #b98a52;
+
+            border-radius: 3px;
+        }
+
+
+        /* =====================================================
+           SUBTÍTULO
+           ===================================================== */
 
         .subtitulo {
 
-            color: #999;
+            margin: 18px 0 32px;
 
-            margin-bottom: 30px;
+            color: #77736d;
+
+            font-size: 14px;
+
+            font-weight: 500;
         }
+
+
+        /* =====================================================
+           LABEL
+           ===================================================== */
 
         label {
 
             display: block;
 
-            margin-bottom: 18px;
+            margin-bottom: 20px;
 
-            color: #aaa;
+            color: #aaa59d;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.05em;
+
+            text-transform: uppercase;
         }
+
+
+        /* =====================================================
+           INPUT
+           ===================================================== */
 
         input {
 
             width: 100%;
 
-            margin-top: 8px;
+            height: 54px;
 
-            padding: 14px;
+            margin-top: 9px;
 
-            border: 1px solid #333;
+            padding: 0 16px;
+
+            border: 1px solid #303030;
 
             border-radius: 8px;
 
-            background: #111;
+            background: #0c0c0c;
 
-            color: white;
+            color: #f4f0e8;
 
-            font-size: 16px;
+            font-family: inherit;
+
+            font-size: 15px;
 
             outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
         }
+
+
+        input::placeholder {
+
+            color: #55524e;
+        }
+
 
         input:focus {
 
-            border-color: #d6ff3f;
+            background: #111;
+
+            border-color: #b98a52;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(185, 138, 82, 0.09);
         }
+
+
+        /* =====================================================
+           BOTÃO
+           ===================================================== */
 
         button {
 
             width: 100%;
 
-            padding: 15px;
+            height: 54px;
+
+            margin-top: 5px;
 
             border: none;
 
             border-radius: 8px;
 
-            background: #d6ff3f;
+            background: #b98a52;
 
             color: #111;
 
-            font-size: 16px;
+            font-family: inherit;
 
-            font-weight: bold;
+            font-size: 14px;
+
+            font-weight: 900;
+
+            letter-spacing: 0.02em;
 
             cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
         }
+
+
+        button:hover {
+
+            background: #d0a46b;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(185, 138, 82, 0.15);
+        }
+
+
+        button:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           MENSAGEM
+           ===================================================== */
 
         #mensagem {
 
-            margin-top: 15px;
+            min-height: 20px;
 
-            color: #ff7777;
+            margin: 17px 0 0;
+
+            color: #c48279;
+
+            font-size: 13px;
+
+            font-weight: 700;
 
             text-align: center;
+        }
+
+
+        /* =====================================================
+           CELULAR
+           ===================================================== */
+
+        @media (max-width: 500px) {
+
+            body {
+
+                padding: 15px;
+            }
+
+            .login {
+
+                padding: 30px 22px;
+
+                border-radius: 12px;
+            }
+
+            .logo {
+
+                font-size: 29px;
+            }
+
+            .subtitulo {
+
+                margin-bottom: 27px;
+            }
+
+        }
+
+
+        /* =====================================================
+           CELULAR PEQUENO
+           ===================================================== */
+
+        @media (max-width: 360px) {
+
+            .login {
+
+                padding: 27px 18px;
+            }
+
+            .logo {
+
+                font-size: 27px;
+            }
+
+            input,
+            button {
+
+                height: 51px;
+            }
+
         }
 
     </style>
@@ -143,11 +385,13 @@
 <body>
 
 
-    <div class="login">
+    <main class="login">
+
 
         <div class="logo">
             DOM ALFA
         </div>
+
 
         <div class="subtitulo">
             Acesso do barbeiro
@@ -155,6 +399,7 @@
 
 
         <form id="formLogin">
+
 
             <label>
 
@@ -164,6 +409,7 @@
                     type="email"
                     id="email"
                     placeholder="seu@email.com"
+                    autocomplete="email"
                     required
                 >
 
@@ -178,6 +424,7 @@
                     type="password"
                     id="senha"
                     placeholder="Sua senha"
+                    autocomplete="current-password"
                     required
                 >
 
@@ -188,12 +435,14 @@
                 Entrar
             </button>
 
+
         </form>
 
 
         <p id="mensagem"></p>
 
-    </div>
+
+    </main>
 
 
     <script
