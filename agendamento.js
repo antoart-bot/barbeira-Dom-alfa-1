@@ -68,6 +68,11 @@ function obterDataHoje() {
 dataInput.min =
     obterDataHoje();
 
+    dataInput.value =
+    obterDataHoje();
+
+    
+
 
 // ========================================
 // FORMATAR DATA

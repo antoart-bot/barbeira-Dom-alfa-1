@@ -128,8 +128,77 @@ const messaging = getMessaging(app);
         return `${ano}-${mes}-${dia}`;
     }
 
-    dataPainel.value =
-        obterDataHoje();
+
+
+// ========================================
+// LIMPAR HORÁRIOS DE DIAS PASSADOS
+// NÃO APAGA AGENDAMENTOS
+// ========================================
+
+async function limparHorariosPassados() {
+
+    const hoje = obterDataHoje();
+
+    try {
+
+        const horariosRef = ref(
+            db,
+            `${CAMINHO_BARBEIRO}/horarios`
+        );
+
+        const snapshot = await get(
+            horariosRef
+        );
+
+        if (!snapshot.exists()) {
+            return;
+        }
+
+        const horarios = snapshot.val();
+
+        const exclusoes = {};
+
+        Object.keys(horarios).forEach(
+            (data) => {
+
+                if (data < hoje) {
+
+                    exclusoes[data] = null;
+
+                }
+
+            }
+        );
+
+        if (Object.keys(exclusoes).length === 0) {
+            return;
+        }
+
+        await update(
+            ref(db, `${CAMINHO_BARBEIRO}/horarios`),
+            exclusoes
+        );
+
+        console.log(
+            "Horários de dias passados removidos."
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao limpar horários passados:",
+            erro
+        );
+
+    }
+}
+
+    const dataHoje = obterDataHoje();
+
+if (dataPainel) {
+    dataPainel.min = dataHoje;
+    dataPainel.value = dataHoje;
+}
 
 
     // ========================================
@@ -178,15 +247,6 @@ async function prepararFCM() {
     }
 );
 
-await update(
-    ref(
-        db,
-        `${CAMINHO_BARBEIRO}/notificacoes`
-    ),
-    {
-        fcmToken: token
-    }
-);
 
 console.log(
     "TOKEN FCM salvo no Firebase:",
@@ -199,28 +259,24 @@ console.log(
 }
 
     onAuthStateChanged(
-        auth,
-        async (usuario) => {
-
-            if (!usuario) {
-
-                window.location.href =
-                    "login.html";
-
-                return;
-            }
-
-
-            await prepararNotificacoes();
-await prepararFCM();
-
-carregarAgendamentos();
-carregarHorarios();
-
-monitorarNovosAgendamentos();
-
+    auth,
+    async (usuario) => {
+        if (!usuario) {
+            window.location.href = "login.html";
+            return;
         }
-    );
+
+        await prepararNotificacoes();
+        await prepararFCM();
+
+        await limparHorariosPassados();
+
+        carregarAgendamentos();
+        carregarHorarios();
+
+        monitorarNovosAgendamentos();
+    }
+);
 
 
     // ========================================
