@@ -298,50 +298,38 @@ console.log(
     // MOSTRAR NOTIFICAÇÃO
     // ========================================
 
-    function mostrarNotificacaoAgendamento(agendamento) {
+   function mostrarNotificacaoAgendamento(agendamento) {
 
-    console.log("1 - FUNÇÃO DE NOTIFICAÇÃO INICIADA");
+    if (!notificacoesAtivas) {
+        return;
+    }
 
     console.log(
-        "2 - Notification:",
-        typeof Notification
+        "MOSTRANDO NOTIFICAÇÃO REAL:",
+        agendamento
     );
 
-    console.log(
-        "3 - Permission:",
-        Notification.permission
-    );
+    const titulo =
+        `✂️ Novo agendamento — ${CONFIG.nome}`;
 
-    try {
+    const corpo =
+        `${agendamento.nome} agendou ${agendamento.servico} às ${agendamento.horario}.`;
 
-        const notificacao = new Notification(
-    "TESTE — Dom Alfa",
-    {
-        body: "Se você está vendo isso, a notificação funcionou.",
-        requireInteraction: true
-    }
-);
-
-        console.log(
-            "4 - NOTIFICAÇÃO CRIADA:",
-            notificacao
+    const notificacao =
+        new Notification(
+            titulo,
+            {
+                body: corpo,
+                tag: "novo-agendamento"
+            }
         );
 
-        notificacao.onclick = () => {
+    notificacao.onclick = () => {
 
-            window.focus();
-            notificacao.close();
+        window.focus();
+        notificacao.close();
 
-        };
-
-    } catch (erro) {
-
-        console.error(
-            "5 - ERRO AO CRIAR NOTIFICAÇÃO:",
-            erro
-        );
-
-    }
+    };
 }
 
     // ========================================
