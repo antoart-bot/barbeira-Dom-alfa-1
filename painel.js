@@ -18,9 +18,18 @@ import {
 
 import { CONFIG } from "./config.js";
 
+import {
+    descobrirCliente
+} from "./cliente.js";
 
-const CAMINHO_BARBEIRO =
-    `barbeiros/${CONFIG.id}`;
+
+// ========================================
+// CAMINHO DO CLIENTE
+// ========================================
+
+let CAMINHO_BARBEIRO = null;
+
+let CONFIG_CLIENTE = null;
 
 
 // ========================================
@@ -86,15 +95,96 @@ const gerarHorarios =
 const nomeBarbearia =
     document.getElementById("nomeBarbearia");
 
-if (nomeBarbearia) {
 
-    nomeBarbearia.textContent =
-        CONFIG.nome;
+function aplicarConfiguracaoCliente() {
+
+    if (!CONFIG_CLIENTE) {
+        return;
+    }
+
+    const nome =
+        CONFIG_CLIENTE.nome ||
+        CONFIG.nome ||
+        "Painel";
+
+    if (nomeBarbearia) {
+
+        nomeBarbearia.textContent =
+            nome;
+
+    }
+
+    document.title =
+        `Painel — ${nome}`;
 
 }
 
-document.title =
-    `Painel — ${CONFIG.nome}`;
+
+// ========================================
+// CARREGAR CONFIGURAÇÃO DO CLIENTE
+// ========================================
+
+async function carregarConfiguracaoCliente() {
+
+    if (!CAMINHO_BARBEIRO) {
+        return;
+    }
+
+    try {
+
+        const configuracoesRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/configuracoes`
+            );
+
+        const snapshot =
+            await get(
+                configuracoesRef
+            );
+
+
+        if (!snapshot.exists()) {
+
+            console.warn(
+                "Nenhuma configuração encontrada para este cliente."
+            );
+
+            // Fallback temporário
+            CONFIG_CLIENTE = {
+                nome: CONFIG.nome
+            };
+
+            return;
+        }
+
+
+        CONFIG_CLIENTE =
+            snapshot.val();
+
+
+        console.log(
+            "CONFIGURAÇÃO DO CLIENTE:",
+            CONFIG_CLIENTE
+        );
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar configuração do cliente:",
+            erro
+        );
+
+
+        // Fallback temporário
+        CONFIG_CLIENTE = {
+            nome: CONFIG.nome
+        };
+
+    }
+
+}
 
 
 // ========================================
@@ -103,7 +193,8 @@ document.title =
 
 function obterDataHoje() {
 
-    const hoje = new Date();
+    const hoje =
+        new Date();
 
     const ano =
         hoje.getFullYear();
@@ -111,14 +202,36 @@ function obterDataHoje() {
     const mes =
         String(
             hoje.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     const dia =
         String(
             hoje.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     return `${ano}-${mes}-${dia}`;
+
+}
+
+
+const dataHoje =
+    obterDataHoje();
+
+
+if (dataPainel) {
+
+    dataPainel.min =
+        dataHoje;
+
+    dataPainel.value =
+        dataHoje;
+
 }
 
 
@@ -128,6 +241,10 @@ function obterDataHoje() {
 // ========================================
 
 async function limparHorariosPassados() {
+
+    if (!CAMINHO_BARBEIRO) {
+        return;
+    }
 
     const hoje =
         obterDataHoje();
@@ -145,14 +262,17 @@ async function limparHorariosPassados() {
                 horariosRef
             );
 
+
         if (!snapshot.exists()) {
             return;
         }
+
 
         const horarios =
             snapshot.val();
 
         const exclusoes = {};
+
 
         Object.keys(horarios).forEach(
             (data) => {
@@ -167,11 +287,15 @@ async function limparHorariosPassados() {
             }
         );
 
+
         if (
             Object.keys(exclusoes).length === 0
         ) {
+
             return;
+
         }
+
 
         await update(
             ref(
@@ -181,9 +305,11 @@ async function limparHorariosPassados() {
             exclusoes
         );
 
+
         console.log(
             "Horários de dias passados removidos."
         );
+
 
     } catch (erro) {
 
@@ -193,20 +319,6 @@ async function limparHorariosPassados() {
         );
 
     }
-
-}
-
-
-const dataHoje =
-    obterDataHoje();
-
-if (dataPainel) {
-
-    dataPainel.min =
-        dataHoje;
-
-    dataPainel.value =
-        dataHoje;
 
 }
 
@@ -240,6 +352,7 @@ async function prepararNotificacoes() {
         return;
     }
 
+
     if (
         Notification.permission ===
         "default"
@@ -255,14 +368,17 @@ async function prepararNotificacoes() {
 
     }
 
+
     notificacoesAtivas =
         Notification.permission ===
         "granted";
+
 
     console.log(
         "NOTIFICAÇÕES ATIVAS:",
         notificacoesAtivas
     );
+
 
     console.log(
         "PERMISSÃO:",
@@ -286,31 +402,102 @@ onAuthStateChanged(
                 "login.html";
 
             return;
+
         }
 
-        await prepararNotificacoes();
 
-        console.log(
-            "AUTH OK — preparando painel e notificações"
-        );
+        try {
 
-        console.log(
-            "TESTE NOTIFICAÇÃO:",
-            Notification.permission
-        );
+            // ========================================
+            // DESCOBRIR CLIENTE DO USUÁRIO
+            // ========================================
 
-        console.log(
-            "notificacoesAtivas:",
-            notificacoesAtivas
-        );
+            const clienteId =
+                await descobrirCliente();
 
-        await limparHorariosPassados();
 
-        carregarAgendamentos();
+            console.log(
+                "CLIENTE IDENTIFICADO:",
+                clienteId
+            );
 
-        carregarHorarios();
 
-        monitorarNovosAgendamentos();
+            // ========================================
+            // DEFINIR CAMINHO DINAMICAMENTE
+            // ========================================
+
+            CAMINHO_BARBEIRO =
+                `barbeiros/${clienteId}`;
+
+
+            console.log(
+                "CAMINHO DO CLIENTE:",
+                CAMINHO_BARBEIRO
+            );
+
+
+            // ========================================
+            // CARREGAR CONFIGURAÇÃO
+            // ========================================
+
+            await carregarConfiguracaoCliente();
+
+            aplicarConfiguracaoCliente();
+
+
+            // ========================================
+            // PREPARAR NOTIFICAÇÕES
+            // ========================================
+
+            await prepararNotificacoes();
+
+
+            console.log(
+                "AUTH OK — preparando painel e notificações"
+            );
+
+
+            console.log(
+                "TESTE NOTIFICAÇÃO:",
+                Notification.permission
+            );
+
+
+            console.log(
+                "notificacoesAtivas:",
+                notificacoesAtivas
+            );
+
+
+            // ========================================
+            // CARREGAR PAINEL
+            // ========================================
+
+            await limparHorariosPassados();
+
+            carregarAgendamentos();
+
+            carregarHorarios();
+
+            monitorarNovosAgendamentos();
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao identificar cliente:",
+                erro
+            );
+
+
+            if (mensagem) {
+
+                mensagem.textContent =
+                    "Erro ao identificar o cliente.";
+
+            }
+
+        }
 
     }
 );
@@ -331,20 +518,31 @@ function mostrarNotificacaoAgendamento(
         );
 
         return;
+
     }
+
 
     console.log(
         "MOSTRANDO NOTIFICAÇÃO REAL:",
         agendamento
     );
 
+
     try {
 
+        const nomeCliente =
+            CONFIG_CLIENTE?.nome ||
+            CONFIG.nome ||
+            "Barbearia";
+
+
         const titulo =
-            `✂️ Novo agendamento — ${CONFIG.nome}`;
+            `✂️ Novo agendamento — ${nomeCliente}`;
+
 
         const corpo =
             `${agendamento.nome} agendou ${agendamento.servico} às ${agendamento.horario}.`;
+
 
         const notificacao =
             new Notification(
@@ -359,10 +557,12 @@ function mostrarNotificacaoAgendamento(
                 }
             );
 
+
         console.log(
             "✅ NOTIFICAÇÃO CRIADA:",
             notificacao
         );
+
 
         notificacao.onclick = () => {
 
@@ -371,6 +571,7 @@ function mostrarNotificacaoAgendamento(
             notificacao.close();
 
         };
+
 
     } catch (erro) {
 
@@ -390,11 +591,17 @@ function mostrarNotificacaoAgendamento(
 
 function monitorarNovosAgendamentos() {
 
+    if (!CAMINHO_BARBEIRO) {
+        return;
+    }
+
+
     const agendamentosRef =
         ref(
             db,
             `${CAMINHO_BARBEIRO}/agendamentos`
         );
+
 
     onValue(
         agendamentosRef,
@@ -405,11 +612,21 @@ function monitorarNovosAgendamentos() {
                 idsAgendamentosConhecidos =
                     new Set();
 
+                primeiraLeituraAgendamentos =
+                    false;
+
+                console.log(
+                    "Nenhum agendamento encontrado."
+                );
+
                 return;
+
             }
+
 
             const dados =
                 snapshot.val();
+
 
             const idsAtuais =
                 new Set(
@@ -437,6 +654,7 @@ function monitorarNovosAgendamentos() {
                 );
 
                 return;
+
             }
 
 
@@ -456,6 +674,7 @@ function monitorarNovosAgendamentos() {
                         const agendamento =
                             dados[id];
 
+
                         if (
                             agendamento &&
                             agendamento.status ===
@@ -467,9 +686,11 @@ function monitorarNovosAgendamentos() {
                                 agendamento
                             );
 
+
                             mostrarNotificacaoAgendamento(
                                 agendamento
                             );
+
 
                             carregarAgendamentos();
 
@@ -487,6 +708,7 @@ function monitorarNovosAgendamentos() {
                 idsAtuais;
 
         },
+
         (erro) => {
 
             console.error(
@@ -517,6 +739,7 @@ if (sair) {
                 window.location.href =
                     "index.html";
 
+
             } catch (erro) {
 
                 console.error(
@@ -524,8 +747,13 @@ if (sair) {
                     erro
                 );
 
-                mensagem.textContent =
-                    "Erro ao sair da conta.";
+
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "Erro ao sair da conta.";
+
+                }
 
             }
 
@@ -541,11 +769,18 @@ if (sair) {
 
 async function carregarAgendamentos() {
 
+    if (!CAMINHO_BARBEIRO) {
+        return;
+    }
+
+
     const data =
         dataPainel.value;
 
+
     listaAgendamentos.innerHTML =
         "<p class='vazio'>Carregando...</p>";
+
 
     try {
 
@@ -567,6 +802,7 @@ async function carregarAgendamentos() {
             listaAgendamentos.innerHTML =
                 "<p class='vazio'>Nenhum agendamento.</p>";
 
+
             if (totalAgendados) {
 
                 totalAgendados.textContent =
@@ -575,6 +811,7 @@ async function carregarAgendamentos() {
             }
 
             return;
+
         }
 
 
@@ -640,6 +877,7 @@ async function carregarAgendamentos() {
             listaAgendamentos.innerHTML =
                 "<p class='vazio'>Nenhum agendamento para esta data.</p>";
 
+
             if (totalAgendados) {
 
                 totalAgendados.textContent =
@@ -648,6 +886,7 @@ async function carregarAgendamentos() {
             }
 
             return;
+
         }
 
 
@@ -667,6 +906,7 @@ async function carregarAgendamentos() {
                         "div"
                     );
 
+
                 card.className =
                     "agendamento";
 
@@ -683,6 +923,7 @@ async function carregarAgendamentos() {
                         /\D/g,
                         ""
                     );
+
 
                 const whatsapp =
                     telefone.startsWith("55")
@@ -708,6 +949,7 @@ async function carregarAgendamentos() {
 
                         <div>
                             <span>Serviço</span>
+
                             <strong>
                                 ${agendamento.servico}
                             </strong>
@@ -715,6 +957,7 @@ async function carregarAgendamentos() {
 
                         <div>
                             <span>WhatsApp</span>
+
                             <strong>
                                 ${agendamento.telefone}
                             </strong>
@@ -754,6 +997,7 @@ async function carregarAgendamentos() {
                         ".cancelar"
                     );
 
+
                 botaoCancelar.addEventListener(
                     "click",
                     () => {
@@ -783,6 +1027,7 @@ async function carregarAgendamentos() {
             erro
         );
 
+
         listaAgendamentos.innerHTML =
             "<p class='vazio'>Erro ao carregar agendamentos.</p>";
 
@@ -797,11 +1042,18 @@ async function carregarAgendamentos() {
 
 async function carregarHorarios() {
 
+    if (!CAMINHO_BARBEIRO) {
+        return;
+    }
+
+
     const data =
         dataPainel.value;
 
+
     listaHorarios.innerHTML =
         "<p class='vazio'>Carregando...</p>";
+
 
     try {
 
@@ -893,6 +1145,7 @@ async function carregarHorarios() {
                         .split(":")
                         .map(Number);
 
+
                 const [
                     horaB,
                     minutoB
@@ -901,13 +1154,16 @@ async function carregarHorarios() {
                         .split(":")
                         .map(Number);
 
+
                 const minutosA =
                     horaA * 60 +
                     minutoA;
 
+
                 const minutosB =
                     horaB * 60 +
                     minutoB;
+
 
                 return (
                     minutosA -
@@ -936,6 +1192,7 @@ async function carregarHorarios() {
                     horariosOcupados.includes(
                         String(horario)
                     );
+
 
                 const disponivel =
                     !ocupado &&
@@ -968,6 +1225,7 @@ async function carregarHorarios() {
 
         }
 
+
         if (totalOcupados) {
 
             totalOcupados.textContent =
@@ -996,6 +1254,7 @@ async function carregarHorarios() {
                 "<p class='vazio'>Nenhum horário cadastrado para esta data.</p>";
 
             return;
+
         }
 
 
@@ -1011,6 +1270,7 @@ async function carregarHorarios() {
                         String(horario)
                     );
 
+
                 const disponivel =
                     !ocupado &&
                     dados &&
@@ -1025,6 +1285,7 @@ async function carregarHorarios() {
                     document.createElement(
                         "div"
                     );
+
 
                 card.className =
                     "horario-card";
@@ -1108,6 +1369,7 @@ async function carregarHorarios() {
             erro
         );
 
+
         listaHorarios.innerHTML =
             "<p class='vazio'>Erro ao carregar horários.</p>";
 
@@ -1130,6 +1392,7 @@ async function cancelarAgendamento(
         confirm(
             "Cancelar este agendamento?"
         );
+
 
     if (!confirmar) {
         return;
@@ -1168,8 +1431,12 @@ async function cancelarAgendamento(
         );
 
 
-        mensagem.textContent =
-            "✓ Agendamento cancelado.";
+        if (mensagem) {
+
+            mensagem.textContent =
+                "✓ Agendamento cancelado.";
+
+        }
 
 
         await carregarAgendamentos();
@@ -1184,8 +1451,13 @@ async function cancelarAgendamento(
             erro
         );
 
-        mensagem.textContent =
-            "Erro ao cancelar o agendamento.";
+
+        if (mensagem) {
+
+            mensagem.textContent =
+                "Erro ao cancelar o agendamento.";
+
+        }
 
     }
 
@@ -1202,8 +1474,14 @@ if (adicionarHorario) {
         "click",
         async () => {
 
+            if (!CAMINHO_BARBEIRO) {
+                return;
+            }
+
+
             const data =
                 dataPainel.value;
+
 
             const horario =
                 novoHorario.value;
@@ -1215,6 +1493,7 @@ if (adicionarHorario) {
                     "Escolha um horário.";
 
                 return;
+
             }
 
 
@@ -1239,6 +1518,7 @@ if (adicionarHorario) {
                         "Esse horário já existe.";
 
                     return;
+
                 }
 
 
@@ -1253,6 +1533,7 @@ if (adicionarHorario) {
                 novoHorario.value =
                     "";
 
+
                 mensagem.textContent =
                     "✓ Horário adicionado.";
 
@@ -1266,6 +1547,7 @@ if (adicionarHorario) {
                     "Erro ao adicionar horário:",
                     erro
                 );
+
 
                 mensagem.textContent =
                     "Erro ao adicionar horário.";
@@ -1288,19 +1570,28 @@ if (gerarHorarios) {
         "click",
         async () => {
 
+            if (!CAMINHO_BARBEIRO) {
+                return;
+            }
+
+
             const inicio =
                 horaInicio.value;
 
+
             const fim =
                 horaFim.value;
+
 
             const intervalo =
                 Number(
                     intervaloHorario.value
                 );
 
+
             const pausaInicioValor =
                 pausaInicio.value;
+
 
             const pausaFimValor =
                 pausaFim.value;
@@ -1316,6 +1607,7 @@ if (gerarHorarios) {
                     "Preencha o início e o fim.";
 
                 return;
+
             }
 
 
@@ -1328,6 +1620,7 @@ if (gerarHorarios) {
                     "Escolha um intervalo válido.";
 
                 return;
+
             }
 
 
@@ -1335,6 +1628,7 @@ if (gerarHorarios) {
                 inicio
                     .split(":")
                     .map(Number);
+
 
             const fimPartes =
                 fim
@@ -1345,6 +1639,7 @@ if (gerarHorarios) {
             const inicioMinutos =
                 inicioPartes[0] * 60 +
                 inicioPartes[1];
+
 
             const fimMinutos =
                 fimPartes[0] * 60 +
@@ -1360,6 +1655,7 @@ if (gerarHorarios) {
                     "O horário final deve ser maior que o inicial.";
 
                 return;
+
             }
 
 
@@ -1383,6 +1679,7 @@ if (gerarHorarios) {
                     pausaInicioValor
                         .split(":")
                         .map(Number);
+
 
                 const pausaFimPartes =
                     pausaFimValor
@@ -1409,6 +1706,7 @@ if (gerarHorarios) {
                         "O fim da pausa deve ser maior que o início.";
 
                     return;
+
                 }
 
             }
@@ -1440,6 +1738,7 @@ if (gerarHorarios) {
 
                 const hoje =
                     new Date();
+
 
                 hoje.setHours(
                     0,
@@ -1509,7 +1808,6 @@ if (gerarHorarios) {
                         minutos +=
                             intervalo
                     ) {
-
 
                         // ========================================
                         // PAUSA
@@ -1592,8 +1890,10 @@ if (gerarHorarios) {
                     erro
                 );
 
+
                 mensagem.textContent =
                     "Erro ao gerar os horários. Veja o console.";
+
 
             } finally {
 
@@ -1700,6 +2000,7 @@ async function removerHorario(
                 "Não foi possível remover o horário.";
 
             return;
+
         }
 
 
@@ -1716,6 +2017,7 @@ async function removerHorario(
             "Erro ao remover horário:",
             erro
         );
+
 
         mensagem.textContent =
             "Erro ao remover horário.";

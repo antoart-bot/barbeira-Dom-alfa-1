@@ -10,8 +10,123 @@ import {
 import { db } from "./firebase.js";
 import { CONFIG } from "./config.js";
 
-const CAMINHO_BARBEIRO =
+
+// ========================================
+// CONFIGURAÇÃO DO CLIENTE
+// ========================================
+
+let CONFIG_CLIENTE = {
+    ...CONFIG
+};
+
+let CAMINHO_BARBEIRO =
     `barbeiros/${CONFIG.id}`;
+
+
+// ========================================
+// DESCOBRIR CLIENTE PELA URL
+// ========================================
+
+function descobrirCliente() {
+
+    const parametros =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const clienteId =
+        parametros.get("cliente");
+
+    if (clienteId) {
+
+        return clienteId;
+
+    }
+
+    return CONFIG.id;
+
+}
+
+
+// ========================================
+// CARREGAR CONFIGURAÇÃO DO CLIENTE
+// ========================================
+
+async function carregarConfiguracaoCliente() {
+
+    const clienteId =
+        descobrirCliente();
+
+    CAMINHO_BARBEIRO =
+        `barbeiros/${clienteId}`;
+
+    console.log(
+        "CLIENTE DO AGENDAMENTO:",
+        clienteId
+    );
+
+    console.log(
+        "CAMINHO DO AGENDAMENTO:",
+        CAMINHO_BARBEIRO
+    );
+
+
+    try {
+
+        const configuracoesRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/configuracoes`
+            );
+
+        const snapshot =
+            await get(
+                configuracoesRef
+            );
+
+        if (
+            snapshot.exists()
+        ) {
+
+            const dados =
+                snapshot.val();
+
+            CONFIG_CLIENTE = {
+                ...CONFIG,
+                ...dados
+            };
+
+            console.log(
+                "CONFIGURAÇÃO DO AGENDAMENTO:",
+                CONFIG_CLIENTE
+            );
+
+        } else {
+
+            console.warn(
+                "Configuração do cliente não encontrada. Usando CONFIG padrão."
+            );
+
+            CONFIG_CLIENTE = {
+                ...CONFIG
+            };
+
+        }
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar configuração do cliente:",
+            erro
+        );
+
+        CONFIG_CLIENTE = {
+            ...CONFIG
+        };
+
+    }
+
+}
 
 
 // ========================================
@@ -25,20 +140,27 @@ const listaHorarios =
     document.getElementById("listaHorarios");
 
 const confirmar =
-    document.getElementById("confirmarAgendamento");
+    document.getElementById(
+        "confirmarAgendamento"
+    );
 
 const mensagem =
-    document.getElementById("mensagemAgendamento");
+    document.getElementById(
+        "mensagemAgendamento"
+    );
 
 const abrirAgendamento =
-    document.getElementById("abrirAgendamento");
+    document.getElementById(
+        "abrirAgendamento"
+    );
 
 
 // ========================================
 // HORÁRIO SELECIONADO
 // ========================================
 
-let horarioSelecionado = null;
+let horarioSelecionado =
+    null;
 
 
 // ========================================
@@ -47,7 +169,8 @@ let horarioSelecionado = null;
 
 function obterDataHoje() {
 
-    const hoje = new Date();
+    const hoje =
+        new Date();
 
     const ano =
         hoje.getFullYear();
@@ -55,23 +178,29 @@ function obterDataHoje() {
     const mes =
         String(
             hoje.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     const dia =
         String(
             hoje.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     return `${ano}-${mes}-${dia}`;
+
 }
+
 
 dataInput.min =
     obterDataHoje();
 
-    dataInput.value =
+dataInput.value =
     obterDataHoje();
-
-    
 
 
 // ========================================
@@ -86,10 +215,13 @@ function formatarData(data) {
     if (
         partes.length !== 3
     ) {
+
         return data;
+
     }
 
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
 }
 
 
@@ -189,11 +321,14 @@ function mostrarConfirmacao({
                 modal
             );
 
+
             requestAnimationFrame(
                 () => {
+
                     modal.classList.add(
                         "ativo"
                     );
+
                 }
             );
 
@@ -207,7 +342,9 @@ function mostrarConfirmacao({
 
                     setTimeout(
                         () => {
+
                             modal.remove();
+
                         },
                         200
                     );
@@ -226,7 +363,9 @@ function mostrarConfirmacao({
                 .addEventListener(
                     "click",
                     () => {
+
                         fechar(false);
+
                     }
                 );
 
@@ -238,7 +377,9 @@ function mostrarConfirmacao({
                 .addEventListener(
                     "click",
                     () => {
+
                         fechar(false);
+
                     }
                 );
 
@@ -250,7 +391,9 @@ function mostrarConfirmacao({
                 .addEventListener(
                     "click",
                     () => {
+
                         fechar(true);
+
                     }
                 );
 
@@ -262,7 +405,9 @@ function mostrarConfirmacao({
                     if (
                         e.target === modal
                     ) {
+
                         fechar(false);
+
                     }
 
                 }
@@ -287,22 +432,28 @@ function mostrarSucesso({
 }) {
 
     const nomeBarbearia =
-    String(CONFIG.nome);
-
-const mensagemWhatsApp =
-    encodeURIComponent(
-        `*NOVO AGENDAMENTO - ${nomeBarbearia.toUpperCase()}*\n\n` +
-        `Olá! Um novo horário foi agendado pelo site.\n\n` +
-        `*Cliente:* ${nome}\n` +
-        `*Serviço:* ${servico}\n` +
-        `*Data:* ${formatarData(data)}\n` +
-        `*Horário:* ${horario}\n` +
-        `*Contato:* ${telefone}\n\n` +
-        `Agendamento realizado pelo site.`
-    );
+        String(
+            CONFIG_CLIENTE.nome ||
+            CONFIG.nome
+        );
 
 
-    const numeroWhatsApp = CONFIG.whatsapp;
+    const mensagemWhatsApp =
+        encodeURIComponent(
+            `*NOVO AGENDAMENTO - ${nomeBarbearia.toUpperCase()}*\n\n` +
+            `Olá! Um novo horário foi agendado pelo site.\n\n` +
+            `*Cliente:* ${nome}\n` +
+            `*Serviço:* ${servico}\n` +
+            `*Data:* ${formatarData(data)}\n` +
+            `*Horário:* ${horario}\n` +
+            `*Contato:* ${telefone}\n\n` +
+            `Agendamento realizado pelo site.`
+        );
+
+
+    const numeroWhatsApp =
+        CONFIG_CLIENTE.whatsapp ||
+        CONFIG.whatsapp;
 
 
     const linkWhatsApp =
@@ -337,8 +488,10 @@ const mensagemWhatsApp =
             </p>
 
             <span>
-    Aguardamos você na ${CONFIG.nome}. ✂️
-</span>
+                Aguardamos você na
+                ${CONFIG_CLIENTE.nome || CONFIG.nome}.
+                ✂️
+            </span>
 
             <a
                 href="${linkWhatsApp}"
@@ -378,6 +531,7 @@ async function carregarHorarios() {
             "<p>Escolha uma data.</p>";
 
         return;
+
     }
 
 
@@ -388,10 +542,10 @@ async function carregarHorarios() {
     try {
 
         const horariosRef =
-    ref(
-        db,
-        `${CAMINHO_BARBEIRO}/horarios/${data}`
-    );
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/horarios/${data}`
+            );
 
 
         const snapshot =
@@ -408,6 +562,7 @@ async function carregarHorarios() {
                 "<p>Nenhum horário disponível para esta data.</p>";
 
             return;
+
         }
 
 
@@ -428,7 +583,6 @@ async function carregarHorarios() {
                         horarioA
                             .split(":")
                             .map(Number);
-
 
                     const [horaB, minutoB] =
                         horarioB
@@ -470,7 +624,9 @@ async function carregarHorarios() {
                     !dados ||
                     dados.disponivel !== true
                 ) {
+
                     return;
+
                 }
 
 
@@ -623,7 +779,9 @@ confirmar.addEventListener(
         if (
             confirmar.disabled
         ) {
+
             return;
+
         }
 
 
@@ -673,6 +831,7 @@ confirmar.addEventListener(
                 "Preencha todos os campos e escolha um horário.";
 
             return;
+
         }
 
 
@@ -701,6 +860,7 @@ confirmar.addEventListener(
                 "Agendamento cancelado.";
 
             return;
+
         }
 
 
@@ -719,10 +879,10 @@ confirmar.addEventListener(
             // ========================================
 
             const disponivelRef =
-    ref(
-        db,
-        `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}/disponivel`
-    );
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}/disponivel`
+                );
 
 
             // ========================================
@@ -749,7 +909,7 @@ confirmar.addEventListener(
 
             console.log(
                 "CAMINHO:",
-                `horarios/${data}/${horario}/disponivel`
+                `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}/disponivel`
             );
 
 
@@ -769,6 +929,7 @@ confirmar.addEventListener(
                 await carregarHorarios();
 
                 return;
+
             }
 
 
@@ -782,6 +943,7 @@ confirmar.addEventListener(
                 await carregarHorarios();
 
                 return;
+
             }
 
 
@@ -800,17 +962,6 @@ confirmar.addEventListener(
                         );
 
 
-                        /*
-                         * IMPORTANTE:
-                         *
-                         * Se o Firebase iniciar
-                         * a transação com null,
-                         * usamos true como estado
-                         * inicial porque acabamos
-                         * de confirmar que o valor
-                         * real no banco é true.
-                         */
-
                         if (
                             valorAtual === null
                         ) {
@@ -820,11 +971,6 @@ confirmar.addEventListener(
                         }
 
 
-                        /*
-                         * Horário disponível:
-                         * reserva.
-                         */
-
                         if (
                             valorAtual === true
                         ) {
@@ -833,10 +979,6 @@ confirmar.addEventListener(
 
                         }
 
-
-                        /*
-                         * Já está ocupado.
-                         */
 
                         return undefined;
 
@@ -864,6 +1006,7 @@ confirmar.addEventListener(
                 await carregarHorarios();
 
                 return;
+
             }
 
 
@@ -872,10 +1015,10 @@ confirmar.addEventListener(
             // ========================================
 
             const agendamentosRef =
-    ref(
-        db,
-        `${CAMINHO_BARBEIRO}/agendamentos`
-    );
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/agendamentos`
+                );
 
 
             const novoAgendamento =
@@ -884,7 +1027,7 @@ confirmar.addEventListener(
                 );
 
 
-                       try {
+            try {
 
                 await update(
                     novoAgendamento,
@@ -917,7 +1060,7 @@ confirmar.addEventListener(
 
 
                 // ========================================
-                // ENVIAR NOTIFICAÇÃO PARA O BARBEIRO
+                // NOTIFICAÇÃO PARA O BARBEIRO
                 // ========================================
 
                 try {
@@ -1081,7 +1224,6 @@ confirmar.addEventListener(
             mensagem.textContent =
                 "Não foi possível realizar o agendamento. Tente novamente.";
 
-
         } finally {
 
             confirmar.disabled =
@@ -1094,7 +1236,20 @@ confirmar.addEventListener(
 
 
 // ========================================
-// CARREGAR HORÁRIOS AO ABRIR
+// INICIAR SITE
 // ========================================
 
-carregarHorarios();
+async function iniciarAgendamento() {
+
+    await carregarConfiguracaoCliente();
+
+    await carregarHorarios();
+
+}
+
+
+// ========================================
+// INICIAR
+// ========================================
+
+iniciarAgendamento();

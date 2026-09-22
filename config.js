@@ -10,13 +10,16 @@ export const CONFIG = {
 
     cidade: "Presidente Dutra — MA",
 
+
     // ========================================
     // CONTATO
     // ========================================
 
     whatsapp: "559991493420",
 
-    instagram: "https://www.instagram.com/vitinhoar1/",
+    instagram:
+        "https://www.instagram.com/vitinhoar1/",
+
 
     // ========================================
     // HORÁRIO DE FUNCIONAMENTO
@@ -24,11 +27,14 @@ export const CONFIG = {
 
     horario: {
 
-        semana: "Seg — Sex / 08h — 19h",
+        semana:
+            "Seg — Sex / 08h — 19h",
 
-        sabado: "Sáb / 08h — 17h"
+        sabado:
+            "Sáb / 08h — 17h"
 
     },
+
 
     // ========================================
     // SERVIÇOS
@@ -62,15 +68,18 @@ export const CONFIG = {
 
     ],
 
+
     // ========================================
     // CORES DO SITE
     // ========================================
 
     cores: {
 
-        primaria: "#d6ff3f",
+        primaria:
+            "#d6ff3f",
 
-        fundo: "#111111"
+        fundo:
+            "#111111"
 
     }
 
