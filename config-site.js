@@ -78,6 +78,16 @@ async function carregarConfiguracao() {
             configuracaoFirebase
         );
 
+        console.log(
+    "NOME RECEBIDO DO FIREBASE:",
+    configuracaoFirebase.nome
+);
+
+console.log(
+    "CHAVES RECEBIDAS:",
+    Object.keys(configuracaoFirebase)
+);
+
         return {
             ...CONFIG,
             ...configuracaoFirebase
@@ -430,7 +440,7 @@ async function iniciarSite() {
                 );
 
             }
-        );
+        );if (!usuario) {
 
     }
 
