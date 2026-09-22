@@ -320,15 +320,14 @@ console.log(
             titulo,
             {
                 body: corpo,
-                tag: "novo-agendamento"
+                tag: `agendamento-${agendamento.data}-${agendamento.horario}`,
+                renotify: true
             }
         );
 
     notificacao.onclick = () => {
-
         window.focus();
         notificacao.close();
-
     };
 }
     // ========================================
