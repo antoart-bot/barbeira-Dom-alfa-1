@@ -300,36 +300,50 @@ console.log(
 
     function mostrarNotificacaoAgendamento(agendamento) {
 
-    if (!notificacoesAtivas) {
-        return;
-    }
+    console.log("1 - FUNÇÃO DE NOTIFICAÇÃO INICIADA");
 
     console.log(
-        "MOSTRANDO NOTIFICAÇÃO REAL:",
-        agendamento
+        "2 - Notification:",
+        typeof Notification
     );
 
-    const titulo =
-        `✂️ Novo agendamento — ${CONFIG.nome}`;
+    console.log(
+        "3 - Permission:",
+        Notification.permission
+    );
 
-    const corpo =
-        `${agendamento.nome} agendou ${agendamento.servico} às ${agendamento.horario}.`;
+    try {
 
-    const notificacao =
-        new Notification(
-            titulo,
-            {
-                body: corpo,
-                tag: `agendamento-${agendamento.data}-${agendamento.horario}`,
-                renotify: true
-            }
+        const notificacao = new Notification(
+    "TESTE — Dom Alfa",
+    {
+        body: "Se você está vendo isso, a notificação funcionou.",
+        requireInteraction: true
+    }
+);
+
+        console.log(
+            "4 - NOTIFICAÇÃO CRIADA:",
+            notificacao
         );
 
-    notificacao.onclick = () => {
-        window.focus();
-        notificacao.close();
-    };
+        notificacao.onclick = () => {
+
+            window.focus();
+            notificacao.close();
+
+        };
+
+    } catch (erro) {
+
+        console.error(
+            "5 - ERRO AO CRIAR NOTIFICAÇÃO:",
+            erro
+        );
+
+    }
 }
+
     // ========================================
     // MONITORAR NOVOS AGENDAMENTOS
     // ========================================
