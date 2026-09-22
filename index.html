@@ -1,389 +1,538 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+    <!DOCTYPE html>
+    <html lang="pt-BR">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dom Alfa — Barbearia</title>
+        <title>Dom Alfa — Barbearia</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="agendamento.css">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="agendamento.css">
 
-    <!-- FONTES -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet">
+    </head>
 
-<body>
+    <body>
 
-    <!-- HEADER -->
+        <!-- HEADER -->
 
-    <header>
+        <header>
+            <div class="nav-wrapper">
 
-        <div class="nav-wrapper">
-
-            <a href="#" class="logo" id="logoBarbearia">
+                <a href="#" class="logo" id="logoBarbearia">
                     <span>DOM</span>
                     ALFA
                 </a>
 
-            <nav>
-                <a href="#servicos">Serviços</a>
-                <a href="#sobre">A barbearia</a>
-                <a href="#contato">Contato</a>
-            </nav>
+                <nav>
+                    <a href="#servicos">Serviços</a>
+                    <a href="#sobre">A barbearia</a>
+                    <a href="#contato">Contato</a>
+                </nav>
 
-            <a href="#contato" class="book">
-                Agendar
-                <span>↗</span>
-            </a>
-
-        </div>
-
-    </header>
-
-
-    <!-- HERO -->
-
-    <main>
-
-        <section class="hero">
-
-            <div class="hero-image"></div>
-
-            <div class="hero-gradient"></div>
-
-            <div class="hero-top">
-
-                <span id="cidadeHero">PD / MA</span>
-
-                <span id="anoHero">EST. 2026</span>
+                <a href="#agendamento" class="book">
+                    Agendar
+                    <span>↗</span>
+                </a>
 
             </div>
+        </header>
 
 
-            <div class="hero-content">
+        <!-- HERO -->
 
-                <p class="eyebrow">
-                    BARBEARIA & ESTILO
-                </p>
+        <main>
 
-                <h1>
-                    Corte.
-                    <br>
-                    <span>Presença.</span>
-                </h1>
+            <section class="hero">
 
-                <div class="hero-description">
+                <div class="hero-image"></div>
+                <div class="hero-gradient"></div>
 
-                    <p>
-                        Um espaço para quem entende que
-                        aparência também é identidade.
+                <div class="hero-top">
+                    <span id="cidadeHero">PD / MA</span>
+                    <span id="anoHero">EST. 2026</span>
+                </div>
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">
+                        BARBEARIA & ESTILO
                     </p>
 
-                    <a href="#servicos" class="circle-button">
-                        <span>↓</span>
+                    <h1>
+                        Corte.
+                        <br>
+                        <span>Presença.</span>
+                    </h1>
+
+                    <div class="hero-description">
+
+                        <p>
+                            Um espaço para quem entende que
+                            aparência também é identidade.
+                        </p>
+
+                        <a href="#servicos" class="circle-button">
+                            <span>↓</span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- INTRO -->
+
+            <section class="intro">
+
+                <div class="intro-number">
+                    01
+                </div>
+
+                <div class="intro-content">
+
+                    <p class="label">
+                        MAIS QUE UM CORTE
+                    </p>
+
+                    <h2>
+                        Seu visual não precisa
+                        <span>seguir o padrão.</span>
+                    </h2>
+
+                    <p class="intro-text">
+                        Na <span id="nomeIntro">Dom Alfa</span>, cada atendimento começa
+                        entendendo você. Seu estilo, seu cabelo, sua rotina e aquilo
+                        que você quer transmitir.
+                    </p>
+
+                    <a href="#sobre" class="line-link">
+                        Conheça a Dom Alfa
+                        <span>→</span>
                     </a>
 
                 </div>
 
+            </section>
+
+
+            <!-- SERVIÇOS -->
+
+            <section id="servicos" class="services">
+
+                <div class="section-top">
+
+                    <span class="label">02 / SERVIÇOS</span>
+
+                    <p>
+                        Serviços simples.<br>
+                        Execução precisa.
+                    </p>
+
+                </div>
+
+                <div class="service-list">
+
+                    <a href="#agendamento" class="service">
+
+                        <span class="service-index">01</span>
+
+                        <h3>Corte</h3>
+
+                        <span class="service-price">R$ 40</span>
+
+                        <span class="service-arrow">↗</span>
+
+                    </a>
+
+
+                    <a href="#agendamento" class="service">
+
+                        <span class="service-index">02</span>
+
+                        <h3>Barba</h3>
+
+                        <span class="service-price">R$ 30</span>
+
+                        <span class="service-arrow">↗</span>
+
+                    </a>
+
+
+                    <a href="#agendamento" class="service">
+
+                        <span class="service-index">03</span>
+
+                        <h3>Corte + Barba</h3>
+
+                        <span class="service-price">R$ 65</span>
+
+                        <span class="service-arrow">↗</span>
+
+                    </a>
+
+
+                    <a href="#agendamento" class="service">
+
+                        <span class="service-index">04</span>
+
+                        <h3>Acabamento</h3>
+
+                        <span class="service-price">R$ 20</span>
+
+                        <span class="service-arrow">↗</span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- SOBRE -->
+
+            <section id="sobre" class="about">
+
+                <div class="about-image"></div>
+
+                <div class="about-content">
+
+                    <span class="label">
+                        03 / A BARBEARIA
+                    </span>
+
+                    <h2>
+                        O clássico,
+                        <br>
+                        <i>sem ser antigo.</i>
+                    </h2>
+
+                    <p>
+                        Criamos um ambiente onde o cuidado com o
+                        visual encontra uma experiência tranquila.
+                        Sem pressa. Sem exageros.
+                    </p>
+
+                    <p>
+                        Técnicas tradicionais, referências atuais
+                        e atenção aos detalhes.
+                    </p>
+
+                    <div class="about-signature" id="assinaturaBarbearia">
+                        DOM ALFA
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CTA -->
+
+            <section id="contato" class="contact">
+
+                <div class="contact-number">
+                    04
+                </div>
+
+                <div class="contact-content">
+
+                    <span class="label">
+                        SEU PRÓXIMO CORTE
+                    </span>
+
+                    <h2>
+                        Vamos marcar?
+                    </h2>
+
+                    <button class="big-button" id="abrirAgendamento">
+
+                        <span>Agendar horário</span>
+
+                        <strong>↗</strong>
+
+                    </button>
+
+                </div>
+
+                <div class="contact-info">
+
+                    <div>
+                        <span>HORÁRIO</span>
+                        <p>Seg — Sex / 08h — 19h</p>
+                        <p>Sáb / 08h — 17h</p>
+                    </div>
+
+                    <div>
+                        <span>LOCAL</span>
+                        <p>Presidente Dutra — MA</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- AGENDAMENTO -->
+
+            <section class="booking" id="agendamento">
+
+                <div class="booking-heading">
+
+                    <div>
+                        <span class="label">
+                            05 / AGENDAMENTO
+                        </span>
+
+                        <h2>
+                            Seu próximo corte<br>
+                            <span>começa aqui.</span>
+                        </h2>
+                    </div>
+
+                    <p>
+                        Escolha o serviço, informe seus dados
+                        e encontre um horário disponível.
+                    </p>
+
+                </div>
+
+
+                <div class="booking-card">
+
+                    <!-- DADOS -->
+
+                    <div class="booking-side">
+
+                        <div class="booking-side-header">
+                            <span>01</span>
+
+                            <div>
+                                <small>SEUS DADOS</small>
+                                <h3>Quem está agendando?</h3>
+                            </div>
+                        </div>
+
+
+                        <div class="booking-form">
+
+                            <label>
+                                <span>Seu nome</span>
+
+                                <div class="input-wrap">
+                                    <input
+                                        type="text"
+                                        id="nomeCliente"
+                                        placeholder="Digite seu nome"
+                                        autocomplete="name"
+                                    >
+                                </div>
+                            </label>
+
+
+                            <label>
+                                <span>WhatsApp</span>
+
+                                <div class="input-wrap">
+                                    <input
+                                        type="tel"
+                                        id="telefoneCliente"
+                                        placeholder="(99) 99999-9999"
+                                        autocomplete="tel"
+                                    >
+                                </div>
+                            </label>
+
+
+                            <label>
+                                <span>Serviço</span>
+
+                                <div class="input-wrap select-wrap">
+                                    <select id="servicoCliente">
+
+                                        <option value="">
+                                            Escolha um serviço
+                                        </option>
+
+                                        <option value="corte">
+                                            Corte — R$ 40
+                                        </option>
+
+                                        <option value="barba">
+                                            Barba — R$ 30
+                                        </option>
+
+                                        <option value="corte_barba">
+                                            Corte + Barba — R$ 65
+                                        </option>
+
+                                        <option value="acabamento">
+                                            Acabamento — R$ 20
+                                        </option>
+
+                                    </select>
+                                </div>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- HORÁRIO -->
+
+                    <div class="booking-side booking-time">
+
+                        <div class="booking-side-header">
+                            <span>02</span>
+
+                            <div>
+                                <small>HORÁRIO</small>
+                                <h3>Quando você vem?</h3>
+                            </div>
+                        </div>
+
+
+                        <label class="date-label">
+
+                            <span>Escolha uma data</span>
+
+                            <div class="input-wrap date-wrap">
+
+                                <input
+                                    type="date"
+                                    id="dataCliente"
+                                >
+
+                            </div>
+
+                        </label>
+
+
+                        <div class="horarios-box">
+
+                            <div class="horarios-header">
+
+                                <span>
+                                    Horários disponíveis
+                                </span>
+
+                                <span class="status-dot">
+                                    Disponível
+                                </span>
+
+                            </div>
+
+
+                            <div id="listaHorarios">
+                                <span class="loading-hours">
+                                    Carregando horários...
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIRMAÇÃO -->
+
+                <div class="booking-bottom">
+
+                    <div class="booking-note">
+                        <span>✓</span>
+
+                        <p>
+                            Seu horário será reservado após
+                            a confirmação do agendamento.
+                        </p>
+                    </div>
+
+
+                    <button
+                        id="confirmarAgendamento"
+                        class="confirm-booking"
+                    >
+                        <span>Confirmar agendamento</span>
+                        <strong>↗</strong>
+                    </button>
+
+                </div>
+
+
+                <p
+                    id="mensagemAgendamento"
+                    class="booking-message"
+                ></p>
+
+            </section>
+
+        </main>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <div class="footer-logo" id="footerLogo">
+                DOM ALFA
             </div>
 
-        </section>
+            <div class="footer-bottom">
 
-
-        <!-- INTRO -->
-
-        <section class="intro">
-
-            <div class="intro-number">
-                01
-            </div>
-
-            <div class="intro-content">
-
-                <p class="label">
-                    MAIS QUE UM CORTE
-                </p>
-
-                <h2>
-                    Seu visual não precisa
-                    <span>seguir o padrão.</span>
-                </h2>
-
-                <p class="intro-text">
-                Na <span id="nomeIntro">Dom Alfa</span>, cada atendimento começa entendendo
-                    você. Seu estilo, seu cabelo, sua rotina e aquilo
-                    que você quer transmitir.
-                  </p>            
-
-                <a href="#sobre" class="line-link">
-                    Conheça a Dom Alfa
-                    <span>→</span>
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- SERVIÇOS -->
-
-        <section id="servicos" class="services">
-
-            <div class="section-top">
-
-                <span class="label">02 / SERVIÇOS</span>
-
-                <p>
-                    Serviços simples.
-                    Execução precisa.
-                </p>
-
-            </div>
-
-
-            <div class="service-list">
-
-                <a href="#contato" class="service">
-
-                    <span class="service-index">01</span>
-
-                    <h3>Corte</h3>
-
-                    <span class="service-price">R$ 40</span>
-
-                    <span class="service-arrow">↗</span>
-
-                </a>
-
-
-                <a href="#contato" class="service">
-
-                    <span class="service-index">02</span>
-
-                    <h3>Barba</h3>
-
-                    <span class="service-price">R$ 30</span>
-
-                    <span class="service-arrow">↗</span>
-
-                </a>
-
-
-                <a href="#contato" class="service">
-
-                    <span class="service-index">03</span>
-
-                    <h3>Corte + Barba</h3>
-
-                    <span class="service-price">R$ 65</span>
-
-                    <span class="service-arrow">↗</span>
-
-                </a>
-
-
-                <a href="#contato" class="service">
-
-                    <span class="service-index">04</span>
-
-                    <h3>Acabamento</h3>
-
-                    <span class="service-price">R$ 20</span>
-
-                    <span class="service-arrow">↗</span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- SOBRE -->
-
-        <section id="sobre" class="about">
-
-            <div class="about-image"></div>
-
-            <div class="about-content">
-
-                <span class="label">03 / A BARBEARIA</span>
-
-                <h2>
-                    O clássico,
-                    <br>
-                    <i>sem ser antigo.</i>
-                </h2>
-
-                <p>
-                    Criamos um ambiente onde o cuidado com o
-                    visual encontra uma experiência tranquila.
-                    Sem pressa. Sem exageros.
-                </p>
-
-                <p>
-                    Técnicas tradicionais, referências atuais
-                    e atenção aos detalhes.
-                </p>
-
-                <div class="about-signature" id="assinaturaBarbearia">
-    DOM ALFA
-</div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CTA -->
-
-        <section id="contato" class="contact">
-
-            <div class="contact-number">
-                04
-            </div>
-
-            <div class="contact-content">
-
-                <span class="label">
-                    SEU PRÓXIMO CORTE
+                <span>
+                    © 2026 Dom Alfa
                 </span>
 
-                <h2>
-                    Vamos marcar?
-                </h2>
-                <button class="big-button" id="abrirAgendamento">
+                <span>
+                    <a
+                        href="https://www.instagram.com/vitinhoar1/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Instagram
+                    </a>
+                    ↗
+                </span>
 
-                    <span>Agendar horário</span>
-
-                    <strong>↗</strong>
-
-                </button>
-
-            </div>
-
-            <div class="contact-info">
-
-                <div>
-                    <span>HORÁRIO</span>
-                    <p>Seg — Sex / 08h — 19h</p>
-                    <p>Sáb / 08h — 17h</p>
-                </div>
-
-                <div>
-                    <span>LOCAL</span>
-                    <p>Presidente Dutra — MA</p>
-                </div>
+                <span>
+                    <a
+                        href="https://wa.me/559991493420"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        WhatsApp
+                    </a>
+                    ↗
+                </span>
 
             </div>
 
-        </section>
-
-        <section class="booking" id="agendamento">
-
-    <div class="booking-content">
-
-        <span class="label">AGENDAMENTO</span>
-
-        <h2>Escolha seu horário.</h2>
-
-        <div class="booking-form">
-
-            <label>
-                Seu nome
-                <input
-                    type="text"
-                    id="nomeCliente"
-                    placeholder="Digite seu nome"
-                >
-            </label>
-
-            <label>
-                WhatsApp
-                <input
-                    type="tel"
-                    id="telefoneCliente"
-                    placeholder="(99) 99999-9999"
-                >
-            </label>
-
-            <label>
-                Serviço
-                <select id="servicoCliente">
-                    <option value="">Escolha um serviço</option>
-                    <option value="corte">Corte — R$ 40</option>
-                    <option value="barba">Barba — R$ 30</option>
-                    <option value="corte_barba">Corte + Barba — R$ 65</option>
-                    <option value="acabamento">Acabamento — R$ 20</option>
-                </select>
-            </label>
-
-            <label>
-                Data
-                <input
-                    type="date"
-                    id="dataCliente"
-                    value="2026-09-20"
-                >
-            </label>
-
-            <div class="horarios-box">
-
-                <span>Horários disponíveis</span>
-
-                <div id="listaHorarios">
-                    Carregando horários...
-                </div>
-
-            </div>
-
-            <button id="confirmarAgendamento" class="confirm-booking">
-                Confirmar agendamento
-            </button>
-
-            <p id="mensagemAgendamento"></p>
-
-        </div>
-
-    </div>
-
-</section>
-
-    </main>
+        </footer>
 
 
-    <!-- FOOTER -->
+        <script src="script.js"></script>
 
-    <footer>
+        <script
+            type="module"
+            src="agendamento.js"
+        ></script>
 
-        <div class="footer-logo" id="footerLogo">
-    DOM ALFA
-</div>
+        <script
+            type="module"
+            src="config-site.js"
+        ></script>
 
-        <div class="footer-bottom">
+    </body>
 
-            <span>© 2026 Dom Alfa</span>
-
-            <span><a href="https://www.instagram.com/vitinhoar1/" target="_blank" rel="noopener noreferrer">Instagram</a> ↗</span>
-
-            <span><a href="https://wa.me/559991493420" target="_blank" rel="noopener noreferrer">WhatsApp</a> ↗</span>
-
-        </div>
-
-    </footer>
-
-<script src="script.js"></script>
-
-<script type="module" src="agendamento.js"></script>
-
-<script type="module" src="config-site.js"></script>
-
-
-</body>
-
-</html>
+    </html>

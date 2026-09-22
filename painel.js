@@ -19,13 +19,7 @@ import {
 
     import { CONFIG } from "./config.js";
 
-    import {
-    getMessaging,
-    getToken,
-    onMessage
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 
-const messaging = getMessaging(app);
 
     const CAMINHO_BARBEIRO =
         `barbeiros/${CONFIG.id}`;
@@ -205,79 +199,6 @@ if (dataPainel) {
     // LOGIN / AUTENTICAÇÃO
     // ========================================
 
-async function prepararFCM() {
-    try {
-        if (!("serviceWorker" in navigator)) {
-            console.log("Service Worker não suportado.");
-            return;
-        }
-
-        const registroSW = await navigator.serviceWorker.register(
-    "./firebase-messaging-sw.js"
-);
-
-        await navigator.serviceWorker.ready;
-
-        console.log("Service Worker registrado:", registroSW);
-
-        const permissao = await Notification.requestPermission();
-
-        if (permissao !== "granted") {
-            console.log("Permissão para notificações negada.");
-            return;
-        }
-
-        const token = await getToken(messaging, {
-            vapidKey:"BMlE30g7RCzkg0qauJHGOH3Mn7b6PUHIMnOmdynrL3rOHlez2__FXCXz7JW57KgSKdaQvRpGY77lX74JQT-FDFI",
-            serviceWorkerRegistration: registroSW
-        });
-
-        if (!token) {
-            console.log("Não foi possível obter o token FCM.");
-            return;
-        }
-
-        await update(
-    ref(
-        db,
-        `${CAMINHO_BARBEIRO}/notificacoes`
-    ),
-    {
-        fcmToken: token
-    }
-);
-
-
-console.log(
-    "TOKEN FCM salvo no Firebase:",
-    token
-);
-
-    } catch (erro) {
-        console.error("Erro ao preparar FCM:", erro);
-    }
-}
-
-    onAuthStateChanged(
-    auth,
-    async (usuario) => {
-        if (!usuario) {
-            window.location.href = "login.html";
-            return;
-        }
-
-        await prepararNotificacoes();
-        await prepararFCM();
-
-        await limparHorariosPassados();
-
-        carregarAgendamentos();
-        carregarHorarios();
-
-        monitorarNovosAgendamentos();
-    }
-);
-
 
     // ========================================
     // NOTIFICAÇÕES DE NOVOS AGENDAMENTOS
@@ -319,53 +240,109 @@ console.log(
 
 
         notificacoesAtivas =
-            Notification.permission === "granted";
+    Notification.permission === "granted";
+
+console.log(
+    "NOTIFICAÇÕES ATIVAS:",
+    notificacoesAtivas
+);
+
+console.log(
+    "PERMISSÃO:",
+    Notification.permission
+);
 
     }
+
+    onAuthStateChanged(
+    auth,
+    async (usuario) => {
+
+        if (!usuario) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+        await prepararNotificacoes();
+
+console.log(
+    "AUTH OK — preparando painel e notificações"
+);
+
+console.log(
+    "TESTE NOTIFICAÇÃO:",
+    Notification.permission
+);
+
+console.log(
+    "notificacoesAtivas:",
+    notificacoesAtivas
+);
+
+        await limparHorariosPassados();
+
+        carregarAgendamentos();
+
+        carregarHorarios();
+
+        monitorarNovosAgendamentos();
+
+    }
+);
 
 
     // ========================================
     // MOSTRAR NOTIFICAÇÃO
     // ========================================
 
-    function mostrarNotificacaoAgendamento(
-        agendamento
-    ) {
+    function mostrarNotificacaoAgendamento(agendamento) {
 
-        if (!notificacoesAtivas) {
-            return;
-        }
+    console.log("1 - FUNÇÃO DE NOTIFICAÇÃO INICIADA");
 
+    console.log(
+        "2 - Notification:",
+        typeof Notification
+    );
 
-        const titulo =
-        `✂️ Novo agendamento — ${CONFIG.nome}`;
+    console.log(
+        "3 - Permission:",
+        Notification.permission
+    );
 
+    try {
 
-        const corpo =
-            `${agendamento.nome} agendou ${agendamento.servico} às ${agendamento.horario}.`;
+        const notificacao = new Notification(
+    "TESTE — Dom Alfa",
+    {
+        body: "Se você está vendo isso, a notificação funcionou.",
+        requireInteraction: true
+    }
+);
 
-
-        const notificacao =
-            new Notification(
-                titulo,
-                {
-                    body: corpo,
-                    icon: "/favicon.ico",
-                    tag: "novo-agendamento"
-                }
-            );
-
+        console.log(
+            "4 - NOTIFICAÇÃO CRIADA:",
+            notificacao
+        );
 
         notificacao.onclick = () => {
 
             window.focus();
-
             notificacao.close();
 
         };
 
-    }
+    } catch (erro) {
 
+        console.error(
+            "5 - ERRO AO CRIAR NOTIFICAÇÃO:",
+            erro
+        );
+
+    }
+}
 
     // ========================================
     // MONITORAR NOVOS AGENDAMENTOS
@@ -678,46 +655,51 @@ console.log(
                     // CARD
                     // ========================================
 
-                    card.innerHTML = `
+                 card.innerHTML = `
 
-                        <div class="horario">
-                            ${agendamento.horario}
-                        </div>
+    <div class="horario">
+        ${agendamento.horario}
+    </div>
 
-                        <div class="cliente">
-                            ${agendamento.nome}
-                        </div>
+    <div class="cliente">
+        ${agendamento.nome}
+    </div>
 
-                        <div class="info">
-                            Serviço: ${agendamento.servico}
-                        </div>
+    <div class="detalhes-agendamento">
 
-                        <div class="info">
-                            WhatsApp: ${agendamento.telefone}
-                        </div>
+        <div>
+            <span>Serviço</span>
+            <strong>${agendamento.servico}</strong>
+        </div>
 
-                        <div class="botoes">
+        <div>
+            <span>WhatsApp</span>
+            <strong>${agendamento.telefone}</strong>
+        </div>
 
-                            <a
-                                class="whatsapp"
-                                href="https://wa.me/${whatsapp}"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                WhatsApp ↗
-                            </a>
+    </div>
 
-                            <button
-                                class="cancelar"
-                                type="button"
-                            >
-                                Cancelar
-                            </button>
+    <div class="botoes">
 
-                        </div>
+        <a
+            class="whatsapp"
+            href="https://wa.me/${whatsapp}"
+            target="_blank"
+            rel="noopener"
+        >
+            WhatsApp ↗
+        </a>
 
-                    `;
+        <button
+            class="cancelar"
+            type="button"
+        >
+            Cancelar
+        </button>
 
+    </div>
+
+`;
 
                     // ========================================
                     // BOTÃO CANCELAR
