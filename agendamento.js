@@ -1,0 +1,1100 @@
+import {
+    ref,
+    get,
+    update,
+    push,
+    runTransaction,
+    set
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+import { db } from "./firebase.js";
+import { CONFIG } from "./config.js";
+
+const CAMINHO_BARBEIRO =
+    `barbeiros/${CONFIG.id}`;
+
+
+// ========================================
+// ELEMENTOS
+// ========================================
+
+const dataInput =
+    document.getElementById("dataCliente");
+
+const listaHorarios =
+    document.getElementById("listaHorarios");
+
+const confirmar =
+    document.getElementById("confirmarAgendamento");
+
+const mensagem =
+    document.getElementById("mensagemAgendamento");
+
+const abrirAgendamento =
+    document.getElementById("abrirAgendamento");
+
+
+// ========================================
+// HORÁRIO SELECIONADO
+// ========================================
+
+let horarioSelecionado = null;
+
+
+// ========================================
+// DATA ATUAL
+// ========================================
+
+function obterDataHoje() {
+
+    const hoje = new Date();
+
+    const ano =
+        hoje.getFullYear();
+
+    const mes =
+        String(
+            hoje.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            hoje.getDate()
+        ).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}`;
+}
+
+dataInput.min =
+    obterDataHoje();
+
+    dataInput.value =
+    obterDataHoje();
+
+    
+
+
+// ========================================
+// FORMATAR DATA
+// ========================================
+
+function formatarData(data) {
+
+    const partes =
+        data.split("-");
+
+    if (
+        partes.length !== 3
+    ) {
+        return data;
+    }
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+
+// ========================================
+// MODAL DE CONFIRMAÇÃO
+// ========================================
+
+function mostrarConfirmacao({
+    nome,
+    servico,
+    data,
+    horario
+}) {
+
+    return new Promise(
+        (resolve) => {
+
+            const modal =
+                document.createElement(
+                    "div"
+                );
+
+            modal.className =
+                "modal-confirmacao";
+
+            modal.innerHTML = `
+                <div class="modal-confirmacao-conteudo">
+
+                    <button
+                        type="button"
+                        class="modal-fechar"
+                        aria-label="Fechar"
+                    >
+                        ×
+                    </button>
+
+                    <div class="modal-icone">
+                        ✂
+                    </div>
+
+                    <h3>
+                        Confirmar agendamento?
+                    </h3>
+
+                    <p class="modal-subtitulo">
+                        Confira os dados antes de confirmar.
+                    </p>
+
+                    <div class="resumo-agendamento">
+
+                        <div class="resumo-item">
+                            <span>Cliente</span>
+                            <strong>${nome}</strong>
+                        </div>
+
+                        <div class="resumo-item">
+                            <span>Serviço</span>
+                            <strong>${servico}</strong>
+                        </div>
+
+                        <div class="resumo-item">
+                            <span>Data</span>
+                            <strong>
+                                ${formatarData(data)}
+                            </strong>
+                        </div>
+
+                        <div class="resumo-item">
+                            <span>Horário</span>
+                            <strong>${horario}</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-acoes">
+
+                        <button
+                            type="button"
+                            class="modal-cancelar"
+                        >
+                            Cancelar
+                        </button>
+
+                        <button
+                            type="button"
+                            class="modal-confirmar"
+                        >
+                            Confirmar
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            document.body.appendChild(
+                modal
+            );
+
+            requestAnimationFrame(
+                () => {
+                    modal.classList.add(
+                        "ativo"
+                    );
+                }
+            );
+
+
+            const fechar =
+                (resultado) => {
+
+                    modal.classList.remove(
+                        "ativo"
+                    );
+
+                    setTimeout(
+                        () => {
+                            modal.remove();
+                        },
+                        200
+                    );
+
+                    resolve(
+                        resultado
+                    );
+
+                };
+
+
+            modal
+                .querySelector(
+                    ".modal-fechar"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+                        fechar(false);
+                    }
+                );
+
+
+            modal
+                .querySelector(
+                    ".modal-cancelar"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+                        fechar(false);
+                    }
+                );
+
+
+            modal
+                .querySelector(
+                    ".modal-confirmar"
+                )
+                .addEventListener(
+                    "click",
+                    () => {
+                        fechar(true);
+                    }
+                );
+
+
+            modal.addEventListener(
+                "click",
+                (e) => {
+
+                    if (
+                        e.target === modal
+                    ) {
+                        fechar(false);
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// MENSAGEM DE SUCESSO
+// ========================================
+
+function mostrarSucesso({
+    nome,
+    telefone,
+    servico,
+    data,
+    horario
+}) {
+
+    const nomeBarbearia =
+    String(CONFIG.nome);
+
+const mensagemWhatsApp =
+    encodeURIComponent(
+        `*NOVO AGENDAMENTO - ${nomeBarbearia.toUpperCase()}*\n\n` +
+        `Olá! Um novo horário foi agendado pelo site.\n\n` +
+        `*Cliente:* ${nome}\n` +
+        `*Serviço:* ${servico}\n` +
+        `*Data:* ${formatarData(data)}\n` +
+        `*Horário:* ${horario}\n` +
+        `*Contato:* ${telefone}\n\n` +
+        `Agendamento realizado pelo site.`
+    );
+
+
+    const numeroWhatsApp = CONFIG.whatsapp;
+
+
+    const linkWhatsApp =
+        `https://wa.me/${numeroWhatsApp}?text=${mensagemWhatsApp}`;
+
+
+    mensagem.innerHTML = `
+
+        <div class="sucesso-agendamento">
+
+            <div class="sucesso-icone">
+                ✓
+            </div>
+
+            <h3>
+                Agendamento confirmado!
+            </h3>
+
+            <p>
+                Seu horário está reservado para:
+            </p>
+
+            <strong>
+                ${formatarData(data)}
+                às
+                ${horario}
+            </strong>
+
+            <p>
+                Serviço:
+                <strong>${servico}</strong>
+            </p>
+
+            <span>
+    Aguardamos você na ${CONFIG.nome}. ✂️
+</span>
+
+            <a
+                href="${linkWhatsApp}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="botao-whatsapp-agendamento"
+            >
+                💬 Avisar pelo WhatsApp
+            </a>
+
+        </div>
+
+    `;
+
+}
+
+
+// ========================================
+// CARREGAR HORÁRIOS
+// ========================================
+
+async function carregarHorarios() {
+
+    const data =
+        dataInput.value;
+
+    horarioSelecionado =
+        null;
+
+    listaHorarios.innerHTML =
+        "";
+
+
+    if (!data) {
+
+        listaHorarios.innerHTML =
+            "<p>Escolha uma data.</p>";
+
+        return;
+    }
+
+
+    listaHorarios.innerHTML =
+        "<p>Carregando horários...</p>";
+
+
+    try {
+
+        const horariosRef =
+    ref(
+        db,
+        `${CAMINHO_BARBEIRO}/horarios/${data}`
+    );
+
+
+        const snapshot =
+            await get(
+                horariosRef
+            );
+
+
+        if (
+            !snapshot.exists()
+        ) {
+
+            listaHorarios.innerHTML =
+                "<p>Nenhum horário disponível para esta data.</p>";
+
+            return;
+        }
+
+
+        const horarios =
+            snapshot.val();
+
+
+        const horariosOrdenados =
+            Object.entries(
+                horarios
+            ).sort(
+                (
+                    [horarioA],
+                    [horarioB]
+                ) => {
+
+                    const [horaA, minutoA] =
+                        horarioA
+                            .split(":")
+                            .map(Number);
+
+
+                    const [horaB, minutoB] =
+                        horarioB
+                            .split(":")
+                            .map(Number);
+
+
+                    const minutosA =
+                        horaA * 60 +
+                        minutoA;
+
+
+                    const minutosB =
+                        horaB * 60 +
+                        minutoB;
+
+
+                    return (
+                        minutosA -
+                        minutosB
+                    );
+
+                }
+            );
+
+
+        listaHorarios.innerHTML =
+            "";
+
+
+        let encontrouHorario =
+            false;
+
+
+        horariosOrdenados.forEach(
+            ([horario, dados]) => {
+
+                if (
+                    !dados ||
+                    dados.disponivel !== true
+                ) {
+                    return;
+                }
+
+
+                encontrouHorario =
+                    true;
+
+
+                const botao =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                botao.type =
+                    "button";
+
+
+                botao.className =
+                    "horario";
+
+
+                botao.textContent =
+                    horario;
+
+
+                botao.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".horario"
+                            )
+                            .forEach(
+                                (btn) => {
+
+                                    btn.classList.remove(
+                                        "selecionado"
+                                    );
+
+                                }
+                            );
+
+
+                        botao.classList.add(
+                            "selecionado"
+                        );
+
+
+                        horarioSelecionado =
+                            horario;
+
+
+                        mensagem.innerHTML =
+                            "";
+
+                    }
+                );
+
+
+                listaHorarios.appendChild(
+                    botao
+                );
+
+            }
+        );
+
+
+        if (
+            !encontrouHorario
+        ) {
+
+            listaHorarios.innerHTML =
+                "<p>Não há horários disponíveis para esta data.</p>";
+
+        }
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar horários:",
+            erro
+        );
+
+
+        listaHorarios.innerHTML =
+            "<p>Erro ao carregar os horários.</p>";
+
+    }
+
+}
+
+
+// ========================================
+// TROCAR DATA
+// ========================================
+
+dataInput.addEventListener(
+    "change",
+    carregarHorarios
+);
+
+
+// ========================================
+// BOTÃO ABRIR AGENDAMENTO
+// ========================================
+
+if (
+    abrirAgendamento
+) {
+
+    abrirAgendamento.addEventListener(
+        "click",
+        () => {
+
+            const secaoAgendamento =
+                document.getElementById(
+                    "agendamento"
+                );
+
+
+            if (
+                secaoAgendamento
+            ) {
+
+                secaoAgendamento.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }
+
+
+            carregarHorarios();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// CONFIRMAR AGENDAMENTO
+// ========================================
+
+confirmar.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            confirmar.disabled
+        ) {
+            return;
+        }
+
+
+        const nome =
+            document
+                .getElementById(
+                    "nomeCliente"
+                )
+                .value
+                .trim();
+
+
+        const telefone =
+            document
+                .getElementById(
+                    "telefoneCliente"
+                )
+                .value
+                .trim();
+
+
+        const servico =
+            document
+                .getElementById(
+                    "servicoCliente"
+                )
+                .value;
+
+
+        const data =
+            dataInput.value;
+
+
+        // ========================================
+        // VALIDAR CAMPOS
+        // ========================================
+
+        if (
+            !nome ||
+            !telefone ||
+            !servico ||
+            !data ||
+            !horarioSelecionado
+        ) {
+
+            mensagem.textContent =
+                "Preencha todos os campos e escolha um horário.";
+
+            return;
+        }
+
+
+        const horario =
+            horarioSelecionado;
+
+
+        // ========================================
+        // CONFIRMAÇÃO
+        // ========================================
+
+        const usuarioConfirmou =
+            await mostrarConfirmacao({
+                nome,
+                servico,
+                data,
+                horario
+            });
+
+
+        if (
+            !usuarioConfirmou
+        ) {
+
+            mensagem.textContent =
+                "Agendamento cancelado.";
+
+            return;
+        }
+
+
+        mensagem.textContent =
+            "Confirmando agendamento...";
+
+
+        confirmar.disabled =
+            true;
+
+
+        try {
+
+            // ========================================
+            // REFERÊNCIA DO HORÁRIO
+            // ========================================
+
+            const disponivelRef =
+    ref(
+        db,
+        `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}/disponivel`
+    );
+
+
+            // ========================================
+            // VERIFICAR DISPONIBILIDADE
+            // ========================================
+
+            const disponibilidadeAtual =
+                await get(
+                    disponivelRef
+                );
+
+
+            console.log(
+                "DATA:",
+                data
+            );
+
+
+            console.log(
+                "HORÁRIO:",
+                horario
+            );
+
+
+            console.log(
+                "CAMINHO:",
+                `horarios/${data}/${horario}/disponivel`
+            );
+
+
+            console.log(
+                "VALOR DIRETO DO FIREBASE:",
+                disponibilidadeAtual.val()
+            );
+
+
+            if (
+                !disponibilidadeAtual.exists()
+            ) {
+
+                mensagem.textContent =
+                    "Esse horário não existe no banco de dados.";
+
+                await carregarHorarios();
+
+                return;
+            }
+
+
+            if (
+                disponibilidadeAtual.val() !== true
+            ) {
+
+                mensagem.textContent =
+                    "Esse horário não está mais disponível.";
+
+                await carregarHorarios();
+
+                return;
+            }
+
+
+            // ========================================
+            // RESERVA ATÔMICA
+            // ========================================
+
+            const resultado =
+                await runTransaction(
+                    disponivelRef,
+                    (valorAtual) => {
+
+                        console.log(
+                            "VALOR DENTRO DA TRANSAÇÃO:",
+                            valorAtual
+                        );
+
+
+                        /*
+                         * IMPORTANTE:
+                         *
+                         * Se o Firebase iniciar
+                         * a transação com null,
+                         * usamos true como estado
+                         * inicial porque acabamos
+                         * de confirmar que o valor
+                         * real no banco é true.
+                         */
+
+                        if (
+                            valorAtual === null
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        /*
+                         * Horário disponível:
+                         * reserva.
+                         */
+
+                        if (
+                            valorAtual === true
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        /*
+                         * Já está ocupado.
+                         */
+
+                        return undefined;
+
+                    }
+                );
+
+
+            console.log(
+                "RESULTADO DA TRANSAÇÃO:",
+                resultado
+            );
+
+
+            // ========================================
+            // NÃO CONSEGUIU RESERVAR
+            // ========================================
+
+            if (
+                !resultado.committed
+            ) {
+
+                mensagem.textContent =
+                    "Esse horário acabou de ser reservado. Escolha outro.";
+
+                await carregarHorarios();
+
+                return;
+            }
+
+
+            // ========================================
+            // CRIAR AGENDAMENTO
+            // ========================================
+
+            const agendamentosRef =
+    ref(
+        db,
+        `${CAMINHO_BARBEIRO}/agendamentos`
+    );
+
+
+            const novoAgendamento =
+                push(
+                    agendamentosRef
+                );
+
+
+                       try {
+
+                await update(
+                    novoAgendamento,
+                    {
+
+                        nome:
+                            nome,
+
+                        telefone:
+                            telefone,
+
+                        servico:
+                            servico,
+
+                        data:
+                            data,
+
+                        horario:
+                            horario,
+
+                        status:
+                            "confirmado",
+
+                        criadoEm:
+                            new Date()
+                                .toISOString()
+
+                    }
+                );
+
+
+                // ========================================
+                // ENVIAR NOTIFICAÇÃO PARA O BARBEIRO
+                // ========================================
+
+                try {
+
+                    const respostaNotificacao =
+                        await fetch(
+                            "https://plain-credit-3c23.vitorarthurxxx.workers.dev/",
+                            {
+
+                                method:
+                                    "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        nome:
+                                            nome,
+
+                                        servico:
+                                            servico,
+
+                                        data:
+                                            data,
+
+                                        horario:
+                                            horario
+
+                                    })
+
+                            }
+                        );
+
+
+                    const resultadoNotificacao =
+                        await respostaNotificacao.json();
+
+
+                    console.log(
+                        "Resultado da notificação:",
+                        resultadoNotificacao
+                    );
+
+
+                } catch (
+                    erroNotificacao
+                ) {
+
+                    console.error(
+                        "Erro ao enviar notificação:",
+                        erroNotificacao
+                    );
+
+                }
+
+
+            } catch (
+                erroAgendamento
+            ) {
+
+                console.error(
+                    "Erro ao criar agendamento:",
+                    erroAgendamento
+                );
+
+
+                // ========================================
+                // LIBERAR HORÁRIO
+                // ========================================
+
+                try {
+
+                    await set(
+                        disponivelRef,
+                        true
+                    );
+
+                } catch (
+                    erroLiberar
+                ) {
+
+                    console.error(
+                        "Erro ao liberar horário:",
+                        erroLiberar
+                    );
+
+                }
+
+
+                mensagem.textContent =
+                    "Não foi possível concluir o agendamento. Tente novamente.";
+
+                return;
+
+            }
+
+
+            // ========================================
+            // SUCESSO
+            // ========================================
+
+            mostrarSucesso({
+                nome,
+                telefone,
+                servico,
+                data,
+                horario
+            });
+
+
+            // ========================================
+            // LIMPAR CAMPOS
+            // ========================================
+
+            document
+                .getElementById(
+                    "nomeCliente"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "telefoneCliente"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "servicoCliente"
+                )
+                .value = "";
+
+
+            horarioSelecionado =
+                null;
+
+
+            // ========================================
+            // ATUALIZAR HORÁRIOS
+            // ========================================
+
+            await carregarHorarios();
+
+
+        } catch (erro) {
+
+            console.error(
+                "ERRO COMPLETO AO AGENDAR:",
+                erro
+            );
+
+
+            mensagem.textContent =
+                "Não foi possível realizar o agendamento. Tente novamente.";
+
+
+        } finally {
+
+            confirmar.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+// ========================================
+// CARREGAR HORÁRIOS AO ABRIR
+// ========================================
+
+carregarHorarios();

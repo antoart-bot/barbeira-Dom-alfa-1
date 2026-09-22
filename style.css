@@ -1,0 +1,2784 @@
+
+/* =========================================================
+   DOM ALFA — PREMIUM
+   Preto / Branco / Editorial / Barber
+   ========================================================= */
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #080808;
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+::selection {
+    background: #fff;
+    color: #000;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    z-index: 100;
+
+    mix-blend-mode: difference;
+}
+
+.nav-wrapper {
+    width: 90%;
+    max-width: 1400px;
+
+    height: 95px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* LOGO */
+
+.logo {
+    font-family: "Manrope", sans-serif;
+
+    font-size: 25px;
+    font-weight: 800;
+
+    line-height: .8;
+
+    letter-spacing: -1.5px;
+}
+
+.logo span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 4px;
+}
+
+
+/* MENU */
+
+nav {
+    display: flex;
+    align-items: center;
+
+    gap: 40px;
+}
+
+nav a {
+    position: relative;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    color: #fff;
+
+    transition: opacity .3s ease;
+}
+
+nav a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -6px;
+
+    width: 0;
+    height: 1px;
+
+    background: #fff;
+
+    transition: width .35s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+nav a:hover {
+    opacity: .65;
+}
+
+
+/* BOTÃO AGENDAR */
+
+.book {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 6px;
+
+    border-bottom: 1px solid #fff;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.book span {
+    font-size: 17px;
+
+    transition: transform .3s ease;
+}
+
+.book:hover span {
+    transform: translate(3px, -3px);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+    position: relative;
+
+    height: 100vh;
+    min-height: 720px;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* FOTO */
+
+.hero-image {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        url("https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=2400&q=95")
+        center / cover no-repeat;
+
+    filter: grayscale(100%);
+
+    transform: scale(1.08);
+
+    animation:
+        heroImageEnter 1.8s cubic-bezier(.2,.7,.2,1) forwards;
+}
+
+@keyframes heroImageEnter {
+
+    from {
+        transform: scale(1.16);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* CAMADA ESCURA */
+
+.hero-gradient {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.92) 0%,
+            rgba(0,0,0,.65) 32%,
+            rgba(0,0,0,.22) 70%,
+            rgba(0,0,0,.55) 100%
+        );
+}
+
+
+/* LINHA ESCURA INFERIOR */
+
+.hero-gradient::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 50%,
+            rgba(0,0,0,.15) 65%,
+            rgba(0,0,0,.95) 100%
+        );
+}
+
+
+/* TOPO HERO */
+
+.hero-top {
+    position: absolute;
+
+    top: 125px;
+
+    left: 5%;
+    right: 5%;
+
+    z-index: 3;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 2.5px;
+
+    color: rgba(255,255,255,.6);
+}
+
+
+/* CONTEÚDO */
+
+.hero-content {
+    position: relative;
+
+    z-index: 3;
+
+    width: 90%;
+    max-width: 1400px;
+
+    margin: auto;
+}
+
+
+/* EYEBROW */
+
+.eyebrow {
+    margin-bottom: 25px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    color: rgba(255,255,255,.75);
+
+    animation: revealUp .9s .25s both;
+}
+
+
+/* TÍTULO */
+
+.hero h1 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(75px, 11vw, 170px);
+
+    font-weight: 700;
+
+    line-height: .82;
+
+    letter-spacing: -8px;
+
+    text-transform: uppercase;
+
+    animation: revealUp 1s .4s both;
+}
+
+.hero h1 span {
+    color: transparent;
+
+    -webkit-text-stroke: 1px #fff;
+
+    font-weight: 600;
+
+    transition:
+        color .5s ease,
+        -webkit-text-stroke .5s ease;
+}
+
+.hero h1 span:hover {
+    color: #fff;
+}
+
+
+/* DESCRIÇÃO */
+
+.hero-description {
+    display: flex;
+    align-items: center;
+
+    gap: 35px;
+
+    margin-top: 48px;
+
+    animation: revealUp 1s .55s both;
+}
+
+.hero-description p {
+    width: 320px;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    color: rgba(255,255,255,.68);
+}
+
+
+/* CÍRCULO */
+
+.circle-button {
+    width: 70px;
+    height: 70px;
+
+    border: 1px solid rgba(255,255,255,.5);
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background .4s ease,
+        color .4s ease,
+        transform .4s ease;
+}
+
+.circle-button span {
+    font-size: 19px;
+
+    transition: transform .4s ease;
+}
+
+.circle-button:hover {
+    background: #fff;
+
+    color: #000;
+
+    transform: translateY(5px);
+}
+
+.circle-button:hover span {
+    transform: translateY(3px);
+}
+
+
+/* ANIMAÇÃO */
+
+@keyframes revealUp {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(35px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.intro {
+    width: 90%;
+    max-width: 1400px;
+
+    min-height: 700px;
+
+    margin: auto;
+
+    padding: 150px 0;
+
+    display: grid;
+
+    grid-template-columns: 100px 1fr;
+
+    gap: 70px;
+
+    align-items: start;
+}
+
+.intro-number {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #555;
+}
+
+.intro-content {
+    max-width: 1050px;
+}
+
+
+/* LABEL */
+
+.label {
+    display: block;
+
+    margin-bottom: 30px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    color: #666;
+}
+
+
+/* TÍTULO */
+
+.intro h2 {
+    font-family: "Manrope", sans-serif;
+
+    max-width: 1000px;
+
+    font-size: clamp(55px, 7vw, 100px);
+
+    font-weight: 600;
+
+    line-height: .95;
+
+    letter-spacing: -5px;
+}
+
+.intro h2 span {
+    color: #555;
+}
+
+
+/* TEXTO */
+
+.intro-text {
+    max-width: 570px;
+
+    margin-top: 55px;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+
+    color: #777;
+}
+
+.intro-text span {
+    color: #fff;
+}
+
+
+/* LINK */
+
+.line-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 38px;
+
+    padding-bottom: 7px;
+
+    border-bottom: 1px solid #444;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition:
+        gap .35s ease,
+        border-color .35s ease;
+}
+
+.line-link span {
+    font-size: 17px;
+}
+
+.line-link:hover {
+    gap: 28px;
+
+    border-color: #fff;
+}
+
+
+/* =========================================================
+   SERVIÇOS
+   ========================================================= */
+
+.services {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 120px 0 160px;
+
+    border-top: 1px solid #222;
+}
+
+.section-top {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 70px;
+}
+
+.section-top .label {
+    margin: 0;
+}
+
+.section-top p {
+    width: 250px;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 17px;
+
+    line-height: 1.45;
+
+    color: #777;
+}
+
+
+/* LISTA */
+
+.service-list {
+    border-top: 1px solid #292929;
+}
+
+
+/* SERVIÇO */
+
+.service {
+    position: relative;
+
+    min-height: 145px;
+
+    display: grid;
+
+    grid-template-columns: 80px 1fr 120px 40px;
+
+    align-items: center;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #292929;
+
+    overflow: hidden;
+
+    transition: padding .45s ease;
+}
+
+
+/* FUNDO HOVER */
+
+.service::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -1;
+
+    background: #fff;
+
+    transform: translateX(-101%);
+
+    transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+
+.service:hover::before {
+    transform: translateX(0);
+}
+
+.service:hover {
+    padding-left: 25px;
+
+    color: #000;
+}
+
+
+/* ÍNDICE */
+
+.service-index {
+    font-size: 11px;
+
+    color: #555;
+}
+
+
+/* NOME */
+
+.service h3 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(38px, 4vw, 62px);
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    letter-spacing: -2.5px;
+}
+
+
+/* PREÇO */
+
+.service-price {
+    font-size: 14px;
+
+    color: #777;
+}
+
+
+/* SETA */
+
+.service-arrow {
+    font-size: 22px;
+
+    transition:
+        transform .35s ease,
+        color .35s ease;
+}
+
+.service:hover .service-arrow {
+    transform: translate(5px, -5px);
+
+    color: #000;
+}
+
+
+/* =========================================================
+   SOBRE
+   ========================================================= */
+
+.about {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    min-height: 800px;
+
+    background: #111;
+}
+
+
+/* IMAGEM */
+
+.about-image {
+    position: relative;
+
+    min-height: 700px;
+
+    background:
+        url("https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1800&q=90")
+        center / cover no-repeat;
+
+    filter: grayscale(100%);
+}
+
+.about-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0,0,0,.15)
+    );
+}
+
+
+/* TEXTO */
+
+.about-content {
+    padding: 100px 10%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.about-content .label {
+    margin-bottom: 35px;
+}
+
+.about-content h2 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(55px, 6.5vw, 95px);
+
+    font-weight: 600;
+
+    line-height: .9;
+
+    letter-spacing: -5px;
+}
+
+.about-content h2 i {
+    color: #555;
+
+    font-weight: 400;
+}
+
+.about-content p {
+    max-width: 440px;
+
+    margin-top: 35px;
+
+    font-size: 16px;
+
+    line-height: 1.75;
+
+    color: #777;
+}
+
+.about-signature {
+    margin-top: 55px;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 5px;
+}
+
+
+/* =========================================================
+   CONTATO
+   ========================================================= */
+
+.contact {
+    width: 90%;
+    max-width: 1400px;
+
+    min-height: 720px;
+
+    margin: auto;
+
+    padding: 140px 0;
+
+    display: grid;
+
+    grid-template-columns: 90px 1fr 280px;
+
+    gap: 60px;
+
+    align-items: center;
+}
+
+.contact-number {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #555;
+}
+
+.contact-content h2 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(75px, 9vw, 145px);
+
+    font-weight: 600;
+
+    line-height: .85;
+
+    letter-spacing: -7px;
+}
+
+
+/* BOTÃO */
+
+.big-button {
+    min-width: 260px;
+
+    margin-top: 55px;
+
+    padding: 18px 22px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 40px;
+
+    background: #fff;
+
+    color: #000;
+
+    border: 1px solid #fff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition:
+        background .4s ease,
+        color .4s ease,
+        transform .4s ease;
+}
+
+.big-button strong {
+    font-size: 19px;
+
+    transition: transform .3s ease;
+}
+
+.big-button:hover {
+    background: transparent;
+
+    color: #fff;
+
+    transform: translateY(-4px);
+}
+
+.big-button:hover strong {
+    transform: translate(4px, -4px);
+}
+
+
+/* INFORMAÇÕES */
+
+.contact-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 45px;
+}
+
+.contact-info span {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #555;
+}
+
+.contact-info p {
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: #777;
+}
+
+
+/* =========================================================
+   AGENDAMENTO
+   ========================================================= */
+
+.booking {
+    position: relative;
+
+    padding: 150px 5% 130px;
+
+    background: #f5f5f3;
+
+    color: #111;
+
+    overflow: hidden;
+}
+
+
+/* NÚMERO GIGANTE */
+
+.booking::before {
+    content: "05";
+
+    position: absolute;
+
+    top: 35px;
+    right: 4%;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 240px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: -15px;
+
+    color: rgba(0,0,0,.035);
+
+    pointer-events: none;
+}
+
+
+/* CABEÇALHO */
+
+.booking-heading {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: auto auto 80px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 320px;
+
+    gap: 70px;
+
+    align-items: end;
+}
+
+.booking .label {
+    color: #777;
+}
+
+.booking-heading h2 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(60px, 7vw, 105px);
+
+    font-weight: 600;
+
+    line-height: .88;
+
+    letter-spacing: -5px;
+}
+
+.booking-heading h2 span {
+    color: #999;
+}
+
+.booking-heading > p {
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    color: #777;
+}
+
+
+/* =========================================================
+   CARD DE AGENDAMENTO
+   ========================================================= */
+
+.booking-card {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    border: 1px solid #d1d1ce;
+
+    background: #ededeb;
+}
+
+
+/* CADA LADO */
+
+.booking-side {
+    min-height: 500px;
+
+    padding: 50px;
+}
+
+.booking-side + .booking-side {
+    border-left: 1px solid #d1d1ce;
+}
+
+
+/* CABEÇALHO */
+
+.booking-side-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 50px;
+}
+
+.booking-side-header > span {
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #999;
+}
+
+.booking-side-header small {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #999;
+}
+
+.booking-side-header h3 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    letter-spacing: -1px;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.booking-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 25px;
+}
+
+.booking-form label,
+.date-label {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #666;
+}
+
+
+/* INPUT */
+
+.input-wrap {
+    position: relative;
+}
+
+.booking input,
+.booking select {
+    width: 100%;
+
+    height: 58px;
+
+    padding: 0 17px;
+
+    background: #f7f7f5;
+
+    border: 1px solid #ccc;
+
+    border-radius: 0;
+
+    outline: none;
+
+    color: #111;
+
+    font-size: 14px;
+
+    transition:
+        border-color .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+}
+
+.booking input::placeholder {
+    color: #aaa;
+}
+
+.booking input:hover,
+.booking select:hover {
+    border-color: #999;
+}
+
+.booking input:focus,
+.booking select:focus {
+    background: #fff;
+
+    border-color: #111;
+
+    box-shadow: 0 0 0 3px rgba(0,0,0,.05);
+}
+
+
+/* SELECT */
+
+.select-wrap::after {
+    content: "↓";
+
+    position: absolute;
+
+    right: 17px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #555;
+
+    pointer-events: none;
+}
+
+.select-wrap select {
+    appearance: none;
+
+    padding-right: 45px;
+}
+
+
+/* DATA */
+
+.date-label {
+    margin-bottom: 28px;
+}
+
+.date-wrap input {
+    color-scheme: light;
+}
+
+
+/* =========================================================
+   HORÁRIOS
+   ========================================================= */
+
+.horarios-box {
+    padding-top: 22px;
+
+    border-top: 1px solid #d1d1ce;
+}
+
+.horarios-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #666;
+}
+
+
+/* STATUS */
+
+.status-dot {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    color: #777;
+}
+
+.status-dot::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #555;
+
+    box-shadow: 0 0 0 3px rgba(0,0,0,.06);
+}
+
+
+/* HORÁRIOS GERADOS */
+
+#listaHorarios {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+#listaHorarios button,
+#listaHorarios .horario,
+#listaHorarios [data-horario] {
+    min-width: 78px;
+
+    padding: 12px 14px;
+
+    background: transparent;
+
+    border: 1px solid #c9c9c5;
+
+    color: #111;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .25s ease;
+}
+
+#listaHorarios button:hover,
+#listaHorarios .horario:hover,
+#listaHorarios [data-horario]:hover {
+    background: #111;
+
+    border-color: #111;
+
+    color: #fff;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RODAPÉ DO AGENDAMENTO
+   ========================================================= */
+
+.booking-bottom {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: 35px auto 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 40px;
+}
+
+
+/* NOTA */
+
+.booking-note {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.booking-note > span {
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #bbb;
+
+    border-radius: 50%;
+
+    font-size: 12px;
+}
+
+.booking-note p {
+    max-width: 330px;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    color: #777;
+}
+
+
+/* CONFIRMAR */
+
+.confirm-booking {
+    min-width: 300px;
+
+    padding: 20px 23px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background: #111;
+
+    color: #fff;
+
+    border: 1px solid #111;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition:
+        background .35s ease,
+        color .35s ease,
+        transform .35s ease;
+}
+
+.confirm-booking strong {
+    font-size: 18px;
+
+    transition: transform .3s ease;
+}
+
+.confirm-booking:hover {
+    background: transparent;
+
+    color: #111;
+
+    transform: translateY(-3px);
+}
+
+.confirm-booking:hover strong {
+    transform: translate(4px, -4px);
+}
+
+
+/* MENSAGEM */
+
+.booking-message {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: 25px auto 0;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    padding: 120px 5% 30px;
+
+    background: #050505;
+}
+
+.footer-logo {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: auto;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(75px, 15vw, 205px);
+
+    font-weight: 800;
+
+    line-height: .75;
+
+    letter-spacing: -10px;
+
+    color: #fff;
+}
+
+.footer-bottom {
+    width: 90%;
+    max-width: 1400px;
+
+    margin: 110px auto 0;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #222;
+
+    display: grid;
+
+    grid-template-columns: 1fr auto auto;
+
+    gap: 35px;
+
+    font-size: 9px;
+
+    letter-spacing: .5px;
+
+    color: #555;
+}
+
+.footer-bottom a {
+    transition: color .3s ease;
+}
+
+.footer-bottom a:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .nav-wrapper {
+        width: 92%;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero-content {
+        width: 92%;
+    }
+
+    .hero h1 {
+        font-size: clamp(65px, 13vw, 110px);
+
+        letter-spacing: -5px;
+    }
+
+    .intro {
+        width: 92%;
+
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+    .intro-number {
+        display: none;
+    }
+
+    .services {
+        width: 92%;
+    }
+
+    .service {
+        grid-template-columns: 55px 1fr 80px 25px;
+    }
+
+    .about {
+        grid-template-columns: 1fr;
+    }
+
+    .about-image {
+        min-height: 550px;
+    }
+
+    .about-content {
+        padding: 90px 8%;
+    }
+
+    .contact {
+        width: 92%;
+
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+
+        padding: 120px 0;
+    }
+
+    .contact-number {
+        display: none;
+    }
+
+    .contact-info {
+        flex-direction: row;
+
+        gap: 70px;
+
+        margin-top: 40px;
+    }
+
+    .booking-heading {
+        width: 92%;
+
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+    .booking-card {
+        width: 92%;
+
+        grid-template-columns: 1fr;
+    }
+
+    .booking-side {
+        min-height: auto;
+    }
+
+    .booking-side + .booking-side {
+        border-left: none;
+
+        border-top: 1px solid #d1d1ce;
+    }
+
+    .booking-bottom {
+        width: 92%;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .confirm-booking {
+        width: 100%;
+    }
+
+    .footer-logo,
+    .footer-bottom {
+        width: 92%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — CELULAR
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* HEADER */
+
+    .nav-wrapper {
+        width: 92%;
+
+        height: 80px;
+    }
+
+    .logo {
+        font-size: 22px;
+
+        letter-spacing: -1px;
+    }
+
+    .logo span {
+        font-size: 8px;
+
+        letter-spacing: 3px;
+    }
+
+    .book {
+        font-size: 10px;
+    }
+
+
+    /* HERO */
+
+    .hero {
+        min-height: 720px;
+    }
+
+    .hero-image {
+        background-position: 62% center;
+    }
+
+    .hero-gradient {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(0,0,0,.94),
+                rgba(0,0,0,.52),
+                rgba(0,0,0,.3)
+            );
+    }
+
+    .hero-top {
+        top: 100px;
+
+        left: 4%;
+        right: 4%;
+
+        font-size: 7px;
+    }
+
+    .hero-content {
+        width: 92%;
+    }
+
+    .eyebrow {
+        font-size: 8px;
+
+        letter-spacing: 3px;
+    }
+
+    .hero h1 {
+        font-size: clamp(58px, 17vw, 90px);
+
+        letter-spacing: -4px;
+
+        line-height: .85;
+    }
+
+    .hero h1 span {
+        -webkit-text-stroke: .8px #fff;
+    }
+
+    .hero-description {
+        margin-top: 35px;
+
+        gap: 20px;
+    }
+
+    .hero-description p {
+        width: 230px;
+
+        font-size: 12px;
+    }
+
+    .circle-button {
+        width: 52px;
+        height: 52px;
+
+        flex-shrink: 0;
+    }
+
+    .circle-button span {
+        font-size: 15px;
+    }
+
+
+    /* INTRO */
+
+    .intro {
+        width: 92%;
+
+        min-height: auto;
+
+        padding: 95px 0 110px;
+    }
+
+    .label {
+        margin-bottom: 22px;
+
+        font-size: 8px;
+
+        letter-spacing: 2.5px;
+    }
+
+    .intro h2 {
+        font-size: clamp(43px, 13vw, 67px);
+
+        letter-spacing: -3px;
+    }
+
+    .intro-text {
+        margin-top: 35px;
+
+        font-size: 14px;
+
+        line-height: 1.75;
+    }
+
+    .line-link {
+        margin-top: 30px;
+
+        font-size: 11px;
+    }
+
+
+    /* SERVIÇOS */
+
+    .services {
+        width: 92%;
+
+        padding: 90px 0 110px;
+    }
+
+    .section-top {
+        flex-direction: column;
+
+        gap: 20px;
+
+        margin-bottom: 50px;
+    }
+
+    .section-top p {
+        width: auto;
+
+        font-size: 14px;
+    }
+
+    .service {
+        min-height: 100px;
+
+        grid-template-columns: 28px 1fr 55px 15px;
+
+        gap: 7px;
+    }
+
+    .service:hover {
+        padding-left: 8px;
+    }
+
+    .service h3 {
+        font-size: clamp(24px, 7vw, 38px);
+
+        letter-spacing: -1.5px;
+    }
+
+    .service-index {
+        font-size: 8px;
+    }
+
+    .service-price {
+        font-size: 10px;
+
+        text-align: right;
+    }
+
+    .service-arrow {
+        font-size: 15px;
+    }
+
+
+    /* SOBRE */
+
+    .about-image {
+        min-height: 420px;
+
+        background-position: center;
+    }
+
+    .about-content {
+        padding: 80px 8%;
+    }
+
+    .about-content h2 {
+        font-size: clamp(45px, 13vw, 67px);
+
+        letter-spacing: -3px;
+    }
+
+    .about-content p {
+        margin-top: 25px;
+
+        font-size: 14px;
+    }
+
+    .about-signature {
+        margin-top: 40px;
+
+        font-size: 9px;
+
+        letter-spacing: 4px;
+    }
+
+
+    /* CONTATO */
+
+    .contact {
+        width: 92%;
+
+        min-height: auto;
+
+        padding: 95px 0;
+    }
+
+    .contact-content h2 {
+        font-size: clamp(55px, 16vw, 88px);
+
+        letter-spacing: -4px;
+    }
+
+    .big-button {
+        width: 100%;
+
+        min-width: 0;
+
+        margin-top: 40px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+
+        gap: 28px;
+    }
+
+
+    /* AGENDAMENTO */
+
+    .booking {
+        padding: 95px 0 80px;
+    }
+
+    .booking::before {
+        top: 40px;
+
+        right: 0;
+
+        font-size: 110px;
+
+        letter-spacing: -7px;
+    }
+
+    .booking-heading {
+        width: 92%;
+
+        margin-bottom: 45px;
+    }
+
+    .booking-heading h2 {
+        font-size: clamp(44px, 13vw, 68px);
+
+        letter-spacing: -3px;
+    }
+
+    .booking-heading > p {
+        font-size: 13px;
+    }
+
+    .booking-card {
+        width: 92%;
+    }
+
+    .booking-side {
+        padding: 32px 20px;
+    }
+
+    .booking-side-header {
+        margin-bottom: 38px;
+    }
+
+    .booking-side-header h3 {
+        font-size: 20px;
+    }
+
+    .booking-form {
+        gap: 22px;
+    }
+
+    .booking input,
+    .booking select {
+        height: 54px;
+
+        font-size: 14px;
+    }
+
+    .horarios-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+    }
+
+    #listaHorarios {
+        gap: 7px;
+    }
+
+    #listaHorarios button,
+    #listaHorarios .horario,
+    #listaHorarios [data-horario] {
+        min-width: 70px;
+
+        padding: 11px 9px;
+
+        font-size: 10px;
+    }
+
+    .booking-bottom {
+        width: 92%;
+
+        margin-top: 25px;
+
+        gap: 25px;
+    }
+
+    .booking-note p {
+        font-size: 10px;
+    }
+
+    .confirm-booking {
+        min-width: 0;
+
+        padding: 18px;
+
+        font-size: 11px;
+    }
+
+
+    /* FOOTER */
+
+    footer {
+        padding: 80px 0 25px;
+    }
+
+    .footer-logo {
+        width: 92%;
+
+        font-size: clamp(55px, 18vw, 100px);
+
+        letter-spacing: -5px;
+    }
+
+    .footer-bottom {
+        width: 92%;
+
+        grid-template-columns: 1fr 1fr;
+
+        margin-top: 70px;
+
+        gap: 18px;
+
+        font-size: 8px;
+    }
+
+    .footer-bottom span:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* =========================================================
+   CELULAR PEQUENO
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .hero h1 {
+        font-size: 56px;
+    }
+
+    .hero-description p {
+        width: 205px;
+    }
+
+    .service {
+        grid-template-columns: 24px 1fr 50px 12px;
+    }
+
+    .service h3 {
+        font-size: 23px;
+    }
+
+    .booking-side {
+        padding: 28px 16px;
+    }
+
+    .booking-heading h2 {
+        font-size: 42px;
+    }
+}
+/* =========================================================
+   HEADER — DOM ALFA MAIOR
+   ========================================================= */
+
+header .logo {
+    font-family: "Manrope", sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 0.9;
+    text-transform: uppercase;
+}
+
+header .logo span {
+    font-weight: 500;
+    letter-spacing: 0.10em;
+}
+
+header nav {
+    gap: 38px;
+}
+
+header nav a {
+    font-family: "DM Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+header .book {
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   AGENDAMENTO — PREMIUM DARK
+   ========================================================= */
+
+.booking {
+    background:
+        radial-gradient(circle at 85% 15%, rgba(173, 122, 55, 0.12), transparent 30%),
+        radial-gradient(circle at 10% 85%, rgba(255, 255, 255, 0.035), transparent 28%),
+        #0b0b0b;
+
+    color: #f4f0e8;
+    padding: 140px 7vw 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* linha decorativa */
+.booking::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 7vw;
+    right: 7vw;
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+}
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
+.booking-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 80px;
+    margin-bottom: 70px;
+}
+
+.booking-heading .label {
+    color: #b98a52;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+.booking-heading h2 {
+    margin-top: 22px;
+    font-size: clamp(54px, 6.5vw, 105px);
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    font-weight: 800;
+    color: #f4f0e8;
+}
+
+.booking-heading h2 span {
+    color: #b98a52;
+}
+
+.booking-heading > p {
+    max-width: 380px;
+    margin-bottom: 8px;
+
+    color: #9b9993;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   CARD PRINCIPAL
+   ========================================================= */
+
+.booking-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    background: #151515;
+    border: 1px solid rgba(255,255,255,0.09);
+
+    box-shadow:
+        0 35px 90px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.025);
+
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+/* =========================================================
+   LADOS
+   ========================================================= */
+
+.booking-side {
+    padding: 58px;
+}
+
+.booking-side + .booking-side {
+    border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================================================
+   CABEÇALHO DOS BLOCOS
+   ========================================================= */
+
+.booking-side-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.booking-side-header > span {
+    min-width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(185,138,82,0.55);
+    border-radius: 50%;
+
+    color: #c99a60;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.booking-side-header small {
+    display: block;
+
+    color: #8f8c86;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+
+    margin-bottom: 9px;
+}
+
+.booking-side-header h3 {
+    margin: 0;
+
+    color: #f4f0e8;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.booking-form label,
+.date-label {
+    display: block;
+}
+
+.booking-form label > span,
+.date-label > span {
+    display: block;
+
+    margin-bottom: 11px;
+
+    color: #b5b1aa;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-wrap input,
+.input-wrap select {
+    width: 100%;
+    height: 68px;
+
+    padding: 0 21px;
+
+    background: #202020;
+    border: 1px solid #343434;
+
+    border-radius: 2px;
+
+    color: #f4f0e8;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 500;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.input-wrap input::placeholder {
+    color: #66635f;
+}
+
+.input-wrap input:focus,
+.input-wrap select:focus {
+    background: #242424;
+    border-color: #b98a52;
+
+    box-shadow:
+        0 0 0 3px rgba(185,138,82,0.08);
+}
+
+.input-wrap select {
+    appearance: none;
+    cursor: pointer;
+}
+
+/* seta do select */
+.select-wrap::after {
+    content: "↓";
+
+    position: absolute;
+    right: 22px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #b98a52;
+    font-size: 21px;
+
+    pointer-events: none;
+}
+
+/* =========================================================
+   DATA
+   ========================================================= */
+
+.date-label {
+    margin-bottom: 35px;
+}
+
+.date-wrap input {
+    color-scheme: dark;
+}
+
+/* =========================================================
+   HORÁRIOS
+   ========================================================= */
+
+.horarios-box {
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.horarios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.horarios-header > span:first-child {
+    color: #f4f0e8;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #a9a49d;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-dot::before {
+    content: "";
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+    background: #b98a52;
+
+    box-shadow: 0 0 12px rgba(185,138,82,0.6);
+}
+
+/* =========================================================
+   HORÁRIOS GERADOS PELO JS
+   ========================================================= */
+
+#listaHorarios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+#listaHorarios button,
+#listaHorarios .horario {
+    min-height: 58px;
+
+    background: #202020;
+    border: 1px solid #353535;
+
+    color: #e9e5dd;
+
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+#listaHorarios button:hover,
+#listaHorarios .horario:hover {
+    transform: translateY(-3px);
+
+    background: #b98a52;
+    border-color: #b98a52;
+
+    color: #111;
+}
+
+#listaHorarios button.selected,
+#listaHorarios .horario.selected,
+#listaHorarios button.active,
+#listaHorarios .horario.active {
+    background: #b98a52;
+    border-color: #b98a52;
+    color: #111;
+}
+
+.loading-hours {
+    display: block;
+
+    grid-column: 1 / -1;
+
+    padding: 25px 0;
+
+    color: #77736d;
+    font-size: 16px;
+}
+
+/* =========================================================
+   PARTE INFERIOR
+   ========================================================= */
+
+.booking-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 40px;
+
+    margin-top: 38px;
+    padding-top: 38px;
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.booking-note {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    max-width: 440px;
+}
+
+.booking-note > span {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid rgba(185,138,82,0.45);
+    border-radius: 50%;
+
+    color: #b98a52;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.booking-note p {
+    margin: 0;
+
+    color: #8e8b85;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   BOTÃO CONFIRMAR
+   ========================================================= */
+
+.confirm-booking {
+    min-width: 330px;
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    border: none;
+    border-radius: 2px;
+
+    background: #b98a52;
+    color: #111;
+
+    font-family: inherit;
+    font-size: 19px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.confirm-booking strong {
+    font-size: 27px;
+    font-weight: 500;
+}
+
+.confirm-booking:hover {
+    transform: translateY(-4px);
+
+    background: #d0a46b;
+
+    box-shadow:
+        0 18px 35px rgba(185,138,82,0.18);
+}
+
+.confirm-booking:active {
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   MENSAGEM
+   ========================================================= */
+
+.booking-message {
+    margin: 30px 0 0;
+
+    text-align: center;
+
+    color: #b98a52;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .booking {
+        padding: 100px 5vw 90px;
+    }
+
+    .booking-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+    }
+
+    .booking-heading h2 {
+        font-size: clamp(48px, 10vw, 78px);
+    }
+
+    .booking-heading > p {
+        font-size: 17px;
+    }
+
+    .booking-card {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-side {
+        padding: 42px 32px;
+    }
+
+    .booking-side + .booking-side {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .booking-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-note {
+        max-width: none;
+    }
+
+    .confirm-booking {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .booking {
+        padding: 85px 20px 70px;
+    }
+
+    .booking-heading {
+        margin-bottom: 45px;
+    }
+
+    .booking-heading .label {
+        font-size: 12px;
+    }
+
+    .booking-heading h2 {
+        font-size: 48px;
+        line-height: 0.94;
+    }
+
+    .booking-heading > p {
+        font-size: 16px;
+    }
+
+    .booking-side {
+        padding: 34px 22px;
+    }
+
+    .booking-side-header {
+        gap: 16px;
+        margin-bottom: 35px;
+    }
+
+    .booking-side-header > span {
+        min-width: 48px;
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+    }
+
+    .booking-side-header h3 {
+        font-size: 24px;
+    }
+
+    .booking-side-header small {
+        font-size: 11px;
+    }
+
+    .booking-form {
+        gap: 23px;
+    }
+
+    .booking-form label > span,
+    .date-label > span {
+        font-size: 15px;
+    }
+
+    .input-wrap input,
+    .input-wrap select {
+        height: 62px;
+        font-size: 16px;
+    }
+
+    #listaHorarios {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #listaHorarios button,
+    #listaHorarios .horario {
+        min-height: 56px;
+        font-size: 16px;
+    }
+
+    .booking-note p {
+        font-size: 14px;
+    }
+
+    .confirm-booking {
+        min-height: 70px;
+        min-width: 0;
+        font-size: 17px;
+    }
+}
+/* =========================================================
+   CONFIRMAÇÃO DO AGENDAMENTO
+   ========================================================= */
+
+.booking-message {
+    width: 100%;
+    max-width: 1400px;
+    margin: 28px auto 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    color: #f4f0e8;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.booking-message:not(:empty) {
+    padding: 24px 28px;
+    border: 1px solid rgba(185, 138, 82, 0.28);
+    border-radius: 2px;
+    background: #151515;
+}
+
+.booking-message strong {
+    color: #f4f0e8;
+}
+
+.booking-message a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 18px;
+    padding: 13px 20px;
+
+    background: #b98a52;
+    color: #111;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    text-decoration: none;
+    border-radius: 2px;
+
+    transition: .25s ease;
+}
+
+.booking-message a:hover {
+    background: #d0a46b;
+    transform: translateY(-2px);
+}

@@ -1,0 +1,710 @@
+/* =========================
+   AGENDAMENTO
+========================= */
+
+#agendamento {
+    padding: 100px 20px;
+    background: #111;
+    color: #fff;
+}
+
+.agendamento-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+#agendamento h2 {
+    text-align: center;
+    font-size: 42px;
+    margin: 0 0 15px;
+    letter-spacing: -0.5px;
+}
+
+#agendamento p {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 35px;
+    line-height: 1.5;
+}
+
+#agendamento label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #eee;
+}
+
+#agendamento input,
+#agendamento select {
+    width: 100%;
+    height: 52px;
+    padding: 0 15px;
+    margin-bottom: 20px;
+
+    border: 1px solid #333;
+    border-radius: 9px;
+
+    background: #1b1b1b;
+    color: #fff;
+
+    font-size: 16px;
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+#agendamento input:hover,
+#agendamento select:hover {
+    border-color: #444;
+}
+
+#agendamento input:focus,
+#agendamento select:focus {
+    outline: none;
+    border-color: #c9a227;
+    background: #202020;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.10);
+}
+
+/* =========================
+   HORÁRIOS
+========================= */
+
+#listaHorarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+    gap: 10px;
+    margin: 15px 0 25px;
+}
+
+.horario {
+    min-height: 50px;
+
+    padding: 12px 10px;
+
+    border: 1px solid #3a3a3a;
+    border-radius: 9px;
+
+    background: #1b1b1b;
+    color: #fff;
+
+    cursor: pointer;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.horario:hover {
+    border-color: #c9a227;
+    background: #202020;
+    transform: translateY(-2px);
+}
+
+.horario.selecionado {
+    background: #c9a227;
+    color: #111;
+    border-color: #c9a227;
+
+    font-weight: 800;
+
+    transform: scale(1.03);
+
+    box-shadow:
+        0 0 0 3px rgba(201, 162, 39, 0.15),
+        0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   BOTÃO CONFIRMAR
+========================= */
+
+#confirmarAgendamento {
+    width: 100%;
+    min-height: 54px;
+
+    padding: 15px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #c9a227;
+    color: #111;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#confirmarAgendamento:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 8px 20px rgba(201, 162, 39, 0.15);
+}
+
+#confirmarAgendamento:active {
+    transform: translateY(0);
+}
+
+#confirmarAgendamento:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================
+   MENSAGEM
+========================= */
+
+#mensagemAgendamento {
+    min-height: 25px;
+    margin-top: 20px;
+
+    text-align: center;
+    color: #c9a227;
+
+    line-height: 1.5;
+}
+
+/* =========================
+   MODAL DE CONFIRMAÇÃO
+========================= */
+
+.modal-confirmacao {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.78);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.modal-confirmacao.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-confirmacao-conteudo {
+    position: relative;
+
+    width: 100%;
+    max-width: 430px;
+
+    padding: 32px;
+
+    background: #171717;
+    color: #fff;
+
+    border: 1px solid #333;
+    border-radius: 16px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.55);
+
+    transform: translateY(20px) scale(0.96);
+
+    transition:
+        transform 0.2s ease;
+}
+
+.modal-confirmacao.ativo .modal-confirmacao-conteudo {
+    transform: translateY(0) scale(1);
+}
+
+/* =========================
+   FECHAR MODAL
+========================= */
+
+.modal-fechar {
+    position: absolute;
+
+    top: 12px;
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #aaa;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.modal-fechar:hover {
+    background: #242424;
+    color: #fff;
+}
+
+/* =========================
+   ÍCONE MODAL
+========================= */
+
+.modal-icone {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    background: #c9a227;
+    color: #111;
+
+    font-size: 24px;
+}
+
+/* =========================
+   TÍTULO MODAL
+========================= */
+
+.modal-confirmacao-conteudo h3 {
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 24px;
+}
+
+.modal-subtitulo {
+    margin: 8px 0 24px;
+
+    text-align: center;
+
+    color: #999;
+
+    font-size: 14px;
+}
+
+/* =========================
+   RESUMO
+========================= */
+
+.resumo-agendamento {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 18px;
+
+    background: #1f1f1f;
+
+    border: 1px solid #292929;
+    border-radius: 10px;
+}
+
+.resumo-item {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.resumo-item span {
+    color: #999;
+    font-size: 14px;
+}
+
+.resumo-item strong {
+    color: #fff;
+    text-align: right;
+}
+
+/* =========================
+   AÇÕES DO MODAL
+========================= */
+
+.modal-acoes {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.modal-cancelar,
+.modal-confirmar {
+    min-height: 48px;
+
+    padding: 14px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        background 0.2s ease;
+}
+
+.modal-cancelar {
+    border: 1px solid #444;
+
+    background: #222;
+    color: #fff;
+}
+
+.modal-cancelar:hover {
+    background: #2b2b2b;
+}
+
+.modal-confirmar {
+    border: none;
+
+    background: #c9a227;
+    color: #111;
+}
+
+.modal-confirmar:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+/* =========================
+   SUCESSO
+========================= */
+
+.sucesso-agendamento {
+    margin-top: 20px;
+
+    padding: 28px 20px;
+
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 12px;
+
+    text-align: center;
+
+    animation:
+        aparecerSucesso 0.35s ease;
+}
+
+.sucesso-icone {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #c9a227;
+    color: #111;
+
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.sucesso-agendamento h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: 22px;
+}
+
+.sucesso-agendamento p {
+    margin: 8px 0;
+
+    color: #aaa;
+
+    line-height: 1.5;
+}
+
+.sucesso-agendamento > strong {
+    display: block;
+
+    margin: 12px 0;
+
+    color: #c9a227;
+
+    font-size: 18px;
+}
+
+.sucesso-agendamento p strong {
+    color: #fff;
+}
+
+.sucesso-agendamento span {
+    display: block;
+
+    margin-top: 15px;
+
+    color: #aaa;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================
+   WHATSAPP
+========================= */
+
+.botao-whatsapp-agendamento {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 50px;
+
+    box-sizing: border-box;
+
+    margin-top: 20px;
+
+    padding: 14px 20px;
+
+    border-radius: 8px;
+
+    background: #25d366;
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+}
+
+.botao-whatsapp-agendamento:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+
+@keyframes aparecerSucesso {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 800px) {
+
+    #agendamento {
+        padding: 80px 18px;
+    }
+
+    #agendamento h2 {
+        font-size: 36px;
+    }
+
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+
+    #agendamento {
+        padding: 65px 15px;
+    }
+
+    .agendamento-container {
+        width: 100%;
+    }
+
+    #agendamento h2 {
+        font-size: 30px;
+        line-height: 1.15;
+    }
+
+    #agendamento p {
+        font-size: 14px;
+        margin-bottom: 28px;
+    }
+
+    #agendamento input,
+    #agendamento select {
+        height: 50px;
+        font-size: 16px;
+    }
+
+    #listaHorarios {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+
+        margin-top: 12px;
+    }
+
+    .horario {
+        min-height: 48px;
+
+        padding: 10px 5px;
+
+        font-size: 14px;
+    }
+
+    .horario.selecionado {
+        transform: scale(1.02);
+    }
+
+    #confirmarAgendamento {
+        min-height: 52px;
+        font-size: 16px;
+    }
+
+    /* MODAL */
+
+    .modal-confirmacao {
+        padding: 15px;
+    }
+
+    .modal-confirmacao-conteudo {
+        max-height: 90vh;
+        overflow-y: auto;
+
+        padding: 28px 20px;
+
+        border-radius: 14px;
+    }
+
+    .modal-confirmacao-conteudo h3 {
+        font-size: 21px;
+        padding-right: 20px;
+    }
+
+    .resumo-agendamento {
+        padding: 15px;
+    }
+
+    .resumo-item {
+        align-items: flex-start;
+    }
+
+    .resumo-item strong {
+        max-width: 60%;
+        line-height: 1.4;
+    }
+
+    .modal-acoes {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-confirmar {
+        order: -1;
+    }
+
+    /* SUCESSO */
+
+    .sucesso-agendamento {
+        padding: 25px 16px;
+    }
+
+}
+
+/* =========================
+   CELULARES PEQUENOS
+========================= */
+
+@media (max-width: 380px) {
+
+    #agendamento {
+        padding: 55px 12px;
+    }
+
+    #agendamento h2 {
+        font-size: 27px;
+    }
+
+    #listaHorarios {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .horario {
+        min-height: 50px;
+    }
+
+    .modal-confirmacao-conteudo {
+        padding: 25px 16px;
+    }
+
+    .resumo-item {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .resumo-item strong {
+        max-width: 100%;
+        text-align: left;
+    }
+
+}

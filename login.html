@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login — Dom Alfa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #111;
+
+            color: white;
+
+            font-family: Arial, sans-serif;
+
+            padding: 20px;
+        }
+
+        .login {
+
+            width: 100%;
+
+            max-width: 400px;
+
+            background: #1b1b1b;
+
+            border: 1px solid #333;
+
+            border-radius: 15px;
+
+            padding: 30px;
+        }
+
+        .logo {
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+        .subtitulo {
+
+            color: #999;
+
+            margin-bottom: 30px;
+        }
+
+        label {
+
+            display: block;
+
+            margin-bottom: 18px;
+
+            color: #aaa;
+        }
+
+        input {
+
+            width: 100%;
+
+            margin-top: 8px;
+
+            padding: 14px;
+
+            border: 1px solid #333;
+
+            border-radius: 8px;
+
+            background: #111;
+
+            color: white;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+        input:focus {
+
+            border-color: #d6ff3f;
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #d6ff3f;
+
+            color: #111;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        #mensagem {
+
+            margin-top: 15px;
+
+            color: #ff7777;
+
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="login">
+
+        <div class="logo">
+            DOM ALFA
+        </div>
+
+        <div class="subtitulo">
+            Acesso do barbeiro
+        </div>
+
+
+        <form id="formLogin">
+
+            <label>
+
+                E-mail
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="seu@email.com"
+                    required
+                >
+
+            </label>
+
+
+            <label>
+
+                Senha
+
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Sua senha"
+                    required
+                >
+
+            </label>
+
+
+            <button type="submit">
+                Entrar
+            </button>
+
+        </form>
+
+
+        <p id="mensagem"></p>
+
+    </div>
+
+
+    <script
+        type="module"
+        src="login.js"
+    ></script>
+
+
+</body>
+
+</html>
