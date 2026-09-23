@@ -25,8 +25,6 @@ function descobrirCliente() {
         return clienteId;
     }
 
-    // Se não tiver ?cliente=,
-    // mantém Dom Alfa como padrão.
     return CONFIG.id;
 }
 
@@ -67,7 +65,6 @@ async function carregarConfiguracao() {
             return {
                 ...CONFIG
             };
-
         }
 
         const configuracaoFirebase =
@@ -77,9 +74,6 @@ async function carregarConfiguracao() {
             "CONFIGURAÇÃO DO SITE:",
             configuracaoFirebase
         );
-
-        // TESTES PARA DESCOBRIR EXATAMENTE
-        // O QUE ESTÁ VINDO DO FIREBASE
 
         console.log(
             "NOME RECEBIDO DO FIREBASE:",
@@ -106,9 +100,7 @@ async function carregarConfiguracao() {
         return {
             ...CONFIG
         };
-
     }
-
 }
 
 
@@ -128,9 +120,7 @@ function colocarTexto(
 
         elemento.textContent =
             texto;
-
     }
-
 }
 
 
@@ -207,9 +197,7 @@ async function iniciarSite() {
 
             logo.textContent =
                 nome.toUpperCase();
-
         }
-
     }
 
 
@@ -250,7 +238,6 @@ async function iniciarSite() {
 
             elemento.textContent =
                 CONFIG_SITE.cidade;
-
         }
     );
 
@@ -274,7 +261,6 @@ async function iniciarSite() {
 
         horarioDivs[1].textContent =
             CONFIG_SITE.horario.sabado || "";
-
     }
 
 
@@ -294,7 +280,6 @@ async function iniciarSite() {
 
         instagram.href =
             CONFIG_SITE.instagram;
-
     }
 
 
@@ -314,7 +299,6 @@ async function iniciarSite() {
 
         whatsapp.href =
             `https://wa.me/${CONFIG_SITE.whatsapp}`;
-
     }
 
 
@@ -331,7 +315,6 @@ async function iniciarSite() {
 
         copyright.textContent =
             `© ${anoAtual} ${CONFIG_SITE.nome}`;
-
     }
 
 
@@ -404,10 +387,8 @@ async function iniciarSite() {
                 listaServicos.appendChild(
                     link
                 );
-
             }
         );
-
     }
 
 
@@ -440,10 +421,8 @@ async function iniciarSite() {
                 selectServicos.appendChild(
                     option
                 );
-
             }
         );
-
     }
 
 
@@ -451,9 +430,7 @@ async function iniciarSite() {
     // CORES
     // ========================================
 
-    if (
-        CONFIG_SITE.cores
-    ) {
+    if (CONFIG_SITE.cores) {
 
         if (
             CONFIG_SITE.cores.primaria
@@ -463,7 +440,6 @@ async function iniciarSite() {
                 "--cor-primaria",
                 CONFIG_SITE.cores.primaria
             );
-
         }
 
         if (
@@ -474,9 +450,7 @@ async function iniciarSite() {
                 "--cor-fundo",
                 CONFIG_SITE.cores.fundo
             );
-
         }
-
     }
 
 
@@ -488,7 +462,6 @@ async function iniciarSite() {
         "✓ SITE CONFIGURADO PARA:",
         CONFIG_SITE.nome
     );
-
 }
 
 
