@@ -1,4 +1,3 @@
-
 import {
     ref,
     get,
@@ -29,7 +28,6 @@ import {
 // ========================================
 
 let CAMINHO_BARBEIRO = null;
-
 let CONFIG_CLIENTE = null;
 
 
@@ -450,9 +448,9 @@ onAuthStateChanged(
 
             await limparHorariosPassados();
 
-            carregarAgendamentos();
+            await carregarAgendamentos();
 
-            carregarHorarios();
+            await carregarHorarios();
 
             monitorarNovosAgendamentos();
 
@@ -837,7 +835,9 @@ async function carregarAgendamentos() {
         if (totalAgendados) {
 
             totalAgendados.textContent =
-                agendamentos.length;
+                String(
+                    agendamentos.length
+                );
 
         }
 
@@ -1192,10 +1192,9 @@ async function carregarHorarios() {
                     );
 
 
-                /*
-                 * AGENDAMENTO CONFIRMADO
-                 * SEMPRE TEM PRIORIDADE.
-                 */
+                // ========================================
+                // AGENDAMENTO CONFIRMADO
+                // ========================================
 
                 if (ocupado) {
 
@@ -1206,10 +1205,9 @@ async function carregarHorarios() {
                 }
 
 
-                /*
-                 * SEM AGENDAMENTO:
-                 * verifica o Firebase.
-                 */
+                // ========================================
+                // HORÁRIO DISPONÍVEL
+                // ========================================
 
                 if (
                     dados &&
@@ -1266,65 +1264,130 @@ async function carregarHorarios() {
         // ATUALIZAR RESUMO
         // ========================================
 
+        const elementoAgendados =
+            document.getElementById(
+                "totalAgendados"
+            );
+
+        const elementoDisponiveis =
+            document.getElementById(
+                "totalDisponiveis"
+            );
+
+        const elementoOcupados =
+            document.getElementById(
+                "totalOcupados"
+            );
+
+
         // ========================================
-// ATUALIZAR RESUMO
-// ========================================
+        // AGENDADOS
+        // ========================================
 
-if (totalAgendados) {
+        if (elementoAgendados) {
 
-    totalAgendados.textContent =
-        String(
-            agendamentos.length
+            const quantidadeAgendados =
+                agendamentos.filter(
+                    (agendamento) => {
+
+                        return (
+                            agendamento.data === data &&
+                            agendamento.status !==
+                                "cancelado"
+                        );
+
+                    }
+                ).length;
+
+            elementoAgendados.textContent =
+                String(
+                    quantidadeAgendados
+                );
+
+            elementoAgendados.style.display =
+                "block";
+
+            elementoAgendados.style.visibility =
+                "visible";
+
+            elementoAgendados.style.opacity =
+                "1";
+
+        }
+
+
+        // ========================================
+        // DISPONÍVEIS
+        // ========================================
+
+        if (elementoDisponiveis) {
+
+            elementoDisponiveis.textContent =
+                String(
+                    quantidadeDisponiveis
+                );
+
+            elementoDisponiveis.style.display =
+                "block";
+
+            elementoDisponiveis.style.visibility =
+                "visible";
+
+            elementoDisponiveis.style.opacity =
+                "1";
+
+        }
+
+
+        // ========================================
+        // OCUPADOS
+        // ========================================
+
+        if (elementoOcupados) {
+
+            elementoOcupados.textContent =
+                String(
+                    quantidadeOcupados
+                );
+
+            elementoOcupados.style.display =
+                "block";
+
+            elementoOcupados.style.visibility =
+                "visible";
+
+            elementoOcupados.style.opacity =
+                "1";
+
+        }
+
+
+        // ========================================
+        // DEBUG FINAL DOS ELEMENTOS
+        // ========================================
+
+        console.log(
+            "========== CONTADORES DOM =========="
         );
 
-    totalAgendados.style.display =
-        "block";
-
-    totalAgendados.style.visibility =
-        "visible";
-
-    totalAgendados.style.opacity =
-        "1";
-
-}
-
-
-if (totalDisponiveis) {
-
-    totalDisponiveis.textContent =
-        String(
-            quantidadeDisponiveis
+        console.log(
+            "Agendados:",
+            elementoAgendados?.textContent
         );
 
-    totalDisponiveis.style.display =
-        "block";
-
-    totalDisponiveis.style.visibility =
-        "visible";
-
-    totalDisponiveis.style.opacity =
-        "1";
-
-}
-
-
-if (totalOcupados) {
-
-    totalOcupados.textContent =
-        String(
-            quantidadeOcupados
+        console.log(
+            "Disponíveis:",
+            elementoDisponiveis?.textContent
         );
 
-    totalOcupados.style.display =
-        "block";
+        console.log(
+            "Ocupados:",
+            elementoOcupados?.textContent
+        );
 
-    totalOcupados.style.visibility =
-        "visible";
-
-    totalOcupados.style.opacity =
-        "1";
-
-}
+        console.log(
+            "===================================="
+        );
 
 
         // ========================================
@@ -1363,12 +1426,6 @@ if (totalOcupados) {
                         String(horario)
                     );
 
-
-                /*
-                 * O horário só fica disponível
-                 * se não estiver ocupado E
-                 * estiver marcado como disponível.
-                 */
 
                 const disponivel =
                     !ocupado &&
@@ -1878,7 +1935,7 @@ if (gerarHorarios) {
                             inicioMinutos;
 
                         minutos <
-                            fimMinutos;
+                        fimMinutos;
 
                         minutos +=
                             intervalo
@@ -1926,7 +1983,6 @@ if (gerarHorarios) {
 
                         atualizacoes[caminho] =
                             true;
-
 
                         totalHorarios++;
 
@@ -1985,11 +2041,11 @@ if (atualizar) {
 
     atualizar.addEventListener(
         "click",
-        () => {
+        async () => {
 
-            carregarAgendamentos();
+            await carregarAgendamentos();
 
-            carregarHorarios();
+            await carregarHorarios();
 
         }
     );
@@ -2005,11 +2061,11 @@ if (dataPainel) {
 
     dataPainel.addEventListener(
         "change",
-        () => {
+        async () => {
 
-            carregarAgendamentos();
+            await carregarAgendamentos();
 
-            carregarHorarios();
+            await carregarHorarios();
 
         }
     );
