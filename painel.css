@@ -1,4 +1,3 @@
-
 /* =========================================================
    DOM ALFA — PAINEL DO BARBEIRO
    DASHBOARD PREMIUM
@@ -31,8 +30,10 @@ body {
         #0a0a0a;
 
     color: #f1ede5;
+
     padding: 35px 25px 70px;
 }
+
 
 /* =========================================================
    CONTAINER
@@ -43,6 +44,7 @@ body {
     max-width: 1180px;
     margin: 0 auto;
 }
+
 
 /* =========================================================
    CABEÇALHO
@@ -58,7 +60,8 @@ body {
     padding-bottom: 32px;
     margin-bottom: 28px;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.09);
 }
 
 .cabecalho h1 {
@@ -66,7 +69,9 @@ body {
 
     font-size: clamp(32px, 4vw, 52px);
     line-height: 0.95;
+
     letter-spacing: -0.045em;
+
     font-weight: 800;
 
     color: #f4f0e8;
@@ -79,8 +84,10 @@ body {
 
     font-size: 15px;
     font-weight: 500;
+
     letter-spacing: 0.02em;
 }
+
 
 /* =========================================================
    BOTÃO SAIR
@@ -91,13 +98,16 @@ body {
 
     padding: 0 22px;
 
-    border: 1px solid #333;
+    border:
+        1px solid #333;
+
     border-radius: 2px;
 
     background: #151515;
     color: #aaa59d;
 
     font-family: inherit;
+
     font-size: 14px;
     font-weight: 700;
 
@@ -112,11 +122,15 @@ body {
 
 .botao-sair:hover {
     background: #202020;
+
     color: #f4f0e8;
+
     border-color: #555;
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 }
+
 
 /* =========================================================
    FILTROS / DATA
@@ -124,7 +138,9 @@ body {
 
 .filtros {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 
     margin-bottom: 28px;
@@ -147,7 +163,9 @@ button {
 
 input,
 select {
-    border: 1px solid #303030;
+    border:
+        1px solid #303030;
+
     border-radius: 2px;
 
     background: #151515;
@@ -175,16 +193,19 @@ input::placeholder {
 input:focus,
 select:focus {
     background: #191919;
+
     border-color: #b98a52;
 
     box-shadow:
-        0 0 0 3px rgba(185, 138, 82, 0.08);
+        0 0 0 3px
+        rgba(185, 138, 82, 0.08);
 }
 
 input[type="date"],
 input[type="time"] {
     color-scheme: dark;
 }
+
 
 /* =========================================================
    BOTÃO ATUALIZAR
@@ -195,10 +216,13 @@ input[type="time"] {
 
     padding: 0 25px;
 
-    border: 1px solid #b98a52;
+    border:
+        1px solid #b98a52;
+
     border-radius: 2px;
 
     background: #b98a52;
+
     color: #111;
 
     font-size: 14px;
@@ -215,15 +239,19 @@ input[type="time"] {
 #atualizar:hover {
     background: #d0a46b;
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 10px 25px rgba(185, 138, 82, 0.14);
+        0 10px 25px
+        rgba(185, 138, 82, 0.14);
 }
 
 #atualizar:active {
-    transform: translateY(0);
+    transform:
+        translateY(0);
 }
+
 
 /* =========================================================
    RESUMO
@@ -231,7 +259,9 @@ input[type="time"] {
 
 .resumo-painel {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 14px;
 
@@ -244,14 +274,18 @@ input[type="time"] {
     min-height: 155px;
 
     display: flex;
+
     flex-direction: column;
+
     justify-content: space-between;
 
     padding: 25px 27px;
 
     background: #121212;
 
-    border: 1px solid #282828;
+    border:
+        1px solid #282828;
+
     border-radius: 3px;
 
     overflow: hidden;
@@ -275,13 +309,16 @@ input[type="time"] {
 
     border-radius: 50%;
 
-    background: rgba(185, 138, 82, 0.05);
+    background:
+        rgba(185, 138, 82, 0.05);
 }
 
 .resumo-card:hover {
-    transform: translateY(-4px);
+    transform:
+        translateY(-4px);
 
     background: #161616;
+
     border-color: #3a3a3a;
 }
 
@@ -292,17 +329,21 @@ input[type="time"] {
     font-weight: 800;
 
     letter-spacing: 0.16em;
+
     text-transform: uppercase;
 }
 
 .resumo-card strong {
     position: relative;
+
     z-index: 1;
 
     color: #f4f0e8;
 
     font-size: 52px;
+
     line-height: 0.9;
+
     font-weight: 800;
 
     letter-spacing: -0.05em;
@@ -311,6 +352,7 @@ input[type="time"] {
 .resumo-card:first-child strong {
     color: #b98a52;
 }
+
 
 /* =========================================================
    SEÇÕES
@@ -326,9 +368,11 @@ input[type="time"] {
     color: #f4f0e8;
 
     font-size: 28px;
+
     line-height: 1;
 
     letter-spacing: -0.035em;
+
     font-weight: 800;
 }
 
@@ -340,10 +384,12 @@ input[type="time"] {
     width: 7px;
     height: 7px;
 
-    margin: 0 12px 5px 0;
+    margin:
+        0 12px 5px 0;
 
     background: #b98a52;
 }
+
 
 /* =========================================================
    AGENDAMENTOS
@@ -351,8 +397,12 @@ input[type="time"] {
 
 #listaAgendamentos {
     display: flex;
+
     flex-direction: column;
+
     gap: 12px;
+
+    width: 100%;
 }
 
 .agendamento {
@@ -360,61 +410,99 @@ input[type="time"] {
 
     display: grid;
 
-    grid-template-columns: 105px 1fr auto;
+    grid-template-columns:
+        95px 1fr auto;
+
     grid-template-areas:
         "hora cliente botoes"
-        "hora info botoes";
+        "hora detalhes botoes";
 
-    column-gap: 25px;
-    row-gap: 7px;
+    column-gap: 24px;
 
-    padding: 23px 25px;
+    row-gap: 8px;
 
-    background: #121212;
+    width: 100%;
 
-    border: 1px solid #292929;
-    border-radius: 3px;
+    padding: 24px;
+
+    background: #151515;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
 
     transition:
-        transform 0.22s ease,
-        border-color 0.22s ease,
-        background 0.22s ease;
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.agendamento::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 3px;
+
+    background: #b98a52;
 }
 
 .agendamento:hover {
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 
-    background: #161616;
-    border-color: #3b3b3b;
+    background: #191919;
+
+    border-color:
+        rgba(185, 138, 82, 0.25);
 }
 
+
 /* =========================================================
-   HORÁRIO DO CLIENTE
+   HORÁRIO
    ========================================================= */
 
 .agendamento .horario {
     grid-area: hora;
 
-    align-self: center;
-
-    min-height: 65px;
+    width: 78px;
+    height: 58px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    padding: 0 12px;
+    align-self: start;
 
-    background: #b98a52;
-    color: #111;
+    background:
+        rgba(185, 138, 82, 0.08);
 
-    border-radius: 2px;
+    border:
+        1px solid
+        rgba(185, 138, 82, 0.25);
 
-    font-size: 23px;
-    font-weight: 900;
+    border-radius: 8px;
 
-    letter-spacing: -0.04em;
+    color: #c99b63;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    box-sizing: border-box;
 }
+
 
 /* =========================================================
    CLIENTE
@@ -427,28 +515,59 @@ input[type="time"] {
 
     color: #f4f0e8;
 
-    font-size: 22px;
-    line-height: 1.1;
-    font-weight: 800;
+    font-size: 18px;
 
-    letter-spacing: -0.025em;
+    font-weight: 600;
+
+    line-height: 1.3;
 }
+
 
 /* =========================================================
-   INFORMAÇÕES
+   DETALHES
    ========================================================= */
 
-.agendamento .info {
-    grid-area: info;
-    display: block;
-    margin: 0;
-    color: #77736d;
-    font-size: 14px;
-    line-height: 1.7;
+.agendamento .detalhes-agendamento {
+    grid-area: detalhes;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    margin-top: 4px;
 }
 
-.agendamento .info + .info {
-    margin-top: 2px;
+.agendamento
+.detalhes-agendamento > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.agendamento
+.detalhes-agendamento span {
+    color: #666;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.agendamento
+.detalhes-agendamento strong {
+    color: #a5a5a5;
+
+    font-size: 13px;
+
+    font-weight: 500;
 }
 
 
@@ -459,65 +578,92 @@ input[type="time"] {
 .agendamento .botoes {
     grid-area: botoes;
 
-    align-self: center;
-
     display: flex;
+
+    align-items: center;
+
     gap: 8px;
 
-    margin: 0;
+    align-self: center;
 }
 
 .agendamento .whatsapp,
 .agendamento .cancelar {
-    min-height: 44px;
-
-    padding: 0 17px;
+    height: 40px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    border-radius: 2px;
+    padding: 0 16px;
+
+    border-radius: 6px;
 
     font-family: inherit;
-    font-size: 13px;
-    font-weight: 800;
 
-    text-decoration: none;
+    font-size: 12px;
+
+    font-weight: 800;
 
     cursor: pointer;
 
+    white-space: nowrap;
+
+    text-decoration: none;
+
     transition:
         transform 0.2s ease,
-        filter 0.2s ease,
-        background 0.2s ease;
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.agendamento .whatsapp {
-    background: #242424;
-    color: #d2a875;
 
-    border: 1px solid #3a3a3a;
+/* =========================================================
+   WHATSAPP
+   ========================================================= */
+
+.agendamento .whatsapp {
+    background: #b98a52;
+
+    color: #111;
+
+    border: none;
 }
 
 .agendamento .whatsapp:hover {
-    background: #2d2d2d;
-    transform: translateY(-2px);
+    background: #d2a66d;
+
+    transform:
+        translateY(-1px);
 }
+
+
+/* =========================================================
+   CANCELAR
+   ========================================================= */
 
 .agendamento .cancelar {
     background: transparent;
-    color: #9b6964;
 
-    border: 1px solid #513432;
+    color: #999;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
 }
 
 .agendamento .cancelar:hover {
-    background: #2a1716;
-    color: #d58c84;
+    color: #fff;
 
-    transform: translateY(-2px);
+    border-color:
+        rgba(255, 255, 255, 0.25);
+
+    background:
+        rgba(255, 255, 255, 0.04);
 }
+
 
 /* =========================================================
    ESTADO VAZIO
@@ -530,7 +676,8 @@ input[type="time"] {
 
     background: #111;
 
-    border: 1px dashed #292929;
+    border:
+        1px dashed #292929;
 
     color: #68645f;
 
@@ -538,6 +685,7 @@ input[type="time"] {
 
     font-size: 15px;
 }
+
 
 /* =========================================================
    HORÁRIOS
@@ -547,7 +695,10 @@ input[type="time"] {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fill, minmax(145px, 1fr));
+        repeat(
+            auto-fill,
+            minmax(145px, 1fr)
+        );
 
     gap: 12px;
 }
@@ -556,14 +707,18 @@ input[type="time"] {
     min-height: 145px;
 
     display: flex;
+
     flex-direction: column;
+
     justify-content: space-between;
 
     padding: 18px;
 
     background: #121212;
 
-    border: 1px solid #292929;
+    border:
+        1px solid #292929;
+
     border-radius: 3px;
 
     text-align: left;
@@ -574,7 +729,9 @@ input[type="time"] {
 }
 
 .horario-card:hover {
-    transform: translateY(-3px);
+    transform:
+        translateY(-3px);
+
     border-color: #3d3d3d;
 }
 
@@ -586,14 +743,17 @@ input[type="time"] {
     color: #f4f0e8;
 
     font-size: 27px;
+
     line-height: 1;
 
     font-weight: 800;
+
     letter-spacing: -0.04em;
 }
 
 .horario-card span {
     font-size: 13px;
+
     font-weight: 700;
 }
 
@@ -604,6 +764,7 @@ input[type="time"] {
 .ocupado {
     color: #a76660;
 }
+
 
 /* =========================================================
    REMOVER HORÁRIO
@@ -616,14 +777,19 @@ input[type="time"] {
 
     margin-top: 14px;
 
-    border: 1px solid #302524;
+    border:
+        1px solid #302524;
+
     border-radius: 2px;
 
     background: transparent;
+
     color: #80615d;
 
     font-family: inherit;
+
     font-size: 12px;
+
     font-weight: 700;
 
     cursor: pointer;
@@ -636,9 +802,12 @@ input[type="time"] {
 
 .remover-horario:hover {
     background: #241716;
+
     color: #c48279;
+
     border-color: #513532;
 }
+
 
 /* =========================================================
    ADICIONAR HORÁRIO
@@ -650,6 +819,7 @@ input[type="time"] {
 
 .adicionar-manual {
     display: flex;
+
     gap: 10px;
 }
 
@@ -661,16 +831,22 @@ input[type="time"] {
 
 .adicionar-manual button {
     min-width: 210px;
+
     height: 52px;
 
-    border: 1px solid #3a3025;
+    border:
+        1px solid #3a3025;
+
     border-radius: 2px;
 
     background: #1b1815;
+
     color: #c79b64;
 
     font-family: inherit;
+
     font-size: 14px;
+
     font-weight: 800;
 
     cursor: pointer;
@@ -682,8 +858,11 @@ input[type="time"] {
 
 .adicionar-manual button:hover {
     background: #262019;
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 }
+
 
 /* =========================================================
    GERADOR DE HORÁRIOS
@@ -701,7 +880,9 @@ input[type="time"] {
             #101010
         );
 
-    border: 1px solid #292929;
+    border:
+        1px solid #292929;
+
     border-radius: 3px;
 }
 
@@ -711,9 +892,11 @@ input[type="time"] {
     color: #f4f0e8;
 
     font-size: 24px;
+
     line-height: 1;
 
     font-weight: 800;
+
     letter-spacing: -0.03em;
 }
 
@@ -728,8 +911,10 @@ input[type="time"] {
     color: #716e69;
 
     font-size: 14px;
+
     line-height: 1.5;
 }
+
 
 /* =========================================================
    CAMPOS DO GERADOR
@@ -748,6 +933,7 @@ input[type="time"] {
 
 .campos-horario > div {
     display: flex;
+
     flex-direction: column;
 }
 
@@ -757,6 +943,7 @@ input[type="time"] {
     color: #85817b;
 
     font-size: 12px;
+
     font-weight: 800;
 
     letter-spacing: 0.05em;
@@ -765,10 +952,13 @@ input[type="time"] {
 .campos-horario input,
 .campos-horario select {
     width: 100%;
+
     height: 52px;
 
     background: #0c0c0c;
-    border: 1px solid #2c2c2c;
+
+    border:
+        1px solid #2c2c2c;
 
     color: #f1ede5;
 
@@ -777,18 +967,28 @@ input[type="time"] {
     font-size: 15px;
 }
 
+
+/* =========================================================
+   BOTÃO GERAR
+   ========================================================= */
+
 #gerarHorarios {
     width: 100%;
+
     height: 56px;
 
     border: none;
+
     border-radius: 2px;
 
     background: #b98a52;
+
     color: #111;
 
     font-family: inherit;
+
     font-size: 15px;
+
     font-weight: 900;
 
     cursor: pointer;
@@ -802,20 +1002,25 @@ input[type="time"] {
 #gerarHorarios:hover {
     background: #d0a46b;
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 12px 28px rgba(185, 138, 82, 0.13);
+        0 12px 28px
+        rgba(185, 138, 82, 0.13);
 }
 
 #gerarHorarios:active {
-    transform: translateY(0);
+    transform:
+        translateY(0);
 }
 
 #gerarHorarios:disabled {
     opacity: 0.55;
+
     cursor: not-allowed;
 }
+
 
 /* =========================================================
    MENSAGEM
@@ -829,8 +1034,10 @@ input[type="time"] {
     color: #b98a52;
 
     font-size: 14px;
+
     font-weight: 700;
 }
+
 
 /* =========================================================
    TABLET
@@ -839,37 +1046,55 @@ input[type="time"] {
 @media (max-width: 900px) {
 
     body {
-        padding: 28px 20px 60px;
+        padding:
+            28px 20px 60px;
     }
+
 
     .resumo-painel {
         gap: 10px;
     }
 
+
     .resumo-card {
         min-height: 135px;
     }
+
 
     .resumo-card strong {
         font-size: 44px;
     }
 
+
+    /* AGENDAMENTOS */
+
     .agendamento {
-        grid-template-columns: 90px 1fr;
+        grid-template-columns:
+            80px 1fr;
+
         grid-template-areas:
             "hora cliente"
-            "hora info"
+            "hora detalhes"
             "botoes botoes";
+
+        row-gap: 12px;
     }
+
 
     .agendamento .botoes {
-        margin-top: 10px;
+        margin-top: 8px;
+
+        justify-content: flex-start;
     }
 
+
     .campos-horario {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, 1fr);
     }
+
 }
+
 
 /* =========================================================
    CELULAR
@@ -878,8 +1103,10 @@ input[type="time"] {
 @media (max-width: 600px) {
 
     body {
-        padding: 20px 13px 50px;
+        padding:
+            20px 13px 50px;
     }
+
 
     /* CABEÇALHO */
 
@@ -891,44 +1118,54 @@ input[type="time"] {
         gap: 18px;
 
         padding-bottom: 25px;
+
         margin-bottom: 22px;
     }
+
 
     .cabecalho h1 {
         font-size: 34px;
     }
 
+
     .subtitulo {
         font-size: 14px;
     }
+
 
     .botao-sair {
         width: 100%;
     }
 
+
     /* FILTROS */
 
     .filtros {
         flex-direction: column;
+
         gap: 9px;
 
         margin-bottom: 22px;
     }
+
 
     .filtros input,
     .filtros button {
         width: 100%;
     }
 
+
     /* RESUMO */
 
     .resumo-painel {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            1fr 1fr;
 
         gap: 9px;
 
         margin-bottom: 38px;
     }
+
 
     .resumo-card {
         min-height: 125px;
@@ -936,17 +1173,22 @@ input[type="time"] {
         padding: 19px;
     }
 
+
     .resumo-card:first-child {
-        grid-column: 1 / -1;
+        grid-column:
+            1 / -1;
     }
+
 
     .resumo-card strong {
         font-size: 43px;
     }
 
+
     .resumo-card span {
         font-size: 10px;
     }
+
 
     /* SEÇÕES */
 
@@ -954,414 +1196,17 @@ input[type="time"] {
         margin-top: 38px;
     }
 
+
     .secao h2 {
         font-size: 23px;
+
         margin-bottom: 15px;
     }
 
-    /* AGENDAMENTO */
+
+    /* AGENDAMENTOS */
 
     .agendamento {
-        grid-template-columns: 1fr;
-
-        grid-template-areas:
-            "hora"
-            "cliente"
-            "info"
-            "botoes";
-
-        gap: 9px;
-
-        padding: 18px;
-    }
-
-    .agendamento .horario {
-        justify-self: start;
-
-        min-width: 92px;
-        min-height: 50px;
-
-        font-size: 21px;
-    }
-
-    .agendamento .cliente {
-        font-size: 20px;
-    }
-
-    .agendamento .info {
-        font-size: 13px;
-    }
-
-    .agendamento .botoes {
-        width: 100%;
-
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-
-        margin-top: 9px;
-    }
-
-    .agendamento .whatsapp,
-    .agendamento .cancelar {
-        width: 100%;
-    }
-
-    /* HORÁRIOS */
-
-    .horarios {
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 8px;
-    }
-
-    .horario-card {
-        min-height: 130px;
-
-        padding: 15px;
-    }
-
-    .horario-card strong {
-        font-size: 23px;
-    }
-
-    /* ADICIONAR */
-
-    .adicionar-manual {
-        flex-direction: column;
-    }
-
-    .adicionar-manual input,
-    .adicionar-manual button {
-        width: 100%;
-    }
-
-    /* GERADOR */
-
-    .gerador-horarios {
-        padding: 22px 17px;
-    }
-
-    .gerador-horarios h3 {
-        font-size: 21px;
-        line-height: 1.1;
-    }
-
-    .campos-horario {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    #gerarHorarios {
-        height: 54px;
-    }
-}
-
-/* =========================================================
-   CELULARES PEQUENOS
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-    body {
-        padding: 17px 10px 45px;
-    }
-
-    .cabecalho h1 {
-        font-size: 30px;
-    }
-
-    .resumo-card {
-        padding: 16px;
-    }
-
-    .resumo-card strong {
-        font-size: 38px;
-    }
-
-    .agendamento .botoes {
-        grid-template-columns: 1fr;
-    }
-
-    .horarios {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .horario-card {
-        padding: 13px 10px;
-    }
-}
-/* =========================================================
-   AGENDAMENTO — DOM ALFA
-   ========================================================= */
-
-.agendamento {
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns: 95px 1fr auto;
-    grid-template-rows: auto auto auto;
-
-    grid-template-areas:
-        "hora cliente botoes"
-        "hora detalhes botoes"
-        "hora detalhes botoes";
-
-    column-gap: 24px;
-
-    padding: 24px;
-
-    background: #151515;
-
-    border: 1px solid rgba(255,255,255,0.07);
-
-    border-radius: 10px;
-
-    overflow: hidden;
-
-    box-sizing: border-box;
-
-    transition: .25s ease;
-}
-
-
-/* linha dourada */
-
-.agendamento::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 3px;
-
-    background: #b98a52;
-}
-
-
-/* =========================================================
-   HORÁRIO
-   ========================================================= */
-
-.agendamento .horario {
-    grid-area: hora;
-
-    width: 78px;
-    height: 58px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    align-self: start;
-
-    background: rgba(185,138,82,.08);
-
-    border: 1px solid rgba(185,138,82,.25);
-
-    border-radius: 8px;
-
-    color: #c99b63;
-
-    font-size: 20px;
-    font-weight: 700;
-
-    box-sizing: border-box;
-}
-
-
-/* =========================================================
-   NOME
-   ========================================================= */
-
-.agendamento .cliente {
-    grid-area: cliente;
-
-    margin: 0;
-
-    color: #f4f0e8;
-
-    font-size: 18px;
-    font-weight: 600;
-
-    line-height: 1.3;
-}
-
-
-/* =========================================================
-   SERVIÇO + WHATSAPP
-   ========================================================= */
-
-.agendamento .detalhes-agendamento {
-    grid-area: detalhes;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 30px;
-
-    margin-top: 9px;
-}
-
-
-.agendamento .detalhes-agendamento > div {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-}
-
-
-.agendamento .detalhes-agendamento span {
-    color: #666;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    text-transform: uppercase;
-
-    letter-spacing: .6px;
-}
-
-
-.agendamento .detalhes-agendamento strong {
-    color: #a5a5a5;
-
-    font-size: 13px;
-
-    font-weight: 500;
-}
-
-
-/* =========================================================
-   BOTÕES
-   ========================================================= */
-
-.agendamento .botoes {
-    grid-area: botoes;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    align-self: center;
-}
-
-
-/* WHATSAPP */
-
-.agendamento .whatsapp {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    height: 40px;
-
-    padding: 0 16px;
-
-    background: #b98a52;
-
-    color: #111;
-
-    border-radius: 6px;
-
-    font-size: 12px;
-    font-weight: 800;
-
-    text-decoration: none;
-
-    white-space: nowrap;
-
-    transition: .2s ease;
-}
-
-
-.agendamento .whatsapp:hover {
-    background: #d2a66d;
-
-    transform: translateY(-1px);
-}
-
-
-/* CANCELAR */
-
-.agendamento .cancelar {
-    height: 40px;
-
-    padding: 0 16px;
-
-    background: transparent;
-
-    color: #999;
-
-    border: 1px solid rgba(255,255,255,.12);
-
-    border-radius: 6px;
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    white-space: nowrap;
-
-    transition: .2s ease;
-}
-
-
-.agendamento .cancelar:hover {
-    color: #fff;
-
-    border-color: rgba(255,255,255,.25);
-
-    background: rgba(255,255,255,.04);
-}
-
-
-/* =========================================================
-   CELULAR
-   ========================================================= */
-
-@media (max-width: 750px) {
-
-    .agendamento {
-
-        grid-template-columns: 80px 1fr;
-
-        grid-template-areas:
-            "hora cliente"
-            "hora detalhes"
-            "botoes botoes";
-
-        row-gap: 12px;
-
-        padding: 20px;
-    }
-
-
-    .agendamento .botoes {
-
-        margin-top: 8px;
-
-        justify-content: flex-start;
-    }
-
-}
-
-
-@media (max-width: 500px) {
-
-    .agendamento {
-
         display: flex;
 
         flex-direction: column;
@@ -1373,15 +1218,19 @@ input[type="time"] {
 
 
     .agendamento .horario {
-
         width: 82px;
 
         height: 48px;
     }
 
 
-    .agendamento .detalhes-agendamento {
+    .agendamento .cliente {
+        font-size: 20px;
+    }
 
+
+    .agendamento
+    .detalhes-agendamento {
         flex-direction: column;
 
         align-items: flex-start;
@@ -1393,12 +1242,12 @@ input[type="time"] {
 
 
     .agendamento .botoes {
-
         width: 100%;
 
         display: grid;
 
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            1fr 1fr;
 
         margin-top: 5px;
     }
@@ -1406,8 +1255,145 @@ input[type="time"] {
 
     .agendamento .whatsapp,
     .agendamento .cancelar {
-
         width: 100%;
     }
 
+
+    /* HORÁRIOS */
+
+    .horarios {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+
+    .horario-card {
+        min-height: 130px;
+
+        padding: 15px;
+    }
+
+
+    .horario-card strong {
+        font-size: 23px;
+    }
+
+
+    /* ADICIONAR */
+
+    .adicionar-manual {
+        flex-direction: column;
+    }
+
+
+    .adicionar-manual input,
+    .adicionar-manual button {
+        width: 100%;
+    }
+
+
+    /* GERADOR */
+
+    .gerador-horarios {
+        padding:
+            22px 17px;
+    }
+
+
+    .gerador-horarios h3 {
+        font-size: 21px;
+
+        line-height: 1.1;
+    }
+
+
+    .campos-horario {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    #gerarHorarios {
+        height: 54px;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    body {
+        padding:
+            17px 10px 45px;
+    }
+
+
+    .cabecalho h1 {
+        font-size: 30px;
+    }
+
+
+    .resumo-card {
+        padding: 16px;
+    }
+
+
+    .resumo-card strong {
+        font-size: 38px;
+    }
+
+
+    .agendamento .botoes {
+        grid-template-columns: 1fr;
+    }
+
+
+    .horarios {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .horario-card {
+        padding:
+            13px 10px;
+    }
+
+}/* =========================================================
+   CORREÇÃO — NÚMEROS DO RESUMO
+   ========================================================= */
+
+#totalAgendados,
+#totalDisponiveis,
+#totalOcupados {
+    display: block !important;
+    position: relative !important;
+    z-index: 10 !important;
+
+    color: #f4f0e8 !important;
+    font-size: 52px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#totalAgendados {
+    color: #b98a52 !important;
+}
+
+#totalDisponiveis {
+    color: #f4f0e8 !important;
+}
+
+#totalOcupados {
+    color: #f4f0e8 !important;
 }
