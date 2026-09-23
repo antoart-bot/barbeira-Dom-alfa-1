@@ -1266,24 +1266,65 @@ async function carregarHorarios() {
         // ATUALIZAR RESUMO
         // ========================================
 
-        if (totalDisponiveis) {
+        // ========================================
+// ATUALIZAR RESUMO
+// ========================================
 
-            totalDisponiveis.textContent =
-                String(
-                    quantidadeDisponiveis
-                );
+if (totalAgendados) {
 
-        }
+    totalAgendados.textContent =
+        String(
+            agendamentos.length
+        );
+
+    totalAgendados.style.display =
+        "block";
+
+    totalAgendados.style.visibility =
+        "visible";
+
+    totalAgendados.style.opacity =
+        "1";
+
+}
 
 
-        if (totalOcupados) {
+if (totalDisponiveis) {
 
-            totalOcupados.textContent =
-                String(
-                    quantidadeOcupados
-                );
+    totalDisponiveis.textContent =
+        String(
+            quantidadeDisponiveis
+        );
 
-        }
+    totalDisponiveis.style.display =
+        "block";
+
+    totalDisponiveis.style.visibility =
+        "visible";
+
+    totalDisponiveis.style.opacity =
+        "1";
+
+}
+
+
+if (totalOcupados) {
+
+    totalOcupados.textContent =
+        String(
+            quantidadeOcupados
+        );
+
+    totalOcupados.style.display =
+        "block";
+
+    totalOcupados.style.visibility =
+        "visible";
+
+    totalOcupados.style.opacity =
+        "1";
+
+}
 
 
         // ========================================
