@@ -78,15 +78,18 @@ async function carregarConfiguracao() {
             configuracaoFirebase
         );
 
-        console.log(
-    "NOME RECEBIDO DO FIREBASE:",
-    configuracaoFirebase.nome
-);
+        // TESTES PARA DESCOBRIR EXATAMENTE
+        // O QUE ESTÁ VINDO DO FIREBASE
 
-console.log(
-    "CHAVES RECEBIDAS:",
-    Object.keys(configuracaoFirebase)
-);
+        console.log(
+            "NOME RECEBIDO DO FIREBASE:",
+            configuracaoFirebase.nome
+        );
+
+        console.log(
+            "CHAVES RECEBIDAS:",
+            Object.keys(configuracaoFirebase)
+        );
 
         return {
             ...CONFIG,
@@ -346,7 +349,6 @@ async function iniciarSite() {
             "servicoCliente"
         );
 
-
     const servicos =
         Array.isArray(
             CONFIG_SITE.servicos
@@ -440,7 +442,7 @@ async function iniciarSite() {
                 );
 
             }
-        );if (!usuario) {
+        );
 
     }
 
@@ -477,6 +479,10 @@ async function iniciarSite() {
 
     }
 
+
+    // ========================================
+    // CONFIRMAÇÃO
+    // ========================================
 
     console.log(
         "✓ SITE CONFIGURADO PARA:",
