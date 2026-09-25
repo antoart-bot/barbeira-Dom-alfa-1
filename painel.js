@@ -11,11 +11,7 @@ import {
     signOut
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-import {
-    db,
-    auth
-} from "./firebase.js";
-
+import { db, auth } from "./firebase.js";
 import { CONFIG } from "./config.js";
 
 import {
@@ -23,17 +19,17 @@ import {
 } from "./cliente.js";
 
 
-// ========================================
+// =========================================================
 // CAMINHO DO CLIENTE
-// ========================================
+// =========================================================
 
 let CAMINHO_BARBEIRO = null;
 let CONFIG_CLIENTE = null;
 
 
-// ========================================
+// =========================================================
 // ELEMENTOS
-// ========================================
+// =========================================================
 
 const dataPainel =
     document.getElementById("dataPainel");
@@ -90,9 +86,9 @@ const nomeBarbearia =
     document.getElementById("nomeBarbearia");
 
 
-// ========================================
+// =========================================================
 // CONFIGURAÇÃO DA BARBEARIA
-// ========================================
+// =========================================================
 
 function aplicarConfiguracaoCliente() {
 
@@ -106,21 +102,17 @@ function aplicarConfiguracaoCliente() {
         "Painel";
 
     if (nomeBarbearia) {
-
-        nomeBarbearia.textContent =
-            nome;
-
+        nomeBarbearia.textContent = nome;
     }
 
     document.title =
         `Painel — ${nome}`;
-
 }
 
 
-// ========================================
+// =========================================================
 // CARREGAR CONFIGURAÇÃO DO CLIENTE
-// ========================================
+// =========================================================
 
 async function carregarConfiguracaoCliente() {
 
@@ -152,7 +144,6 @@ async function carregarConfiguracaoCliente() {
             };
 
             return;
-
         }
 
         CONFIG_CLIENTE =
@@ -173,15 +164,13 @@ async function carregarConfiguracaoCliente() {
         CONFIG_CLIENTE = {
             nome: CONFIG.nome
         };
-
     }
-
 }
 
 
-// ========================================
+// =========================================================
 // DATA DE HOJE
-// ========================================
+// =========================================================
 
 function obterDataHoje() {
 
@@ -208,7 +197,6 @@ function obterDataHoje() {
         );
 
     return `${ano}-${mes}-${dia}`;
-
 }
 
 
@@ -223,14 +211,13 @@ if (dataPainel) {
 
     dataPainel.value =
         dataHoje;
-
 }
 
 
-// ========================================
+// =========================================================
 // LIMPAR HORÁRIOS DE DIAS PASSADOS
 // NÃO APAGA AGENDAMENTOS
-// ========================================
+// =========================================================
 
 async function limparHorariosPassados() {
 
@@ -270,18 +257,14 @@ async function limparHorariosPassados() {
 
                     exclusoes[data] =
                         null;
-
                 }
-
             }
         );
 
         if (
             Object.keys(exclusoes).length === 0
         ) {
-
             return;
-
         }
 
         await update(
@@ -299,15 +282,13 @@ async function limparHorariosPassados() {
             "Erro ao limpar horários passados:",
             erro
         );
-
     }
-
 }
 
 
-// ========================================
+// =========================================================
 // NOTIFICAÇÕES
-// ========================================
+// =========================================================
 
 let idsAgendamentosConhecidos =
     new Set();
@@ -319,9 +300,9 @@ let notificacoesAtivas =
     false;
 
 
-// ========================================
+// =========================================================
 // PEDIR PERMISSÃO PARA NOTIFICAÇÕES
-// ========================================
+// =========================================================
 
 async function prepararNotificacoes() {
 
@@ -332,7 +313,6 @@ async function prepararNotificacoes() {
         );
 
         return;
-
     }
 
     if (
@@ -347,7 +327,6 @@ async function prepararNotificacoes() {
             "Permissão para notificações:",
             permissao
         );
-
     }
 
     notificacoesAtivas =
@@ -363,13 +342,12 @@ async function prepararNotificacoes() {
         "PERMISSÃO:",
         Notification.permission
     );
-
 }
 
 
-// ========================================
+// =========================================================
 // AUTENTICAÇÃO
-// ========================================
+// =========================================================
 
 onAuthStateChanged(
     auth,
@@ -381,14 +359,13 @@ onAuthStateChanged(
                 "login.html";
 
             return;
-
         }
 
         try {
 
-            // ========================================
+            // =================================================
             // DESCOBRIR CLIENTE
-            // ========================================
+            // =================================================
 
             const clienteId =
                 await descobrirCliente();
@@ -399,9 +376,9 @@ onAuthStateChanged(
             );
 
 
-            // ========================================
+            // =================================================
             // CAMINHO
-            // ========================================
+            // =================================================
 
             CAMINHO_BARBEIRO =
                 `barbeiros/${clienteId}`;
@@ -412,18 +389,18 @@ onAuthStateChanged(
             );
 
 
-            // ========================================
+            // =================================================
             // CONFIGURAÇÃO
-            // ========================================
+            // =================================================
 
             await carregarConfiguracaoCliente();
 
             aplicarConfiguracaoCliente();
 
 
-            // ========================================
+            // =================================================
             // NOTIFICAÇÕES
-            // ========================================
+            // =================================================
 
             await prepararNotificacoes();
 
@@ -442,9 +419,9 @@ onAuthStateChanged(
             );
 
 
-            // ========================================
+            // =================================================
             // CARREGAR PAINEL
-            // ========================================
+            // =================================================
 
             await limparHorariosPassados();
 
@@ -465,18 +442,15 @@ onAuthStateChanged(
 
                 mensagem.textContent =
                     "Erro ao identificar o cliente.";
-
             }
-
         }
-
     }
 );
 
 
-// ========================================
+// =========================================================
 // MOSTRAR NOTIFICAÇÃO
-// ========================================
+// =========================================================
 
 function mostrarNotificacaoAgendamento(
     agendamento
@@ -489,7 +463,6 @@ function mostrarNotificacaoAgendamento(
         );
 
         return;
-
     }
 
     console.log(
@@ -508,7 +481,7 @@ function mostrarNotificacaoAgendamento(
             `✂️ Novo agendamento — ${nomeBarbeariaAtual}`;
 
         const corpo =
-            `${agendamento.nome} agendou ${agendamento.servico} às ${agendamento.horario}.`;
+            `${agendamento.nome || "Cliente"} agendou ${agendamento.servico || "um serviço"} às ${agendamento.horario || "--:--"}.`;
 
         const notificacao =
             new Notification(
@@ -533,7 +506,6 @@ function mostrarNotificacaoAgendamento(
             window.focus();
 
             notificacao.close();
-
         };
 
     } catch (erro) {
@@ -542,15 +514,13 @@ function mostrarNotificacaoAgendamento(
             "💥 ERRO AO CRIAR NOTIFICAÇÃO:",
             erro
         );
-
     }
-
 }
 
 
-// ========================================
+// =========================================================
 // MONITORAR NOVOS AGENDAMENTOS
-// ========================================
+// =========================================================
 
 function monitorarNovosAgendamentos() {
 
@@ -581,7 +551,6 @@ function monitorarNovosAgendamentos() {
                 );
 
                 return;
-
             }
 
             const dados =
@@ -593,9 +562,9 @@ function monitorarNovosAgendamentos() {
                 );
 
 
-            // ========================================
+            // =================================================
             // PRIMEIRA LEITURA
-            // ========================================
+            // =================================================
 
             if (
                 primeiraLeituraAgendamentos
@@ -612,13 +581,12 @@ function monitorarNovosAgendamentos() {
                 );
 
                 return;
-
             }
 
 
-            // ========================================
+            // =================================================
             // PROCURAR NOVOS
-            // ========================================
+            // =================================================
 
             idsAtuais.forEach(
                 (id) => {
@@ -650,18 +618,14 @@ function monitorarNovosAgendamentos() {
                             carregarAgendamentos();
 
                             carregarHorarios();
-
                         }
-
                     }
-
                 }
             );
 
 
             idsAgendamentosConhecidos =
                 idsAtuais;
-
         },
 
         (erro) => {
@@ -670,16 +634,14 @@ function monitorarNovosAgendamentos() {
                 "Erro ao monitorar agendamentos:",
                 erro
             );
-
         }
     );
-
 }
 
 
-// ========================================
+// =========================================================
 // SAIR
-// ========================================
+// =========================================================
 
 if (sair) {
 
@@ -705,20 +667,16 @@ if (sair) {
 
                     mensagem.textContent =
                         "Erro ao sair da conta.";
-
                 }
-
             }
-
         }
     );
-
 }
 
 
-// ========================================
+// =========================================================
 // CARREGAR AGENDAMENTOS
-// ========================================
+// =========================================================
 
 async function carregarAgendamentos() {
 
@@ -727,10 +685,15 @@ async function carregarAgendamentos() {
     }
 
     const data =
-        dataPainel.value;
+        String(
+            dataPainel?.value || obterDataHoje()
+        );
 
-    listaAgendamentos.innerHTML =
-        "<p class='vazio'>Carregando...</p>";
+    if (listaAgendamentos) {
+
+        listaAgendamentos.innerHTML =
+            "<p class='vazio'>Carregando...</p>";
+    }
 
     try {
 
@@ -743,9 +706,9 @@ async function carregarAgendamentos() {
             );
 
 
-        // ========================================
+        // =================================================
         // DEBUG
-        // ========================================
+        // =================================================
 
         console.log(
             "=== DEBUG AGENDAMENTOS ==="
@@ -771,29 +734,26 @@ async function carregarAgendamentos() {
             snapshot.val()
         );
 
-        console.log(
-            "=========================="
-        );
 
-
-        // ========================================
+        // =================================================
         // NENHUM AGENDAMENTO
-        // ========================================
+        // =================================================
 
         if (!snapshot.exists()) {
 
-            listaAgendamentos.innerHTML =
-                "<p class='vazio'>Nenhum agendamento.</p>";
+            if (listaAgendamentos) {
+
+                listaAgendamentos.innerHTML =
+                    "<p class='vazio'>Nenhum agendamento para esta data.</p>";
+            }
 
             if (totalAgendados) {
 
                 totalAgendados.textContent =
                     "0";
-
             }
 
             return;
-
         }
 
 
@@ -801,23 +761,40 @@ async function carregarAgendamentos() {
             snapshot.val();
 
 
-        // ========================================
-        // FILTRAR PELA DATA
-        // ========================================
+        // =================================================
+        // TRANSFORMAR EM ARRAY
+        // =================================================
 
         const todosAgendamentos =
             Object.entries(dados);
+
+
+        // =================================================
+        // FILTRAR PELA DATA
+        // =================================================
 
         const agendamentos =
             todosAgendamentos.filter(
                 ([id, agendamento]) => {
 
-                    return (
-                        agendamento.data === data &&
-                        agendamento.status !==
-                            "cancelado"
-                    );
+                    if (!agendamento) {
+                        return false;
+                    }
 
+                    const dataAgendamento =
+                        String(
+                            agendamento.data || ""
+                        );
+
+                    const status =
+                        String(
+                            agendamento.status || ""
+                        ).toLowerCase();
+
+                    return (
+                        dataAgendamento === data &&
+                        status !== "cancelado"
+                    );
                 }
             );
 
@@ -828,9 +805,33 @@ async function carregarAgendamentos() {
         );
 
 
-        // ========================================
+        // =================================================
+        // ORDENAR POR HORÁRIO
+        // =================================================
+
+        agendamentos.sort(
+            ([, agendamentoA], [, agendamentoB]) => {
+
+                const horarioA =
+                    String(
+                        agendamentoA?.horario || "99:99"
+                    );
+
+                const horarioB =
+                    String(
+                        agendamentoB?.horario || "99:99"
+                    );
+
+                return horarioA.localeCompare(
+                    horarioB
+                );
+            }
+        );
+
+
+        // =================================================
         // TOTAL AGENDADOS
-        // ========================================
+        // =================================================
 
         if (totalAgendados) {
 
@@ -839,42 +840,55 @@ async function carregarAgendamentos() {
                     agendamentos.length
                 );
 
+            totalAgendados.style.display =
+                "block";
+
+            totalAgendados.style.visibility =
+                "visible";
+
+            totalAgendados.style.opacity =
+                "1";
         }
 
 
-        // ========================================
+        // =================================================
         // NENHUM AGENDAMENTO NA DATA
-        // ========================================
+        // =================================================
 
         if (
             agendamentos.length === 0
         ) {
 
-            listaAgendamentos.innerHTML =
-                "<p class='vazio'>Nenhum agendamento para esta data.</p>";
+            if (listaAgendamentos) {
 
-            if (totalAgendados) {
-
-                totalAgendados.textContent =
-                    "0";
-
+                listaAgendamentos.innerHTML =
+                    "<p class='vazio'>Nenhum agendamento para esta data.</p>";
             }
 
             return;
-
         }
 
 
-        listaAgendamentos.innerHTML =
-            "";
+        // =================================================
+        // LIMPAR LISTA
+        // =================================================
+
+        if (listaAgendamentos) {
+            listaAgendamentos.innerHTML = "";
+        }
 
 
-        // ========================================
+        // =================================================
         // CRIAR CARDS
-        // ========================================
+        // =================================================
 
         agendamentos.forEach(
             ([id, agendamento]) => {
+
+                if (!listaAgendamentos) {
+                    return;
+                }
+
 
                 const card =
                     document.createElement(
@@ -885,37 +899,73 @@ async function carregarAgendamentos() {
                     "agendamento";
 
 
-                // ========================================
-                // TELEFONE
-                // ========================================
+                // =================================================
+                // DADOS
+                // =================================================
+
+                const horario =
+                    String(
+                        agendamento.horario || "--:--"
+                    );
+
+                const nome =
+                    String(
+                        agendamento.nome || "Cliente"
+                    );
+
+                const servico =
+                    String(
+                        agendamento.servico || "Não informado"
+                    );
+
+                const telefoneOriginal =
+                    String(
+                        agendamento.telefone || ""
+                    );
 
                 const telefone =
-                    String(
-                        agendamento.telefone ||
-                            ""
-                    ).replace(
+                    telefoneOriginal.replace(
                         /\D/g,
                         ""
                     );
 
-                const whatsapp =
-                    telefone.startsWith("55")
-                        ? telefone
-                        : "55" + telefone;
+                let whatsapp =
+                    telefone;
+
+                if (
+                    whatsapp &&
+                    !whatsapp.startsWith("55")
+                ) {
+                    whatsapp =
+                        "55" + whatsapp;
+                }
 
 
-                // ========================================
+                // =================================================
+                // LINK WHATSAPP
+                // =================================================
+
+                let linkWhatsApp = "#";
+
+                if (whatsapp) {
+
+                    linkWhatsApp =
+                        `https://wa.me/${whatsapp}`;
+                }
+
+
+                // =================================================
                 // CARD
-                // ========================================
+                // =================================================
 
                 card.innerHTML = `
 
                     <div class="horario">
-                        ${agendamento.horario || ""}
+                        ${horario}
                     </div>
 
                     <div class="cliente">
-                        ${agendamento.nome || ""}
+                        ${nome}
                     </div>
 
                     <div class="detalhes-agendamento">
@@ -924,7 +974,7 @@ async function carregarAgendamentos() {
                             <span>Serviço</span>
 
                             <strong>
-                                ${agendamento.servico || ""}
+                                ${servico}
                             </strong>
                         </div>
 
@@ -932,7 +982,7 @@ async function carregarAgendamentos() {
                             <span>WhatsApp</span>
 
                             <strong>
-                                ${agendamento.telefone || ""}
+                                ${telefoneOriginal || "Não informado"}
                             </strong>
                         </div>
 
@@ -940,14 +990,24 @@ async function carregarAgendamentos() {
 
                     <div class="botoes">
 
-                        <a
-                            class="whatsapp"
-                            href="https://wa.me/${whatsapp}"
-                            target="_blank"
-                            rel="noopener"
-                        >
-                            WhatsApp ↗
-                        </a>
+                        ${
+                            whatsapp
+                                ? `
+                                    <a
+                                        class="whatsapp"
+                                        href="${linkWhatsApp}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        WhatsApp ↗
+                                    </a>
+                                `
+                                : `
+                                    <span class="whatsapp" style="opacity:0.5;">
+                                        Sem WhatsApp
+                                    </span>
+                                `
+                        }
 
                         <button
                             class="cancelar"
@@ -957,40 +1017,61 @@ async function carregarAgendamentos() {
                         </button>
 
                     </div>
-
                 `;
 
 
-                // ========================================
-                // CANCELAR
-                // ========================================
+                // =================================================
+                // BOTÃO CANCELAR
+                // =================================================
 
                 const botaoCancelar =
                     card.querySelector(
                         ".cancelar"
                     );
 
-                botaoCancelar.addEventListener(
-                    "click",
-                    () => {
+                if (botaoCancelar) {
 
-                        cancelarAgendamento(
-                            id,
-                            agendamento.data,
-                            agendamento.horario
-                        );
+                    botaoCancelar.addEventListener(
+                        "click",
+                        () => {
 
-                    }
-                );
+                            cancelarAgendamento(
+                                id,
+                                agendamento.data,
+                                agendamento.horario
+                            );
 
+                        }
+                    );
+                }
+
+
+                // =================================================
+                // ADICIONAR CARD
+                // =================================================
 
                 listaAgendamentos.appendChild(
                     card
                 );
-
             }
         );
 
+
+        // =================================================
+        // DEBUG FINAL
+        // =================================================
+
+        console.log(
+            "CARDS CRIADOS:",
+            listaAgendamentos
+                ? listaAgendamentos.children.length
+                : 0
+        );
+
+        console.log(
+            "TOTAL AGENDADOS:",
+            agendamentos.length
+        );
 
     } catch (erro) {
 
@@ -999,17 +1080,18 @@ async function carregarAgendamentos() {
             erro
         );
 
-        listaAgendamentos.innerHTML =
-            "<p class='vazio'>Erro ao carregar agendamentos.</p>";
+        if (listaAgendamentos) {
 
+            listaAgendamentos.innerHTML =
+                "<p class='vazio'>Erro ao carregar agendamentos.</p>";
+        }
     }
-
 }
 
 
-// ========================================
+// =========================================================
 // CARREGAR HORÁRIOS
-// ========================================
+// =========================================================
 
 async function carregarHorarios() {
 
@@ -1018,16 +1100,21 @@ async function carregarHorarios() {
     }
 
     const data =
-        dataPainel.value;
+        String(
+            dataPainel?.value || obterDataHoje()
+        );
 
-    listaHorarios.innerHTML =
-        "<p class='vazio'>Carregando...</p>";
+    if (listaHorarios) {
+
+        listaHorarios.innerHTML =
+            "<p class='vazio'>Carregando...</p>";
+    }
 
     try {
 
-        // ========================================
+        // =================================================
         // BUSCAR HORÁRIOS
-        // ========================================
+        // =================================================
 
         const horariosSnapshot =
             await get(
@@ -1038,9 +1125,9 @@ async function carregarHorarios() {
             );
 
 
-        // ========================================
+        // =================================================
         // BUSCAR AGENDAMENTOS
-        // ========================================
+        // =================================================
 
         const agendamentosSnapshot =
             await get(
@@ -1067,9 +1154,9 @@ async function carregarHorarios() {
                 : [];
 
 
-        // ========================================
+        // =================================================
         // HORÁRIOS OCUPADOS
-        // ========================================
+        // =================================================
 
         const horariosOcupados =
             agendamentos
@@ -1077,27 +1164,30 @@ async function carregarHorarios() {
                     (agendamento) => {
 
                         return (
-                            agendamento.data === data &&
-                            agendamento.status ===
+                            String(
+                                agendamento?.data || ""
+                            ) === data &&
+
+                            String(
+                                agendamento?.status || ""
+                            ).toLowerCase() ===
                                 "confirmado"
                         );
-
                     }
                 )
                 .map(
                     (agendamento) => {
 
                         return String(
-                            agendamento.horario
+                            agendamento.horario || ""
                         );
-
                     }
                 );
 
 
-        // ========================================
+        // =================================================
         // ORDENAR HORÁRIOS
-        // ========================================
+        // =================================================
 
         horarios.sort(
             ([horarioA], [horarioB]) => {
@@ -1106,7 +1196,9 @@ async function carregarHorarios() {
                     horaA,
                     minutoA
                 ] =
-                    horarioA
+                    String(
+                        horarioA
+                    )
                         .split(":")
                         .map(Number);
 
@@ -1114,7 +1206,9 @@ async function carregarHorarios() {
                     horaB,
                     minutoB
                 ] =
-                    horarioB
+                    String(
+                        horarioB
+                    )
                         .split(":")
                         .map(Number);
 
@@ -1130,14 +1224,13 @@ async function carregarHorarios() {
                     minutosA -
                     minutosB
                 );
-
             }
         );
 
 
-        // ========================================
+        // =================================================
         // DEBUG DOS HORÁRIOS
-        // ========================================
+        // =================================================
 
         console.log(
             "========== DEBUG HORÁRIOS =========="
@@ -1168,9 +1261,9 @@ async function carregarHorarios() {
         );
 
 
-        // ========================================
+        // =================================================
         // CONTADORES
-        // ========================================
+        // =================================================
 
         let quantidadeDisponiveis =
             0;
@@ -1185,29 +1278,19 @@ async function carregarHorarios() {
                 const horarioString =
                     String(horario);
 
-
                 const ocupado =
                     horariosOcupados.includes(
                         horarioString
                     );
 
 
-                // ========================================
-                // AGENDAMENTO CONFIRMADO
-                // ========================================
-
                 if (ocupado) {
 
                     quantidadeOcupados++;
 
                     return;
-
                 }
 
-
-                // ========================================
-                // HORÁRIO DISPONÍVEL
-                // ========================================
 
                 if (
                     dados &&
@@ -1219,16 +1302,14 @@ async function carregarHorarios() {
                 } else {
 
                     quantidadeOcupados++;
-
                 }
-
             }
         );
 
 
-        // ========================================
+        // =================================================
         // DEBUG DOS CONTADORES
-        // ========================================
+        // =================================================
 
         console.log(
             "========== RESUMO =========="
@@ -1260,9 +1341,9 @@ async function carregarHorarios() {
         );
 
 
-        // ========================================
+        // =================================================
         // ATUALIZAR RESUMO
-        // ========================================
+        // =================================================
 
         const elementoAgendados =
             document.getElementById(
@@ -1280,9 +1361,9 @@ async function carregarHorarios() {
             );
 
 
-        // ========================================
+        // =================================================
         // AGENDADOS
-        // ========================================
+        // =================================================
 
         if (elementoAgendados) {
 
@@ -1291,11 +1372,15 @@ async function carregarHorarios() {
                     (agendamento) => {
 
                         return (
-                            agendamento.data === data &&
-                            agendamento.status !==
+                            String(
+                                agendamento?.data || ""
+                            ) === data &&
+
+                            String(
+                                agendamento?.status || ""
+                            ).toLowerCase() !==
                                 "cancelado"
                         );
-
                     }
                 ).length;
 
@@ -1312,13 +1397,12 @@ async function carregarHorarios() {
 
             elementoAgendados.style.opacity =
                 "1";
-
         }
 
 
-        // ========================================
+        // =================================================
         // DISPONÍVEIS
-        // ========================================
+        // =================================================
 
         if (elementoDisponiveis) {
 
@@ -1335,13 +1419,12 @@ async function carregarHorarios() {
 
             elementoDisponiveis.style.opacity =
                 "1";
-
         }
 
 
-        // ========================================
+        // =================================================
         // OCUPADOS
-        // ========================================
+        // =================================================
 
         if (elementoOcupados) {
 
@@ -1358,13 +1441,12 @@ async function carregarHorarios() {
 
             elementoOcupados.style.opacity =
                 "1";
-
         }
 
 
-        // ========================================
+        // =================================================
         // DEBUG FINAL DOS ELEMENTOS
-        // ========================================
+        // =================================================
 
         console.log(
             "========== CONTADORES DOM =========="
@@ -1390,33 +1472,36 @@ async function carregarHorarios() {
         );
 
 
-        // ========================================
+        // =================================================
         // LIMPAR LISTA
-        // ========================================
+        // =================================================
 
-        listaHorarios.innerHTML =
-            "";
+        if (listaHorarios) {
+            listaHorarios.innerHTML = "";
+        }
 
 
-        // ========================================
+        // =================================================
         // NENHUM HORÁRIO
-        // ========================================
+        // =================================================
 
         if (
             horarios.length === 0
         ) {
 
-            listaHorarios.innerHTML =
-                "<p class='vazio'>Nenhum horário cadastrado para esta data.</p>";
+            if (listaHorarios) {
+
+                listaHorarios.innerHTML =
+                    "<p class='vazio'>Nenhum horário cadastrado para esta data.</p>";
+            }
 
             return;
-
         }
 
 
-        // ========================================
+        // =================================================
         // MOSTRAR HORÁRIOS
-        // ========================================
+        // =================================================
 
         horarios.forEach(
             ([horario, dados]) => {
@@ -1478,14 +1563,17 @@ async function carregarHorarios() {
                 `;
 
 
-                listaHorarios.appendChild(
-                    card
-                );
+                if (listaHorarios) {
+
+                    listaHorarios.appendChild(
+                        card
+                    );
+                }
 
 
-                // ========================================
+                // =================================================
                 // REMOVER HORÁRIO
-                // ========================================
+                // =================================================
 
                 const botaoRemover =
                     card.querySelector(
@@ -1506,12 +1594,10 @@ async function carregarHorarios() {
 
                         }
                     );
-
                 }
 
             }
         );
-
 
     } catch (erro) {
 
@@ -1520,17 +1606,18 @@ async function carregarHorarios() {
             erro
         );
 
-        listaHorarios.innerHTML =
-            "<p class='vazio'>Erro ao carregar horários.</p>";
+        if (listaHorarios) {
 
+            listaHorarios.innerHTML =
+                "<p class='vazio'>Erro ao carregar horários.</p>";
+        }
     }
-
 }
 
 
-// ========================================
+// =========================================================
 // CANCELAR AGENDAMENTO
-// ========================================
+// =========================================================
 
 async function cancelarAgendamento(
     id,
@@ -1549,9 +1636,9 @@ async function cancelarAgendamento(
 
     try {
 
-        // ========================================
+        // =================================================
         // CANCELAR AGENDAMENTO
-        // ========================================
+        // =================================================
 
         await update(
             ref(
@@ -1564,9 +1651,9 @@ async function cancelarAgendamento(
         );
 
 
-        // ========================================
+        // =================================================
         // LIBERAR HORÁRIO
-        // ========================================
+        // =================================================
 
         await update(
             ref(
@@ -1583,14 +1670,12 @@ async function cancelarAgendamento(
 
             mensagem.textContent =
                 "✓ Agendamento cancelado.";
-
         }
 
 
         await carregarAgendamentos();
 
         await carregarHorarios();
-
 
     } catch (erro) {
 
@@ -1603,17 +1688,14 @@ async function cancelarAgendamento(
 
             mensagem.textContent =
                 "Erro ao cancelar o agendamento.";
-
         }
-
     }
-
 }
 
 
-// ========================================
+// =========================================================
 // ADICIONAR HORÁRIO MANUALMENTE
-// ========================================
+// =========================================================
 
 if (adicionarHorario) {
 
@@ -1634,11 +1716,13 @@ if (adicionarHorario) {
 
             if (!data || !horario) {
 
-                mensagem.textContent =
-                    "Escolha um horário.";
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "Escolha um horário.";
+                }
 
                 return;
-
             }
 
 
@@ -1659,11 +1743,13 @@ if (adicionarHorario) {
 
                 if (snapshot.exists()) {
 
-                    mensagem.textContent =
-                        "Esse horário já existe.";
+                    if (mensagem) {
+
+                        mensagem.textContent =
+                            "Esse horário já existe.";
+                    }
 
                     return;
-
                 }
 
 
@@ -1678,12 +1764,14 @@ if (adicionarHorario) {
                 novoHorario.value =
                     "";
 
-                mensagem.textContent =
-                    "✓ Horário adicionado.";
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "✓ Horário adicionado.";
+                }
 
 
                 await carregarHorarios();
-
 
             } catch (erro) {
 
@@ -1692,9 +1780,11 @@ if (adicionarHorario) {
                     erro
                 );
 
-                mensagem.textContent =
-                    "Erro ao adicionar horário.";
+                if (mensagem) {
 
+                    mensagem.textContent =
+                        "Erro ao adicionar horário.";
+                }
             }
 
         }
@@ -1703,9 +1793,9 @@ if (adicionarHorario) {
 }
 
 
-// ========================================
+// =========================================================
 // GERAR HORÁRIOS AUTOMATICAMENTE
-// ========================================
+// =========================================================
 
 if (gerarHorarios) {
 
@@ -1736,17 +1826,19 @@ if (gerarHorarios) {
                 pausaFim.value;
 
 
-            // ========================================
+            // =================================================
             // VALIDAÇÕES
-            // ========================================
+            // =================================================
 
             if (!inicio || !fim) {
 
-                mensagem.textContent =
-                    "Preencha o início e o fim.";
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "Preencha o início e o fim.";
+                }
 
                 return;
-
             }
 
 
@@ -1755,11 +1847,13 @@ if (gerarHorarios) {
                 intervalo <= 0
             ) {
 
-                mensagem.textContent =
-                    "Escolha um intervalo válido.";
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "Escolha um intervalo válido.";
+                }
 
                 return;
-
             }
 
 
@@ -1788,17 +1882,19 @@ if (gerarHorarios) {
                 fimMinutos
             ) {
 
-                mensagem.textContent =
-                    "O horário final deve ser maior que o inicial.";
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "O horário final deve ser maior que o inicial.";
+                }
 
                 return;
-
             }
 
 
-            // ========================================
+            // =================================================
             // PAUSA
-            // ========================================
+            // =================================================
 
             let pausaInicioMinutos =
                 null;
@@ -1837,28 +1933,31 @@ if (gerarHorarios) {
                     pausaFimMinutos
                 ) {
 
-                    mensagem.textContent =
-                        "O fim da pausa deve ser maior que o início.";
+                    if (mensagem) {
+
+                        mensagem.textContent =
+                            "O fim da pausa deve ser maior que o início.";
+                    }
 
                     return;
-
                 }
-
             }
 
 
-            // ========================================
+            // =================================================
             // GERAR
-            // ========================================
+            // =================================================
 
             try {
 
                 gerarHorarios.disabled =
                     true;
 
+                if (mensagem) {
 
-                mensagem.textContent =
-                    "Gerando horários para 7 dias...";
+                    mensagem.textContent =
+                        "Gerando horários para 7 dias...";
+                }
 
 
                 const atualizacoes = {};
@@ -1867,9 +1966,9 @@ if (gerarHorarios) {
                     0;
 
 
-                // ========================================
+                // =================================================
                 // HOJE
-                // ========================================
+                // =================================================
 
                 const hoje =
                     new Date();
@@ -1882,9 +1981,9 @@ if (gerarHorarios) {
                 );
 
 
-                // ========================================
+                // =================================================
                 // 7 DIAS
-                // ========================================
+                // =================================================
 
                 for (
                     let dia = 0;
@@ -1926,9 +2025,9 @@ if (gerarHorarios) {
                         `${ano}-${mes}-${numeroDia}`;
 
 
-                    // ========================================
+                    // =================================================
                     // HORÁRIOS DO DIA
-                    // ========================================
+                    // =================================================
 
                     for (
                         let minutos =
@@ -1942,9 +2041,9 @@ if (gerarHorarios) {
                     ) {
 
 
-                        // ========================================
+                        // =================================================
                         // PAUSA
-                        // ========================================
+                        // =================================================
 
                         if (
                             pausaInicioMinutos !== null &&
@@ -1956,7 +2055,6 @@ if (gerarHorarios) {
                         ) {
 
                             continue;
-
                         }
 
 
@@ -1973,9 +2071,9 @@ if (gerarHorarios) {
                             `${String(hora).padStart(2, "0")}:${String(minuto).padStart(2, "0")}`;
 
 
-                        // ========================================
+                        // =================================================
                         // CAMINHO
-                        // ========================================
+                        // =================================================
 
                         const caminho =
                             `${CAMINHO_BARBEIRO}/horarios/${dataFirebase}/${horario}/disponivel`;
@@ -1985,15 +2083,13 @@ if (gerarHorarios) {
                             true;
 
                         totalHorarios++;
-
                     }
-
                 }
 
 
-                // ========================================
+                // =================================================
                 // SALVAR
-                // ========================================
+                // =================================================
 
                 await update(
                     ref(db),
@@ -2001,14 +2097,16 @@ if (gerarHorarios) {
                 );
 
 
-                mensagem.textContent =
-                    `✓ 7 dias gerados com sucesso. ${totalHorarios} horários criados.`;
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        `✓ 7 dias gerados com sucesso. ${totalHorarios} horários criados.`;
+                }
 
 
                 await carregarAgendamentos();
 
                 await carregarHorarios();
-
 
             } catch (erro) {
 
@@ -2017,14 +2115,16 @@ if (gerarHorarios) {
                     erro
                 );
 
-                mensagem.textContent =
-                    "Erro ao gerar os horários. Veja o console.";
+                if (mensagem) {
+
+                    mensagem.textContent =
+                        "Erro ao gerar os horários. Veja o console.";
+                }
 
             } finally {
 
                 gerarHorarios.disabled =
                     false;
-
             }
 
         }
@@ -2033,9 +2133,9 @@ if (gerarHorarios) {
 }
 
 
-// ========================================
+// =========================================================
 // BOTÃO ATUALIZAR
-// ========================================
+// =========================================================
 
 if (atualizar) {
 
@@ -2053,9 +2153,9 @@ if (atualizar) {
 }
 
 
-// ========================================
+// =========================================================
 // TROCAR DATA
-// ========================================
+// =========================================================
 
 if (dataPainel) {
 
@@ -2073,9 +2173,9 @@ if (dataPainel) {
 }
 
 
-// ========================================
+// =========================================================
 // REMOVER HORÁRIO
-// ========================================
+// =========================================================
 
 async function removerHorario(
     data,
@@ -2107,9 +2207,9 @@ async function removerHorario(
         );
 
 
-        // ========================================
+        // =================================================
         // VERIFICAR REMOÇÃO
-        // ========================================
+        // =================================================
 
         const verificar =
             await get(
@@ -2121,20 +2221,24 @@ async function removerHorario(
             verificar.exists()
         ) {
 
-            mensagem.textContent =
-                "Não foi possível remover o horário.";
+            if (mensagem) {
+
+                mensagem.textContent =
+                    "Não foi possível remover o horário.";
+            }
 
             return;
-
         }
 
 
-        mensagem.textContent =
-            "✓ Horário removido.";
+        if (mensagem) {
+
+            mensagem.textContent =
+                "✓ Horário removido.";
+        }
 
 
         await carregarHorarios();
-
 
     } catch (erro) {
 
@@ -2143,9 +2247,10 @@ async function removerHorario(
             erro
         );
 
-        mensagem.textContent =
-            "Erro ao remover horário.";
+        if (mensagem) {
 
+            mensagem.textContent =
+                "Erro ao remover horário.";
+        }
     }
-
 }
