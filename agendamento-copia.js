@@ -38,10 +38,13 @@ function descobrirCliente() {
         parametros.get("cliente");
 
     if (clienteId) {
+
         return clienteId;
+
     }
 
     return CONFIG.id;
+
 }
 
 
@@ -66,6 +69,7 @@ async function carregarConfiguracaoCliente() {
         "CAMINHO DO AGENDAMENTO:",
         CAMINHO_BARBEIRO
     );
+
 
     try {
 
@@ -130,14 +134,10 @@ async function carregarConfiguracaoCliente() {
 // ========================================
 
 const dataInput =
-    document.getElementById(
-        "dataCliente"
-    );
+    document.getElementById("dataCliente");
 
 const listaHorarios =
-    document.getElementById(
-        "listaHorarios"
-    );
+    document.getElementById("listaHorarios");
 
 const confirmar =
     document.getElementById(
@@ -192,6 +192,7 @@ function obterDataHoje() {
         );
 
     return `${ano}-${mes}-${dia}`;
+
 }
 
 
@@ -216,9 +217,11 @@ function formatarData(data) {
     ) {
 
         return data;
+
     }
 
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
 }
 
 
@@ -318,6 +321,7 @@ function mostrarConfirmacao({
                 modal
             );
 
+
             requestAnimationFrame(
                 () => {
 
@@ -327,6 +331,7 @@ function mostrarConfirmacao({
 
                 }
             );
+
 
             const fechar =
                 (resultado) => {
@@ -526,6 +531,7 @@ async function carregarHorarios() {
             "<p>Escolha uma data.</p>";
 
         return;
+
     }
 
 
@@ -556,6 +562,7 @@ async function carregarHorarios() {
                 "<p>Nenhum horário disponível para esta data.</p>";
 
             return;
+
         }
 
 
@@ -774,6 +781,7 @@ confirmar.addEventListener(
         ) {
 
             return;
+
         }
 
 
@@ -823,6 +831,7 @@ confirmar.addEventListener(
                 "Preencha todos os campos e escolha um horário.";
 
             return;
+
         }
 
 
@@ -851,6 +860,7 @@ confirmar.addEventListener(
                 "Agendamento cancelado.";
 
             return;
+
         }
 
 
@@ -890,15 +900,18 @@ confirmar.addEventListener(
                 data
             );
 
+
             console.log(
                 "HORÁRIO:",
                 horario
             );
 
+
             console.log(
                 "CAMINHO:",
                 `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}/disponivel`
             );
+
 
             console.log(
                 "VALOR DIRETO DO FIREBASE:",
@@ -916,6 +929,7 @@ confirmar.addEventListener(
                 await carregarHorarios();
 
                 return;
+
             }
 
 
@@ -929,38 +943,62 @@ confirmar.addEventListener(
                 await carregarHorarios();
 
                 return;
+
             }
 
 
             // ========================================
-            // RESERVAR HORÁRIO
+            // RESERVA ATÔMICA
             // ========================================
 
+            const resultado =
+                await runTransaction(
+                    disponivelRef,
+                    (valorAtual) => {
+
+                        console.log(
+                            "VALOR DENTRO DA TRANSAÇÃO:",
+                            valorAtual
+                        );
+
+
+                        if (
+                            valorAtual === null
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            valorAtual === true
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        return undefined;
+
+                    }
+                );
+
+
+            console.log(
+                "RESULTADO DA TRANSAÇÃO:",
+                resultado
+            );
+
+
             // ========================================
-// RESERVAR HORÁRIO
-// ========================================
+            // NÃO CONSEGUIU RESERVAR
+            // ========================================
 
-const horarioAtual =
-    disponibilidadeAtual.val();
-
-if (horarioAtual !== true) {
-    mensagem.textContent =
-        "Esse horário não está mais disponível.";
-
-    await carregarHorarios();
-    return;
-}
-
-// Reserva o horário
-await set(
-    disponivelRef,
-    false
-);
-
-console.log(
-    "HORÁRIO RESERVADO COM SUCESSO:",
-    horario
-);{
+            if (
+                !resultado.committed
+            ) {
 
                 mensagem.textContent =
                     "Esse horário acabou de ser reservado. Escolha outro.";
@@ -968,6 +1006,7 @@ console.log(
                 await carregarHorarios();
 
                 return;
+
             }
 
 
