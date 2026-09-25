@@ -707,4 +707,93 @@
         text-align: left;
     }
 
+}/* ========================================
+   HORÁRIO SELECIONADO — VISUAL PREMIUM
+======================================== */
+
+.horario.selecionado {
+    position: relative;
+    background: linear-gradient(
+        135deg,
+        #d6ff3f 0%,
+        #b8e82f 100%
+    );
+
+    color: #101010;
+    border: 2px solid #d6ff3f;
+
+    box-shadow:
+        0 0 0 4px rgba(214, 255, 63, 0.10),
+        0 8px 24px rgba(214, 255, 63, 0.20);
+
+    font-weight: 800;
+    transform: translateY(-3px);
+}
+
+/* Sinal de horário escolhido */
+.horario.selecionado::after {
+    content: "✓";
+
+    position: absolute;
+    top: -9px;
+    right: -9px;
+
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+    color: #d6ff3f;
+
+    border: 2px solid #d6ff3f;
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Efeito ao passar o mouse */
+.horario.selecionado:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 0 0 5px rgba(214, 255, 63, 0.13),
+        0 12px 30px rgba(214, 255, 63, 0.28);
+}
+
+/* Animação suave ao selecionar */
+@keyframes horarioSelecionado {
+    0% {
+        transform: scale(0.96);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.horario.selecionado {
+    animation: horarioSelecionado 0.2s ease-out;
+}
+
+/* Ajuste para celular */
+@media (max-width: 600px) {
+    .horario.selecionado {
+        transform: translateY(-2px);
+        box-shadow:
+            0 0 0 3px rgba(214, 255, 63, 0.10),
+            0 6px 18px rgba(214, 255, 63, 0.18);
+    }
+
+    .horario.selecionado::after {
+        width: 21px;
+        height: 21px;
+        font-size: 12px;
+    }
 }
