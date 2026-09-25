@@ -936,39 +936,31 @@ confirmar.addEventListener(
             // RESERVAR HORÁRIO
             // ========================================
 
-            // ========================================
-// RESERVAR HORÁRIO
-// ========================================
+            const horarioAtual =
+                disponibilidadeAtual.val();
 
-const horarioAtual =
-    disponibilidadeAtual.val();
-
-if (horarioAtual !== true) {
-    mensagem.textContent =
-        "Esse horário não está mais disponível.";
-
-    await carregarHorarios();
-    return;
-}
-
-// Reserva o horário
-await set(
-    disponivelRef,
-    false
-);
-
-console.log(
-    "HORÁRIO RESERVADO COM SUCESSO:",
-    horario
-);{
+            if (horarioAtual !== true) {
 
                 mensagem.textContent =
-                    "Esse horário acabou de ser reservado. Escolha outro.";
+                    "Esse horário não está mais disponível.";
 
                 await carregarHorarios();
 
                 return;
             }
+
+            // Reserva o horário antes de criar o agendamento.
+            // As Rules do Firebase exigem que o horário esteja
+            // indisponível para permitir a criação anônima do agendamento.
+            await set(
+                disponivelRef,
+                false
+            );
+
+            console.log(
+                "HORÁRIO RESERVADO COM SUCESSO:",
+                horario
+            );
 
 
             // ========================================
