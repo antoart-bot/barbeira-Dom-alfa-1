@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Sistema</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<main class="admin-shell">
+  <header class="topbar">
+    <div><span class="eyebrow">ADMINISTRAÇÃO</span><h1>Estabelecimentos</h1><p>Cadastre e prepare um novo cliente para usar o sistema.</p></div>
+    <button id="sair" class="btn secondary" type="button">Sair</button>
+  </header>
+
+  <section id="bloqueado" class="card hidden">
+    <div class="icon">!</div><h2>Acesso restrito</h2><p>Esta conta não está autorizada a acessar o painel administrativo.</p>
+  </section>
+
+  <section id="conteudo" class="card hidden">
+    <form id="formEstabelecimento" autocomplete="off">
+      <div class="section-title"><span>01</span><div><h2>Dados principais</h2><p>Essas informações identificam o estabelecimento.</p></div></div>
+      <div class="grid">
+        <label>Nome do estabelecimento<input id="nome" required maxlength="80" placeholder="Studio Nova"></label>
+        <label>ID do estabelecimento<input id="id" required maxlength="40" pattern="[a-z0-9-]+" placeholder="studio-nova-003"><small>Use apenas letras minúsculas, números e hífen.</small></label>
+        <label>Cidade<input id="cidade" maxlength="100" placeholder="Presidente Dutra — MA"></label>
+        <label>WhatsApp<input id="whatsapp" inputmode="numeric" maxlength="20" placeholder="5599999999999"></label>
+        <label>Instagram<input id="instagram" type="url" placeholder="https://www.instagram.com/..."></label>
+        <label>UID do responsável<input id="ownerUid" required maxlength="128" placeholder="UID do usuário no Firebase Auth"><small>É o UID da conta que acessará o painel do estabelecimento.</small></label>
+      </div>
+
+      <div class="section-title services-title"><span>02</span><div><h2>Serviços</h2><p>Cadastre os serviços e preços iniciais.</p></div></div>
+      <div id="servicos" class="services"></div>
+      <button id="adicionarServico" class="btn secondary" type="button">+ Adicionar serviço</button>
+
+      <div class="actions"><div id="mensagem" class="message"></div><button id="cadastrar" class="btn primary" type="submit">Criar estabelecimento</button></div>
+    </form>
+  </section>
+</main>
+<script type="module" src="admin.js"></script>
+</body>
+</html>
