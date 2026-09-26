@@ -62,8 +62,14 @@ form.addEventListener("submit",async event=>{
     const existente=await get(estabelecimentoRef);
     if(existente.exists()){mensagemErro("Esse ID já existe. Escolha outro.");return}
     const dados={ownerUid,configuracoes:{nome,cidade,whatsapp,instagram},servicos,agendamentos:{},horarios:{},notificacoes:{}};
-    await set(estabelecimentoRef,dados);
-    mensagemOk(`Estabelecimento "${nome}" criado com sucesso.`);
+    await set(estabelecimentoRef, dados);
+
+await set(
+  ref(db, `usuarios/${ownerUid}/clienteId`),
+  id
+);
+
+mensagemOk(`Estabelecimento "${nome}" criado com sucesso.`);
     form.reset(); lista.innerHTML=""; adicionarServico("Corte",40); adicionarServico("Barba",30); adicionarServico("Corte + Barba",65);
   }catch(erro){console.error(erro);mensagemErro("Não foi possível criar. Verifique as Rules do Firebase.")}
   finally{btnCadastrar.disabled=false;btnCadastrar.textContent="Criar estabelecimento"}
