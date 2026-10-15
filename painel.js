@@ -367,13 +367,24 @@ onAuthStateChanged(
             // DESCOBRIR CLIENTE
             // =================================================
 
-            const clienteId =
-                await descobrirCliente();
+            let clienteId;
+
+            try {
+                clienteId = await descobrirCliente();
+            } catch (erro) {
+                console.warn(
+                    "Não foi possível descobrir o cliente vinculado:",
+                    erro.message
+                );
+
+                clienteId = CONFIG.id;
+            }
 
             console.log(
                 "CLIENTE IDENTIFICADO:",
                 clienteId
             );
+
 
 
             // =================================================
