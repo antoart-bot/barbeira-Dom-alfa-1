@@ -1,309 +1,672 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f3ed">
-  <meta name="description" content="Karen Leão Estética — beleza, cuidado e bem-estar.">
-  <title>Karen Leão Estética — Estética &amp; Bem-estar</title>
+    <link rel="icon" href="favicon.ico">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="agendamento.css">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Barbearia</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="agendamento.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
 </head>
 
 <body>
-  <header class="site-header">
-    <a class="brand" href="#inicio">
-      <span class="brand-mark">KL</span>
-      <span class="brand-copy">
-        <strong id="logoBarbearia">KAREN LEÃO</strong>
-        <small>ESTÉTICA &amp; BEM-ESTAR</small>
-      </span>
-    </a>
 
-    <nav class="main-nav">
-      <a href="#servicos">Tratamentos</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#contato">Contato</a>
-    </nav>
+    <!-- ======================================== -->
+    <!-- HEADER -->
+    <!-- ======================================== -->
 
-    <a class="button button-dark header-cta" href="#agendamento">
-      Agendar horário ↗
-    </a>
-  </header>
+    <header>
 
-  <main>
-    <section class="hero" id="inicio">
-      <div class="hero-copy">
-        <p class="eyebrow">
-          <span class="eyebrow-line"></span>
-          SEU MOMENTO DE CUIDADO
-        </p>
+        <div class="nav-wrapper">
 
-        <h1>Beleza que começa no <em>cuidado.</em></h1>
-
-        <p class="hero-description">
-          Um espaço para desacelerar, cuidar de você e valorizar
-          sua beleza com atenção em cada detalhe.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button button-dark" href="#agendamento">
-            Agendar atendimento ↗
-          </a>
-          <a class="text-link" href="#servicos">
-            Conheça os tratamentos ↓
-          </a>
-        </div>
-
-        <div class="hero-note">
-          <span class="note-star">✳</span>
-          <span>Atendimento acolhedor e cuidado individualizado.</span>
-        </div>
-      </div>
-
-      <div class="hero-visual">
-        <div class="hero-image"></div>
-
-        <div class="image-label">
-          <span>KL / ESTÉTICA</span>
-          <span>Seu bem-estar em primeiro lugar</span>
-        </div>
-
-        <div class="floating-seal">
-          <span>KL</span>
-          <small>BELEZA<br>COM CUIDADO</small>
-        </div>
-      </div>
-
-      <div class="hero-bottom">
-        <span id="cidadeHero">ESTÉTICA • BEM-ESTAR • AUTOCUIDADO</span>
-        <span id="anoHero"></span>
-      </div>
-    </section>
-
-
-    <section class="services-section" id="servicos">
-      <div class="section-wrap">
-        <div class="section-heading">
-          <div>
-            <div class="section-kicker">02 — NOSSOS CUIDADOS</div>
-            <h2>Escolha seu<br><em>momento.</em></h2>
-          </div>
-
-          <p>
-            Explore os procedimentos faciais e corporais, confira os valores e escolha seu momento de cuidado.
-          </p>
-        </div>
-
-        <!-- Os serviços serão carregados pelo config-site.js -->
-        <div class="service-list"></div>
-      </div>
-    </section>
-
-
-    <section class="booking-section section-wrap" id="agendamento">
-      <div class="booking-intro">
-        <div class="section-kicker">AGENDAMENTO ONLINE</div>
-
-        <h2>Vamos reservar<br>seu <em>momento?</em></h2>
-
-        <p>
-          Preencha seus dados, escolha o serviço e selecione
-          um dos horários disponíveis.
-        </p>
-
-        <div class="booking-side-note">
-          <span>KL</span>
-          <p>Um atendimento de cada vez.<br>Você merece esse cuidado.</p>
-        </div>
-      </div>
-
-      <div class="booking-card">
-        <div class="booking-card-heading">
-          <span>RESERVE SEU HORÁRIO</span>
-          <span class="step-indicator">01 — 03</span>
-        </div>
-
-        <form id="formAgendamento" autocomplete="on">
-          <div class="field">
-            <label for="nomeCliente">Seu nome</label>
-            <input
-              id="nomeCliente"
-              name="nomeCliente"
-              type="text"
-              placeholder="Como podemos chamar você?"
-              autocomplete="name"
-              required
+            <a
+                href="#"
+                class="logo"
+                id="logoBarbearia"
             >
-          </div>
+                Barbearia
+            </a>
 
-          <div class="field">
-            <label for="telefoneCliente">WhatsApp</label>
-            <input
-              id="telefoneCliente"
-              name="telefoneCliente"
-              type="tel"
-              placeholder="(00) 00000-0000"
-              autocomplete="tel"
-              required
+            <nav>
+
+                <a href="#servicos">
+                    Serviços
+                </a>
+
+                <a href="#sobre">
+                    A barbearia
+                </a>
+
+                <a href="#contato">
+                    Contato
+                </a>
+
+            </nav>
+
+            <a
+                href="#agendamento"
+                class="book"
             >
-          </div>
+                Agendar
+                <span>↗</span>
+            </a>
 
-          <div class="field">
-            <label for="servicoCliente">Serviço desejado</label>
-            <select id="servicoCliente" name="servicoCliente" required>
-              <option value="">Selecione um serviço</option>
-            </select>
-          </div>
+        </div>
 
-          <div class="field">
-            <label for="dataCliente">Data do atendimento</label>
-            <input id="dataCliente" name="dataCliente" type="date" required>
-          </div>
+    </header>
 
-          <div class="field">
-            <label>Horários disponíveis</label>
-            <div id="listaHorarios" class="lista-horarios">
-              <p class="empty-slots">
-                Selecione uma data para consultar os horários.
-              </p>
+
+    <!-- ======================================== -->
+    <!-- HERO -->
+    <!-- ======================================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-image"></div>
+
+            <div class="hero-gradient"></div>
+
+            <div class="hero-top">
+
+                <span id="cidadeHero">
+                    Cidade
+                </span>
+
+                <span id="anoHero">
+                    EST. 2026
+                </span>
+
             </div>
-          </div>
 
-          <button
-            id="confirmarAgendamento"
-            class="button button-dark booking-submit"
-            type="button"
-          >
-            Confirmar agendamento ↗
-          </button>
+            <div class="hero-content">
 
-          <div id="mensagemAgendamento" class="booking-message" aria-live="polite"></div>
+                <p class="eyebrow">
+                    BARBEARIA & ESTILO
+                </p>
 
-          <p class="privacy-note">
-            Seus dados serão usados para organizar e confirmar seu atendimento.
-          </p>
-        </form>
-      </div>
-    </section>
+                <h1>
+                    Corte.
+                    <br>
+                    <span>Presença.</span>
+                </h1>
 
-    <section class="intro section-wrap">
-      <div class="section-kicker">01 — UMA PAUSA PARA VOCÊ</div>
+                <div class="hero-description">
 
-      <div class="intro-content">
-        <h2>Seu cuidado merece<br>um lugar especial.</h2>
+                    <p>
+                        Um espaço para quem entende que
+                        aparência também é identidade.
+                    </p>
 
-        <div class="intro-text">
-          <p>
-            Mais do que um procedimento, cada atendimento é uma
-            oportunidade de reservar um tempo para si. Aqui,
-            cada detalhe é pensado para que você se sinta
-            confortável, respeitada e bem cuidada.
-          </p>
+                    <a
+                        href="#servicos"
+                        class="circle-button"
+                    >
+                        <span>↓</span>
+                    </a>
 
-          <a class="text-link" href="#sobre">
-            Conheça nosso espaço ↗
-          </a>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- INTRO -->
+        <!-- ======================================== -->
+
+        <section class="intro">
+
+            <div class="intro-number">
+                01
+            </div>
+
+            <div class="intro-content">
+
+                <p class="label">
+                    MAIS QUE UM CORTE
+                </p>
+
+                <h2>
+                    Seu visual não precisa
+                    <span>seguir o padrão.</span>
+                </h2>
+
+                <p class="intro-text">
+
+                    Na
+                    <span id="nomeIntro">
+                        Barbearia
+                    </span>,
+                    cada atendimento começa entendendo você.
+                    Seu estilo, seu cabelo, sua rotina e aquilo
+                    que você quer transmitir.
+
+                </p>
+
+                <a
+                    href="#sobre"
+                    class="line-link"
+                >
+                    Conheça a
+                    <span id="nomeIntroLink">
+                        barbearia
+                    </span>
+
+                    <span>→</span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- SERVIÇOS -->
+        <!-- ======================================== -->
+
+        <section
+            id="servicos"
+            class="services"
+        >
+
+            <div class="section-top">
+
+                <span class="label">
+                    02 / SERVIÇOS
+                </span>
+
+                <p>
+                    Serviços simples.
+                    <br>
+                    Execução precisa.
+                </p>
+
+            </div>
+
+            <!--
+                Os serviços são gerados automaticamente
+                pelo config-site.js usando CONFIG.servicos.
+            -->
+
+            <div class="service-list"></div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- SOBRE -->
+        <!-- ======================================== -->
+
+        <section
+            id="sobre"
+            class="about"
+        >
+
+            <div class="about-image"></div>
+
+            <div class="about-content">
+
+                <span class="label">
+                    03 / A BARBEARIA
+                </span>
+
+                <h2>
+                    O clássico,
+                    <br>
+                    <i>sem ser antigo.</i>
+                </h2>
+
+                <p>
+                    Criamos um ambiente onde o cuidado com o
+                    visual encontra uma experiência tranquila.
+                    Sem pressa. Sem exageros.
+                </p>
+
+                <p>
+                    Técnicas tradicionais, referências atuais
+                    e atenção aos detalhes.
+                </p>
+
+                <div
+                    class="about-signature"
+                    id="assinaturaBarbearia"
+                >
+                    BARBEARIA
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- CTA / CONTATO -->
+        <!-- ======================================== -->
+
+        <section
+            id="contato"
+            class="contact"
+        >
+
+            <div class="contact-number">
+                04
+            </div>
+
+            <div class="contact-content">
+
+                <span class="label">
+                    SEU PRÓXIMO CORTE
+                </span>
+
+                <h2>
+                    Vamos marcar?
+                </h2>
+
+                <button
+                    class="big-button"
+                    id="abrirAgendamento"
+                >
+
+                    <span>
+                        Agendar horário
+                    </span>
+
+                    <strong>
+                        ↗
+                    </strong>
+
+                </button>
+
+            </div>
+
+            <div class="contact-info">
+
+                <div>
+
+                    <span>
+                        HORÁRIO
+                    </span>
+
+                    <p></p>
+
+                    <p></p>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        LOCAL
+                    </span>
+
+                    <p></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================== -->
+        <!-- AGENDAMENTO -->
+        <!-- ======================================== -->
+
+        <section
+            class="booking"
+            id="agendamento"
+        >
+
+            <div class="booking-heading">
+
+                <div>
+
+                    <span class="label">
+                        05 / AGENDAMENTO
+                    </span>
+
+                    <h2>
+                        Seu próximo corte
+                        <br>
+                        <span>começa aqui.</span>
+                    </h2>
+
+                </div>
+
+                <p>
+                    Escolha o serviço, informe seus dados
+                    e encontre um horário disponível.
+                </p>
+
+            </div>
+
+
+            <div class="booking-card">
+
+
+                <!-- ======================================== -->
+                <!-- DADOS DO CLIENTE -->
+                <!-- ======================================== -->
+
+                <div class="booking-side">
+
+                    <div class="booking-side-header">
+
+                        <span>
+                            01
+                        </span>
+
+                        <div>
+
+                            <small>
+                                SEUS DADOS
+                            </small>
+
+                            <h3>
+                                Quem está agendando?
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="booking-form">
+
+                        <label>
+
+                            <span>
+                                Seu nome
+                            </span>
+
+                            <div class="input-wrap">
+
+                                <input
+                                    type="text"
+                                    id="nomeCliente"
+                                    placeholder="Digite seu nome"
+                                    autocomplete="name"
+                                >
+
+                            </div>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                WhatsApp
+                            </span>
+
+                            <div class="input-wrap">
+
+                                <input
+                                    type="tel"
+                                    id="telefoneCliente"
+                                    placeholder="(99) 99999-9999"
+                                    autocomplete="tel"
+                                >
+
+                            </div>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                Serviço
+                            </span>
+
+                            <div class="input-wrap select-wrap">
+
+                                <select id="servicoCliente">
+
+                                    <option value="">
+                                        Escolha um serviço
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ======================================== -->
+                <!-- HORÁRIO -->
+                <!-- ======================================== -->
+
+                <div class="booking-side booking-time">
+
+                    <div class="booking-side-header">
+
+                        <span>
+                            02
+                        </span>
+
+                        <div>
+
+                            <small>
+                                HORÁRIO
+                            </small>
+
+                            <h3>
+                                Quando você vem?
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <label class="date-label">
+
+                        <span>
+                            Escolha uma data
+                        </span>
+
+                        <div class="input-wrap date-wrap">
+
+                            <input
+                                type="date"
+                                id="dataCliente"
+                            >
+
+                        </div>
+
+                    </label>
+
+
+                    <div class="horarios-box">
+
+                        <div class="horarios-header">
+
+                            <span>
+                                Horários disponíveis
+                            </span>
+
+                            <span class="status-dot">
+                                Disponível
+                            </span>
+
+                        </div>
+
+
+                        <div id="listaHorarios">
+
+                            <span class="loading-hours">
+                                Carregando horários...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- CONFIRMAÇÃO -->
+            <!-- ======================================== -->
+
+            <div class="booking-bottom">
+
+                <div class="booking-note">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <p>
+                        Seu horário será reservado após
+                        a confirmação do agendamento.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="confirmarAgendamento"
+                    class="confirm-booking"
+                >
+
+                    <span>
+                        Confirmar agendamento
+                    </span>
+
+                    <strong>
+                        ↗
+                    </strong>
+
+                </button>
+
+            </div>
+
+
+            <p
+                id="mensagemAgendamento"
+                class="booking-message"
+            ></p>
+
+        </section>
+
+    </main>
+
+
+    <!-- ======================================== -->
+    <!-- FOOTER -->
+    <!-- ======================================== -->
+
+    <footer>
+
+        <div
+            class="footer-logo"
+            id="footerLogo"
+        >
+            BARBEARIA
         </div>
-      </div>
-    </section>
+
+        <div class="footer-bottom">
+
+            <span></span>
 
 
-    <section class="about-section section-wrap" id="sobre">
-      <div class="about-visual">
-        <div class="about-image"></div>
-        <div class="about-caption">CUIDADO EM CADA DETALHE</div>
-      </div>
+            <span>
 
-      <div class="about-copy">
-        <div class="section-kicker">03 — SOBRE O ESPAÇO</div>
+                <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="instagramLink"
+                >
+                    Instagram
+                </a>
 
-        <h2>Um cuidado que respeita <em>você.</em></h2>
+                ↗
 
-        <p>
-          Na Karen Leão Estética, acreditamos que o autocuidado
-          deve ser uma experiência leve, acolhedora e feita com
-          atenção às suas necessidades.
-        </p>
+            </span>
 
-        <p>
-          Nosso compromisso é receber você com carinho, explicar
-          cada etapa e oferecer um atendimento cuidadoso do início
-          ao fim.
-        </p>
 
-        <div class="signature" id="assinaturaBarbearia">
-          Karen Leão
-          <span>Estética</span>
-        </div>
-      </div>
-    </section>
+            <span>
 
-    <section class="booking-banner">
-      <div class="section-wrap booking-banner-inner">
-        <div>
-          <div class="section-kicker">UM TEMPO PARA VOCÊ</div>
-          <h2>Seu próximo momento<br>de cuidado começa aqui.</h2>
+                <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="whatsappLink"
+                >
+                    WhatsApp
+                </a>
+
+                ↗
+
+            </span>
+
         </div>
 
-        <a class="button button-light" href="#agendamento">
-          Escolher horário ↗
-        </a>
-      </div>
-    </section>
+    </footer>
 
 
+    <!-- ======================================== -->
+    <!-- SCRIPTS -->
+    <!-- ======================================== -->
 
-    <section class="contact-section" id="contato">
-      <div class="section-wrap contact-inner">
-        <div>
-          <div class="section-kicker">05 — FALE COM A GENTE</div>
-          <h2>Estamos aqui<br><em>para você.</em></h2>
-        </div>
+    <script src="script.js"></script>
 
-        <div class="contact-details">
-          <p>
-            Tem alguma dúvida antes de agendar? Entre em contato
-            pelos nossos canais.
-          </p>
+    <script
+        type="module"
+        src="agendamento.js"
+    ></script>
 
-          <a id="whatsappLink" class="contact-link" href="#">
-            Conversar pelo WhatsApp <span>↗</span>
-          </a>
+    <script
+        type="module"
+        src="config-site.js"
+    ></script>
 
-          <a id="instagramLink" class="contact-link" href="#">
-            Acompanhar no Instagram <span>↗</span>
-          </a>
-
-          <p class="contact-location" id="contatoLocalizacao">
-            Karen Leão Estética
-          </p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <a class="brand footer-brand" href="#inicio">
-      <span class="brand-mark">KL</span>
-      <span class="brand-copy">
-        <strong id="footerLogo">KAREN LEÃO</strong>
-        <small>ESTÉTICA &amp; BEM-ESTAR</small>
-      </span>
-    </a>
-
-    <p>Feito com cuidado, para cuidar de você.</p>
-    <a href="#inicio" class="back-top">Voltar ao início ↑</a>
-  </footer>
-
-  <!-- Mantém os scripts originais do sistema -->
-  <script src="script.js"></script>
-<script type="module" src="./config-site.js"></script>
-<script type="module" src="./agendamento.js"></script>
 </body>
+
 </html>

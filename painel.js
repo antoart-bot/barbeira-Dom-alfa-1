@@ -5,6 +5,7 @@ import {
     remove,
     onValue,
     push
+
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 import {
@@ -86,19 +87,20 @@ const gerarHorarios =
 const nomeBarbearia =
     document.getElementById("nomeBarbearia");
 
+    
 const formCategoria = document.getElementById("formCategoria");
 const nomeCategoria = document.getElementById("nomeCategoria");
 const salvarCategoria = document.getElementById("salvarCategoria");
+
 const formServico = document.getElementById("formServico");
 const categoriaServico = document.getElementById("categoriaServico");
 const nomeServico = document.getElementById("nomeServico");
 const precoServico = document.getElementById("precoServico");
-const duracaoServico = document.getElementById("duracaoServico");
-const descricaoServico = document.getElementById("descricaoServico");
-const detalhesServico = document.getElementById("detalhesServico");
 const salvarServico = document.getElementById("salvarServico");
+
 const listaServicos = document.getElementById("listaServicos");
 const mensagemServicos = document.getElementById("mensagemServicos");
+
 
 
 // =========================================================
@@ -120,7 +122,8 @@ function aplicarConfiguracaoCliente() {
         nomeBarbearia.textContent = nome;
     }
 
-    document.title = `Painel — ${nome}`;
+    document.title =
+        `Painel — ${nome}`;
 }
 
 
@@ -136,12 +139,16 @@ async function carregarConfiguracaoCliente() {
 
     try {
 
-        const configuracoesRef = ref(
-            db,
-            `${CAMINHO_BARBEIRO}/configuracoes`
-        );
+        const configuracoesRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/configuracoes`
+            );
 
-        const snapshot = await get(configuracoesRef);
+        const snapshot =
+            await get(
+                configuracoesRef
+            );
 
         if (!snapshot.exists()) {
 
@@ -156,7 +163,8 @@ async function carregarConfiguracaoCliente() {
             return;
         }
 
-        CONFIG_CLIENTE = snapshot.val();
+        CONFIG_CLIENTE =
+            snapshot.val();
 
         console.log(
             "CONFIGURAÇÃO DO CLIENTE:",
@@ -183,27 +191,43 @@ async function carregarConfiguracaoCliente() {
 
 function obterDataHoje() {
 
-    const hoje = new Date();
+    const hoje =
+        new Date();
 
-    const ano = hoje.getFullYear();
+    const ano =
+        hoje.getFullYear();
 
-    const mes = String(
-        hoje.getMonth() + 1
-    ).padStart(2, "0");
+    const mes =
+        String(
+            hoje.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
 
-    const dia = String(
-        hoje.getDate()
-    ).padStart(2, "0");
+    const dia =
+        String(
+            hoje.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
 
     return `${ano}-${mes}-${dia}`;
 }
 
 
-const dataHoje = obterDataHoje();
+const dataHoje =
+    obterDataHoje();
+
 
 if (dataPainel) {
-    dataPainel.min = dataHoje;
-    dataPainel.value = dataHoje;
+
+    dataPainel.min =
+        dataHoje;
+
+    dataPainel.value =
+        dataHoje;
 }
 
 
@@ -218,36 +242,52 @@ async function limparHorariosPassados() {
         return;
     }
 
-    const hoje = obterDataHoje();
+    const hoje =
+        obterDataHoje();
 
     try {
 
-        const horariosRef = ref(
-            db,
-            `${CAMINHO_BARBEIRO}/horarios`
-        );
+        const horariosRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/horarios`
+            );
 
-        const snapshot = await get(horariosRef);
+        const snapshot =
+            await get(
+                horariosRef
+            );
 
         if (!snapshot.exists()) {
             return;
         }
 
-        const horarios = snapshot.val();
+        const horarios =
+            snapshot.val();
+
         const exclusoes = {};
 
-        Object.keys(horarios).forEach((data) => {
+        Object.keys(horarios).forEach(
+            (data) => {
 
-            if (data < hoje) {
-                exclusoes[data] = null;
+                if (data < hoje) {
+
+                    exclusoes[data] =
+                        null;
+                }
             }
-        });
+        );
 
-        if (Object.keys(exclusoes).length === 0) {
+        if (
+            Object.keys(exclusoes).length === 0
+        ) {
             return;
         }
 
-        await update(horariosRef, exclusoes);
+        await update(
+            horariosRef,
+            exclusoes
+        );
 
         console.log(
             "Horários de dias passados removidos."
@@ -267,17 +307,14 @@ async function limparHorariosPassados() {
 // NOTIFICAÇÕES
 // =========================================================
 
-let idsAgendamentosConhecidos = new Set();
+let idsAgendamentosConhecidos =
+    new Set();
 
-let idsAgendamentosNotificados = new Set();
+let primeiraLeituraAgendamentos =
+    true;
 
-let primeiraLeituraAgendamentos = true;
-
-let notificacoesAtivas = false;
-
-let monitoramentoIniciado = false;
-
-let pararMonitoramento = null;
+let notificacoesAtivas =
+    false;
 
 
 // =========================================================
@@ -292,11 +329,13 @@ async function prepararNotificacoes() {
             "Este navegador não suporta notificações."
         );
 
-        notificacoesAtivas = false;
         return;
     }
 
-    if (Notification.permission === "default") {
+    if (
+        Notification.permission ===
+        "default"
+    ) {
 
         const permissao =
             await Notification.requestPermission();
@@ -308,7 +347,8 @@ async function prepararNotificacoes() {
     }
 
     notificacoesAtivas =
-        Notification.permission === "granted";
+        Notification.permission ===
+        "granted";
 
     console.log(
         "NOTIFICAÇÕES ATIVAS:",
@@ -322,510 +362,663 @@ async function prepararNotificacoes() {
 }
 
 
-// =========================================================
-// CATEGORIAS E PROCEDIMENTOS
-// =========================================================
+
+/* =========================================================
+   GESTÃO DE CATEGORIAS E SERVIÇOS
+========================================================= */
+
 
 let categoriasServicos = {};
 let itensServicos = {};
+let servicosAntigosPainel = {};
 
-const caminhoCategorias = () => `${CAMINHO_BARBEIRO}/servicos/categorias`;
-const caminhoItensServicos = () => `${CAMINHO_BARBEIRO}/servicos/itens`;
 
-function normalizarTexto(valor) {
-    return String(valor || "").trim().toLocaleLowerCase("pt-BR");
+function identificarCategoriaAntiga(nomeServico) {
+    const nome = String(nomeServico || "")
+        .trim()
+        .toLocaleLowerCase("pt-BR");
+
+    // Combos primeiro, para "Corte + Barba" não virar apenas Corte.
+    if (
+        nome.includes("corte") &&
+        nome.includes("barba")
+    ) {
+        return "Combos";
+    }
+
+    if (nome.includes("barba")) {
+        return "Barba";
+    }
+
+    if (
+        nome.includes("acabamento") ||
+        nome.includes("pezinho") ||
+        nome.includes("sobrancelha")
+    ) {
+        return "Acabamentos";
+    }
+
+    if (
+        nome.includes("corte") ||
+        nome.includes("degradê") ||
+        nome.includes("social") ||
+        nome.includes("infantil") ||
+        nome.includes("máquina")
+    ) {
+        return "Cortes";
+    }
+
+    return "Outros";
 }
 
-function formatarPrecoServico(preco) {
-    if (preco === null || preco === undefined || preco === "") return "Após avaliação";
-    return Number(preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+async function garantirCategoriasAntigasNoFirebase() {
+    const nomesExistentes = new Set(
+        Object.values(categoriasServicos)
+            .filter(Boolean)
+            .map(categoria =>
+                String(categoria.nome || "")
+                    .trim()
+                    .toLocaleLowerCase("pt-BR")
+            )
+    );
+
+    for (const nome of Object.keys(servicosAntigosPainel)) {
+        const nomeNormalizado = nome
+            .trim()
+            .toLocaleLowerCase("pt-BR");
+
+        // Se já existe, não cria outra categoria.
+        if (nomesExistentes.has(nomeNormalizado)) {
+            continue;
+        }
+
+        const novaCategoriaRef = push(
+            ref(db, caminhoCategorias())
+        );
+
+        const novaCategoria = {
+            nome,
+            criadoEm: new Date().toISOString()
+        };
+
+        await update(novaCategoriaRef, novaCategoria);
+
+        // Atualiza a lista local sem precisar recarregar a página.
+        categoriasServicos[novaCategoriaRef.key] = novaCategoria;
+
+        nomesExistentes.add(nomeNormalizado);
+
+        console.log("Categoria criada:", nome);
+    }
 }
 
-function formatarDuracaoServico(minutos) {
-    const total = Number(minutos);
-    if (!Number.isFinite(total) || total <= 0) return "Definida na avaliação";
-    const horas = Math.floor(total / 60);
-    const resto = total % 60;
-    if (horas && resto) return `${horas}h ${resto}min`;
-    if (horas) return `${horas} ${horas === 1 ? "hora" : "horas"}`;
-    return `${resto} minutos`;
+
+
+function caminhoCategorias() {
+    return `${CAMINHO_BARBEIRO}/servicos/categorias`;
+}
+
+function caminhoItensServicos() {
+    return `${CAMINHO_BARBEIRO}/servicos/itens`;
 }
 
 function mostrarMensagemServicos(texto, erro = false) {
     if (!mensagemServicos) return;
+
     mensagemServicos.textContent = texto;
-    mensagemServicos.classList.toggle("mensagem-erro", erro);
+    mensagemServicos.style.color = erro ? "#d9534f" : "";
 }
 
-function gerarValorServico(nome) {
-    const base = normalizarTexto(nome)
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") || "procedimento";
-    return `${base}_${Date.now().toString(36)}`;
-}
-
-async function importarProcedimentosAntigos() {
-    // Só importa a configuração local para o estabelecimento deste próprio site.
-    // Não copia procedimentos da Karen para outros clientes do Firebase.
-    if (CAMINHO_BARBEIRO !== `barbeiros/${CONFIG.id}` || !Array.isArray(CONFIG.servicos)) return;
-
-    const categoriasPorNome = new Map(
-        Object.entries(categoriasServicos).map(([id, item]) => [normalizarTexto(item?.nome), id])
-    );
-
-    for (const antigo of CONFIG.servicos) {
-        const nomeCategoria = String(antigo.categoria || "Procedimentos").trim();
-        const chaveCategoria = normalizarTexto(nomeCategoria);
-        let categoriaId = categoriasPorNome.get(chaveCategoria);
-
-        if (!categoriaId) {
-            const novaCategoria = push(ref(db, caminhoCategorias()));
-            await update(novaCategoria, { nome: nomeCategoria, criadoEm: new Date().toISOString() });
-            categoriaId = novaCategoria.key;
-            categoriasServicos[categoriaId] = { nome: nomeCategoria };
-            categoriasPorNome.set(chaveCategoria, categoriaId);
-        }
-
-        const valorAntigo = String(antigo.valor || "");
-        const jaExiste = Object.values(itensServicos).some(item =>
-            item && ((valorAntigo && item.valor === valorAntigo) || normalizarTexto(item.nome) === normalizarTexto(antigo.nome))
-        );
-        if (jaExiste) continue;
-
-        const novoServico = push(ref(db, caminhoItensServicos()));
-        const registro = {
-            nome: antigo.nome,
-            preco: antigo.preco ?? null,
-            categoriaId,
-            valor: valorAntigo || gerarValorServico(antigo.nome),
-            minutos: Number.isFinite(Number(antigo.minutos)) && antigo.minutos !== null ? Number(antigo.minutos) : null,
-            duracao: antigo.duracao || "Definida na avaliação",
-            descricao: antigo.descricao || "",
-            detalhes: Array.isArray(antigo.detalhes) ? antigo.detalhes : [],
-            criadoEm: new Date().toISOString()
-        };
-        await update(novoServico, registro);
-        itensServicos[novoServico.key] = registro;
-    }
-}
-
-function atualizarSeletorCategorias() {
-    if (!categoriaServico) return;
-    const valorAnterior = categoriaServico.value;
-    categoriaServico.replaceChildren();
-    const inicial = document.createElement("option");
-    inicial.value = "";
-    inicial.textContent = "Selecione uma categoria";
-    categoriaServico.appendChild(inicial);
-
-    Object.entries(categoriasServicos)
-        .filter(([, categoria]) => categoria && categoria.nome)
-        .sort((a, b) => String(a[1].nome).localeCompare(String(b[1].nome), "pt-BR"))
-        .forEach(([id, categoria]) => {
-            const option = document.createElement("option");
-            option.value = id;
-            option.textContent = categoria.nome;
-            categoriaServico.appendChild(option);
-        });
-
-    if (valorAnterior && categoriasServicos[valorAnterior]) categoriaServico.value = valorAnterior;
-    if (salvarServico) salvarServico.disabled = Object.keys(categoriasServicos).length === 0;
-}
-
-function criarElementoServico(tag, classe, texto) {
+function criarElemento(tag, classe, texto) {
     const elemento = document.createElement(tag);
+
     if (classe) elemento.className = classe;
     if (texto !== undefined) elemento.textContent = texto;
+
     return elemento;
 }
 
+function formatarPreco(preco) {
+    return Number(preco || 0).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+
+async function carregarServicos() {
+    if (!CAMINHO_BARBEIRO || !listaServicos) return;
+
+    listaServicos.textContent = "Carregando serviços...";
+
+    try {
+        const [categoriasSnapshot, itensSnapshot] = await Promise.all([
+            get(ref(db, caminhoCategorias())),
+            get(ref(db, caminhoItensServicos()))
+        ]);
+
+        categoriasServicos = categoriasSnapshot.exists()
+            ? categoriasSnapshot.val()
+            : {};
+
+        itensServicos = itensSnapshot.exists()
+            ? itensSnapshot.val()
+            : {};
+
+        // Usa serviços antigos salvos na configuração do cliente.
+        // Para o Dom Alfa original, também considera o config.js.
+        let origemAntiga = [];
+
+        if (Array.isArray(CONFIG_CLIENTE?.servicos)) {
+            origemAntiga = CONFIG_CLIENTE.servicos;
+        } else if (CAMINHO_BARBEIRO === `barbeiros/${CONFIG.id}`) {
+            origemAntiga = Array.isArray(CONFIG.servicos)
+                ? CONFIG.servicos
+                : [];
+        }
+
+        // Não repete os serviços que já existem na estrutura nova.
+        const nomesNovos = new Set(
+            Object.values(itensServicos)
+                .filter(Boolean)
+                .map(servico =>
+                    String(servico.nome || "")
+                        .trim()
+                        .toLocaleLowerCase("pt-BR")
+                )
+        );
+
+        servicosAntigosPainel = {};
+
+        origemAntiga.forEach((servico, indice) => {
+            if (!servico?.nome) return;
+
+            const nomeNormalizado = String(servico.nome)
+                .trim()
+                .toLocaleLowerCase("pt-BR");
+
+            if (nomesNovos.has(nomeNormalizado)) return;
+
+            const categoria = identificarCategoriaAntiga(servico.nome);
+
+            if (!servicosAntigosPainel[categoria]) {
+                servicosAntigosPainel[categoria] = [];
+            }
+
+            servicosAntigosPainel[categoria].push({
+                id: `antigo-${indice}`,
+                nome: servico.nome,
+                preco: Number(servico.preco) || 0
+            });
+        });
+
+            await garantirCategoriasAntigasNoFirebase();
+
+            atualizarSeletorCategorias();
+            renderizarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao carregar serviços:", erro);
+
+        listaServicos.textContent =
+            "Não foi possível carregar os serviços.";
+
+        mostrarMensagemServicos(
+            "Erro ao carregar. Verifique a conexão e as permissões do Firebase.",
+            true
+        );
+    }
+}
+
+
+function atualizarSeletorCategorias() {
+    if (!categoriaServico) return;
+
+    categoriaServico.replaceChildren();
+
+    const opcaoInicial = document.createElement("option");
+    opcaoInicial.value = "";
+    opcaoInicial.textContent = "Selecione uma categoria";
+    categoriaServico.appendChild(opcaoInicial);
+
+    Object.entries(categoriasServicos)
+        .sort((a, b) =>
+            String(a[1]?.nome || "").localeCompare(
+                String(b[1]?.nome || ""),
+                "pt-BR"
+            )
+        )
+        .forEach(([id, categoria]) => {
+            const opcao = document.createElement("option");
+            opcao.value = id;
+            opcao.textContent = categoria.nome || "Categoria sem nome";
+            categoriaServico.appendChild(opcao);
+        });
+
+    if (salvarServico) {
+        salvarServico.disabled =
+            Object.keys(categoriasServicos).length === 0;
+    }
+}
+
+
 function renderizarServicos() {
     if (!listaServicos) return;
+
     listaServicos.replaceChildren();
 
     const categorias = Object.entries(categoriasServicos)
-        .filter(([, categoria]) => categoria && categoria.nome)
-        .map(([id, categoria]) => ({ id, nome: categoria.nome }));
+        .map(([id, categoria]) => ({
+            id,
+            nome: categoria.nome || "Sem nome",
+            antiga: false
+        }));
 
-    if (!categorias.length) {
-        listaServicos.appendChild(criarElementoServico("p", "vazio", "Nenhuma categoria cadastrada."));
+    // Acrescenta as categorias dos serviços antigos.
+    Object.keys(servicosAntigosPainel).forEach(nomeCategoria => {
+        const jaExiste = categorias.some(categoria =>
+            categoria.nome.trim().toLocaleLowerCase("pt-BR") ===
+            nomeCategoria.toLocaleLowerCase("pt-BR")
+        );
+
+        if (!jaExiste) {
+            categorias.push({
+                id: `antiga-${nomeCategoria}`,
+                nome: nomeCategoria,
+                antiga: true
+            });
+        }
+    });
+
+    categorias.sort((a, b) =>
+        a.nome.localeCompare(b.nome, "pt-BR")
+    );
+
+    if (categorias.length === 0) {
+        listaServicos.appendChild(
+            criarElemento(
+                "p",
+                "vazio",
+                "Nenhum serviço cadastrado."
+            )
+        );
         return;
     }
 
-    categorias.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
     categorias.forEach(categoria => {
-        const grupo = criarElementoServico("section", "grupo-servicos-painel");
-        const topo = criarElementoServico("div", "topo-grupo-servicos");
-        topo.appendChild(criarElementoServico("h3", "", categoria.nome));
-        const editarCategoria = criarElementoServico("button", "botao-secundario", "Renomear");
-        editarCategoria.type = "button";
-        editarCategoria.addEventListener("click", () => editarCategoriaPainel(categoria.id));
-        const excluirCategoria = criarElementoServico("button", "botao-secundario", "Excluir categoria");
-        excluirCategoria.type = "button";
-        excluirCategoria.addEventListener("click", () => excluirCategoriaPainel(categoria.id));
-        const acoesCategoria = criarElementoServico("div", "acoes-servicos-painel");
-        acoesCategoria.append(editarCategoria, excluirCategoria);
-        topo.appendChild(acoesCategoria);
-        grupo.appendChild(topo);
+        const grupo = criarElemento("div", "categoria-servicos");
+        const cabecalho = criarElemento("div", "cabecalho-categoria");
+        const titulo = criarElemento("h3", "", categoria.nome);
+        const botoesCategoria = criarElemento("div", "acoes-categoria");
 
-        const servicos = Object.entries(itensServicos)
-            .filter(([, item]) => item && item.categoriaId === categoria.id)
-            .sort((a, b) => String(a[1].nome || "").localeCompare(String(b[1].nome || ""), "pt-BR"));
+        // Categorias reais continuam editáveis.
+        if (!categoria.antiga) {
+            const editarCategoria = criarElemento(
+                "button",
+                "editar-categoria",
+                "Editar"
+            );
 
-        if (!servicos.length) grupo.appendChild(criarElementoServico("p", "texto-vazio-servicos", "Nenhum procedimento nesta categoria."));
+            editarCategoria.type = "button";
+            editarCategoria.addEventListener("click", () => {
+                editarCategoriaServico(categoria.id);
+            });
 
-        servicos.forEach(([id, item]) => {
-            const card = criarElementoServico("article", "procedimento-painel");
-            const conteudo = criarElementoServico("div", "procedimento-painel-conteudo");
-            conteudo.appendChild(criarElementoServico("h4", "", item.nome || "Sem nome"));
-            conteudo.appendChild(criarElementoServico("p", "procedimento-meta", `${formatarPrecoServico(item.preco)} · ${formatarDuracaoServico(item.minutos)}`));
-            if (item.descricao) conteudo.appendChild(criarElementoServico("p", "procedimento-descricao-painel", item.descricao));
-            if (Array.isArray(item.detalhes) && item.detalhes.length) {
-                const lista = document.createElement("ul");
-                item.detalhes.forEach(detalhe => lista.appendChild(criarElementoServico("li", "", detalhe)));
-                conteudo.appendChild(lista);
+            const excluirCategoria = criarElemento(
+                "button",
+                "excluir-categoria",
+                "Excluir"
+            );
+
+            excluirCategoria.type = "button";
+            excluirCategoria.addEventListener("click", () => {
+                excluirCategoriaServico(categoria.id);
+            });
+
+            botoesCategoria.append(editarCategoria, excluirCategoria);
+        }
+
+        cabecalho.append(titulo, botoesCategoria);
+        grupo.appendChild(cabecalho);
+
+        const servicosDaCategoria = categoria.antiga
+            ? []
+            : Object.entries(itensServicos)
+                .filter(([, servico]) =>
+                    servico && servico.categoriaId === categoria.id
+                )
+                .map(([id, servico]) => ({
+                    id,
+                    nome: servico.nome || "Sem nome",
+                    preco: servico.preco,
+                    antigo: false
+                }));
+
+        // Se já existe uma categoria real com esse nome,
+        // os serviços antigos aparecem dentro dela também.
+        const categoriaAntigaCorrespondente =
+            Object.keys(servicosAntigosPainel).find(nome =>
+                nome.toLocaleLowerCase("pt-BR") ===
+                categoria.nome.trim().toLocaleLowerCase("pt-BR")
+            );
+
+        if (categoria.antiga) {
+            servicosDaCategoria.push(
+                ...(servicosAntigosPainel[categoria.nome] || [])
+                    .map(servico => ({ ...servico, antigo: true }))
+            );
+        } else if (categoriaAntigaCorrespondente) {
+            servicosDaCategoria.push(
+                ...(servicosAntigosPainel[categoriaAntigaCorrespondente] || [])
+                    .map(servico => ({ ...servico, antigo: true }))
+            );
+        }
+
+        servicosDaCategoria.sort((a, b) =>
+            a.nome.localeCompare(b.nome, "pt-BR")
+        );
+
+        if (servicosDaCategoria.length === 0) {
+            grupo.appendChild(
+                criarElemento("p", "vazio", "Nenhum serviço nesta categoria.")
+            );
+        }
+
+        servicosDaCategoria.forEach(servico => {
+            const linha = criarElemento("div", "item-servico");
+            const informacoes = criarElemento("div", "info-servico");
+            const nome = criarElemento("strong", "", servico.nome);
+            const preco = criarElemento(
+                "span",
+                "preco-servico",
+                formatarPreco(servico.preco)
+            );
+
+            informacoes.append(nome, preco);
+            linha.appendChild(informacoes);
+
+            if (servico.antigo) {
+                linha.appendChild(
+                    criarElemento(
+                        "span",
+                        "servico-legado",
+                        "Serviço existente"
+                    )
+                );
+            } else {
+                const acoes = criarElemento("div", "acoes-servico");
+
+                const editar = criarElemento(
+                    "button",
+                    "editar-servico",
+                    "Editar"
+                );
+
+                const excluir = criarElemento(
+                    "button",
+                    "excluir-servico",
+                    "Excluir"
+                );
+
+                editar.type = "button";
+                excluir.type = "button";
+
+                editar.addEventListener("click", () => {
+                    editarItemServico(servico.id);
+                });
+
+                excluir.addEventListener("click", () => {
+                    excluirItemServico(servico.id);
+                });
+
+                acoes.append(editar, excluir);
+                linha.appendChild(acoes);
             }
-            card.appendChild(conteudo);
-            const acoes = criarElementoServico("div", "acoes-servicos-painel");
-            const editar = criarElementoServico("button", "botao-secundario", "Editar");
-            editar.type = "button";
-            editar.addEventListener("click", () => editarProcedimentoPainel(id));
-            const excluir = criarElementoServico("button", "botao-secundario", "Excluir");
-            excluir.type = "button";
-            excluir.addEventListener("click", () => excluirProcedimentoPainel(id));
-            acoes.append(editar, excluir);
-            card.appendChild(acoes);
-            grupo.appendChild(card);
+
+            grupo.appendChild(linha);
         });
+
         listaServicos.appendChild(grupo);
     });
 }
 
-async function carregarServicosPainel() {
-    if (!CAMINHO_BARBEIRO || !listaServicos) return;
-    listaServicos.textContent = "Carregando procedimentos...";
-    try {
-        const [categoriasSnap, itensSnap] = await Promise.all([
-            get(ref(db, caminhoCategorias())),
-            get(ref(db, caminhoItensServicos()))
-        ]);
-        categoriasServicos = categoriasSnap.exists() ? categoriasSnap.val() : {};
-        itensServicos = itensSnap.exists() ? itensSnap.val() : {};
 
-        await importarProcedimentosAntigos();
-        atualizarSeletorCategorias();
-        renderizarServicos();
-    } catch (erro) {
-        console.error("Erro ao carregar procedimentos:", erro);
-        listaServicos.textContent = "Não foi possível carregar os procedimentos.";
-        mostrarMensagemServicos("Confira a conexão e as permissões do Firebase.", true);
-    }
-}
+/* Criar categoria */
 
-if (formCategoria) formCategoria.addEventListener("submit", async evento => {
-    evento.preventDefault();
-    const nome = nomeCategoria.value.trim();
-    if (!nome) return mostrarMensagemServicos("Digite o nome da categoria.", true);
-    if (Object.values(categoriasServicos).some(item => normalizarTexto(item?.nome) === normalizarTexto(nome))) {
-        return mostrarMensagemServicos("Essa categoria já existe.", true);
-    }
-    salvarCategoria.disabled = true;
-    try {
-        await update(push(ref(db, caminhoCategorias())), { nome, criadoEm: new Date().toISOString() });
-        formCategoria.reset();
-        mostrarMensagemServicos("Categoria adicionada.");
-        await carregarServicosPainel();
-    } catch (erro) {
-        console.error(erro);
-        mostrarMensagemServicos("Não foi possível salvar a categoria. Verifique as permissões.", true);
-    } finally { salvarCategoria.disabled = false; }
-});
+if (formCategoria) {
+    formCategoria.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
 
-if (formServico) formServico.addEventListener("submit", async evento => {
-    evento.preventDefault();
-    const categoriaId = categoriaServico.value;
-    const nome = nomeServico.value.trim();
-    const precoTexto = precoServico.value.trim();
-    const duracaoTexto = duracaoServico.value.trim();
-    const descricao = descricaoServico.value.trim();
-    const detalhes = detalhesServico.value.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-    const preco = precoTexto === "" ? null : Number(precoTexto);
-    const minutos = duracaoTexto === "" ? null : Number(duracaoTexto);
+        if (!CAMINHO_BARBEIRO) return;
 
-    if (!categoriasServicos[categoriaId]) return mostrarMensagemServicos("Selecione uma categoria válida.", true);
-    if (!nome) return mostrarMensagemServicos("Informe o nome do procedimento.", true);
-    if (preco !== null && (!Number.isFinite(preco) || preco < 0 || preco > 99999)) return mostrarMensagemServicos("Informe um preço válido.", true);
-    if (minutos !== null && (!Number.isInteger(minutos) || minutos < 1 || minutos > 1440)) return mostrarMensagemServicos("A duração deve ser de 1 a 1440 minutos.", true);
+        const nome = nomeCategoria.value.trim();
 
-    salvarServico.disabled = true;
-    try {
-        const registro = {
-            nome, preco, minutos,
-            duracao: formatarDuracaoServico(minutos),
-            descricao, detalhes, categoriaId,
-            valor: gerarValorServico(nome),
-            criadoEm: new Date().toISOString()
-        };
-        await update(push(ref(db, caminhoItensServicos())), registro);
-        formServico.reset();
-        mostrarMensagemServicos("Procedimento adicionado e publicado no catálogo.");
-        await carregarServicosPainel();
-    } catch (erro) {
-        console.error(erro);
-        mostrarMensagemServicos("Não foi possível salvar o procedimento. Verifique as permissões.", true);
-    } finally { salvarServico.disabled = false; }
-});
+        if (!nome) {
+            mostrarMensagemServicos("Informe o nome da categoria.", true);
+            return;
+        }
 
-async function editarCategoriaPainel(id) {
-    const atual = categoriasServicos[id];
-    if (!atual) return;
-    const resposta = prompt("Nome da categoria:", atual.nome || "");
-    if (resposta === null) return;
-    const nome = resposta.trim();
-    if (!nome) return mostrarMensagemServicos("O nome não pode ficar vazio.", true);
-    if (Object.entries(categoriasServicos).some(([outroId, item]) => outroId !== id && normalizarTexto(item?.nome) === normalizarTexto(nome))) return mostrarMensagemServicos("Já existe uma categoria com esse nome.", true);
-    try {
-        await update(ref(db, `${caminhoCategorias()}/${id}`), { nome });
-        mostrarMensagemServicos("Categoria atualizada.");
-        await carregarServicosPainel();
-    } catch (erro) { console.error(erro); mostrarMensagemServicos("Não foi possível editar a categoria.", true); }
-}
+        const duplicada = Object.values(categoriasServicos).some(
+            categoria =>
+                String(categoria?.nome || "").trim().toLocaleLowerCase("pt-BR") ===
+                nome.toLocaleLowerCase("pt-BR")
+        );
 
-async function excluirCategoriaPainel(id) {
-    const categoria = categoriasServicos[id];
-    if (!categoria) return;
-    if (Object.values(itensServicos).some(item => item?.categoriaId === id)) return mostrarMensagemServicos("Mova ou exclua os procedimentos antes de remover a categoria.", true);
-    if (!confirm(`Excluir a categoria \"${categoria.nome}\"?`)) return;
-    try {
-        await remove(ref(db, `${caminhoCategorias()}/${id}`));
-        mostrarMensagemServicos("Categoria excluída.");
-        await carregarServicosPainel();
-    } catch (erro) { console.error(erro); mostrarMensagemServicos("Não foi possível excluir a categoria.", true); }
-}
+        if (duplicada) {
+            mostrarMensagemServicos("Já existe uma categoria com esse nome.", true);
+            return;
+        }
 
+        salvarCategoria.disabled = true;
 
-let procedimentoEditandoId = null;
+        try {
+            await push(ref(db, caminhoCategorias()), {
+                nome,
+                criadoEm: new Date().toISOString()
+            });
 
-function abrirModalProcedimento() {
-    const modal = document.getElementById("modalEditarProcedimento");
-    if (!modal) return;
+            formCategoria.reset();
+            mostrarMensagemServicos("Categoria criada com sucesso.");
+            await carregarServicos();
 
-    modal.hidden = false;
-    document.body.classList.add("modal-procedimento-aberto");
-
-    requestAnimationFrame(() => {
-        document.getElementById("editarNomeProcedimento")?.focus();
+        } catch (erro) {
+            console.error("Erro ao criar categoria:", erro);
+            mostrarMensagemServicos(
+                "Não foi possível criar a categoria. Verifique as permissões.",
+                true
+            );
+        } finally {
+            salvarCategoria.disabled = false;
+        }
     });
 }
 
-function fecharModalProcedimento() {
-    const modal = document.getElementById("modalEditarProcedimento");
-    if (!modal) return;
+/* Editar categoria */
 
-    modal.hidden = true;
-    document.body.classList.remove("modal-procedimento-aberto");
-    procedimentoEditandoId = null;
+async function editarCategoriaServico(categoriaId) {
+    const categoria = categoriasServicos[categoriaId];
+    if (!categoria) return;
+
+    const novoNome = prompt("Novo nome da categoria:", categoria.nome || "");
+    if (novoNome === null) return;
+
+    const nome = novoNome.trim();
+
+    if (!nome) {
+        mostrarMensagemServicos("O nome não pode ficar vazio.", true);
+        return;
+    }
+
+    const duplicada = Object.entries(categoriasServicos).some(
+        ([id, item]) =>
+            id !== categoriaId &&
+            String(item?.nome || "").trim().toLocaleLowerCase("pt-BR") ===
+            nome.toLocaleLowerCase("pt-BR")
+    );
+
+    if (duplicada) {
+        mostrarMensagemServicos("Já existe uma categoria com esse nome.", true);
+        return;
+    }
+
+    try {
+        await update(ref(db, `${caminhoCategorias()}/${categoriaId}`), {
+            nome
+        });
+
+        mostrarMensagemServicos("Categoria atualizada.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao editar categoria:", erro);
+        mostrarMensagemServicos("Não foi possível editar a categoria.", true);
+    }
 }
 
-async function editarProcedimentoPainel(id) {
-    const item = itensServicos[id];
-    if (!item) return;
+/* Excluir categoria sem serviços vinculados */
 
-    const modal = document.getElementById("modalEditarProcedimento");
-    const seletorCategoria = document.getElementById("editarCategoriaProcedimento");
+async function excluirCategoriaServico(categoriaId) {
+    const categoria = categoriasServicos[categoriaId];
+    if (!categoria) return;
 
-    if (!modal || !seletorCategoria) {
+    const possuiServicos = Object.values(itensServicos).some(
+        servico => servico?.categoriaId === categoriaId
+    );
+
+    if (possuiServicos) {
         mostrarMensagemServicos(
-            "A janela de edição não foi encontrada. Confira o HTML do painel.",
+            "Mova ou exclua os serviços desta categoria antes de excluí-la.",
             true
         );
         return;
     }
 
-    procedimentoEditandoId = id;
+    if (!confirm(`Excluir a categoria "${categoria.nome}"?`)) return;
 
-    document.getElementById("editarNomeProcedimento").value =
-        item.nome || "";
+    try {
+        await remove(ref(db, `${caminhoCategorias()}/${categoriaId}`));
+        mostrarMensagemServicos("Categoria excluída.");
+        await carregarServicos();
 
-    document.getElementById("editarPrecoProcedimento").value =
-        item.preco === null || item.preco === undefined
-            ? ""
-            : String(item.preco);
-
-    document.getElementById("editarDuracaoProcedimento").value =
-        item.minutos === null || item.minutos === undefined
-            ? ""
-            : String(item.minutos);
-
-    document.getElementById("editarDescricaoProcedimento").value =
-        item.descricao || "";
-
-    document.getElementById("editarDetalhesProcedimento").value =
-        Array.isArray(item.detalhes)
-            ? item.detalhes.join("\n")
-            : "";
-
-    seletorCategoria.replaceChildren();
-
-    Object.entries(categoriasServicos)
-        .filter(([, categoria]) => categoria && categoria.nome)
-        .sort((a, b) =>
-            String(a[1].nome).localeCompare(
-                String(b[1].nome),
-                "pt-BR"
-            )
-        )
-        .forEach(([categoriaId, categoria]) => {
-            const opcao = document.createElement("option");
-            opcao.value = categoriaId;
-            opcao.textContent = categoria.nome;
-            seletorCategoria.appendChild(opcao);
-        });
-
-    if (categoriasServicos[item.categoriaId]) {
-        seletorCategoria.value = item.categoriaId;
+    } catch (erro) {
+        console.error("Erro ao excluir categoria:", erro);
+        mostrarMensagemServicos("Não foi possível excluir a categoria.", true);
     }
-
-    abrirModalProcedimento();
 }
 
+/* Criar serviço */
 
-// Salvar todas as alterações do procedimento.
-const formEditarProcedimento =
-    document.getElementById("formEditarProcedimento");
-
-if (formEditarProcedimento) {
-    formEditarProcedimento.addEventListener("submit", async evento => {
+if (formServico) {
+    formServico.addEventListener("submit", async (evento) => {
         evento.preventDefault();
 
-        const id = procedimentoEditandoId;
-        if (!id || !itensServicos[id]) return;
+        if (!CAMINHO_BARBEIRO) return;
 
-        const nome =
-            document.getElementById("editarNomeProcedimento").value.trim();
-
-        const categoriaId =
-            document.getElementById("editarCategoriaProcedimento").value;
-
-        const precoTexto =
-            document.getElementById("editarPrecoProcedimento").value.trim();
-
-        const duracaoTexto =
-            document.getElementById("editarDuracaoProcedimento").value.trim();
-
-        const descricao =
-            document.getElementById("editarDescricaoProcedimento").value.trim();
-
-        const detalhes =
-            document.getElementById("editarDetalhesProcedimento").value
-                .split(/\r?\n/)
-                .map(texto => texto.trim())
-                .filter(Boolean);
-
-        const preco = precoTexto === "" ? null : Number(precoTexto);
-        const minutos = duracaoTexto === "" ? null : Number(duracaoTexto);
-
-        if (!nome) {
-            mostrarMensagemServicos("Informe o nome do procedimento.", true);
-            document.getElementById("editarNomeProcedimento").focus();
-            return;
-        }
+        const categoriaId = categoriaServico.value;
+        const nome = nomeServico.value.trim();
+        const preco = Number(precoServico.value);
 
         if (!categoriasServicos[categoriaId]) {
             mostrarMensagemServicos("Selecione uma categoria válida.", true);
             return;
         }
 
-        if (
-            preco !== null &&
-            (!Number.isFinite(preco) || preco < 0 || preco > 99999)
-        ) {
-            mostrarMensagemServicos("Informe um preço válido.", true);
+        if (!nome || !Number.isFinite(preco) || preco < 0 || preco > 99999) {
+            mostrarMensagemServicos("Confira o nome e o preço informado.", true);
             return;
         }
 
-        if (
-            minutos !== null &&
-            (!Number.isInteger(minutos) || minutos < 1 || minutos > 1440)
-        ) {
-            mostrarMensagemServicos(
-                "A duração deve ser de 1 a 1440 minutos.",
-                true
-            );
-            return;
-        }
-
-        const botaoSalvar =
-            document.getElementById("salvarEdicaoProcedimento");
-
-        botaoSalvar.disabled = true;
-        botaoSalvar.textContent = "Salvando...";
+        salvarServico.disabled = true;
 
         try {
-            await update(ref(db, `${caminhoItensServicos()}/${id}`), {
+            await push(ref(db, caminhoItensServicos()), {
                 nome,
-                categoriaId,
                 preco,
-                minutos,
-                duracao: formatarDuracaoServico(minutos),
-                descricao,
-                detalhes,
-                valor: gerarValorServico(nome)
+                categoriaId,
+                criadoEm: new Date().toISOString()
             });
 
-            fecharModalProcedimento();
-
-            mostrarMensagemServicos(
-                "Procedimento atualizado com sucesso."
-            );
-
-            await carregarServicosPainel();
+            formServico.reset();
+            atualizarSeletorCategorias();
+            mostrarMensagemServicos("Serviço adicionado com sucesso.");
+            await carregarServicos();
 
         } catch (erro) {
-            console.error("Erro ao editar procedimento:", erro);
-
+            console.error("Erro ao criar serviço:", erro);
             mostrarMensagemServicos(
-                "Não foi possível salvar. Confira a conexão e as permissões do Firebase.",
+                "Não foi possível adicionar o serviço. Verifique as permissões.",
                 true
             );
         } finally {
-            botaoSalvar.disabled = false;
-            botaoSalvar.textContent = "Salvar alterações";
+            salvarServico.disabled =
+                Object.keys(categoriasServicos).length === 0;
         }
     });
 }
 
+/* Editar serviço */
 
-// Fechar pelos botões e clicando fora da janela.
-document.getElementById("fecharModalProcedimento")
-    ?.addEventListener("click", fecharModalProcedimento);
+async function editarItemServico(servicoId) {
+    const servico = itensServicos[servicoId];
+    if (!servico) return;
 
-document.getElementById("cancelarEdicaoProcedimento")
-    ?.addEventListener("click", fecharModalProcedimento);
+    const novoNome = prompt("Nome do serviço:", servico.nome || "");
+    if (novoNome === null) return;
 
-document.querySelector("#modalEditarProcedimento [data-fechar-modal]")
-    ?.addEventListener("click", fecharModalProcedimento);
+    const nome = novoNome.trim();
 
-
-// Fechar com a tecla Esc.
-document.addEventListener("keydown", evento => {
-    if (
-        evento.key === "Escape" &&
-        !document.getElementById("modalEditarProcedimento")?.hidden
-    ) {
-        fecharModalProcedimento();
+    if (!nome) {
+        mostrarMensagemServicos("O nome não pode ficar vazio.", true);
+        return;
     }
-});
 
+    const precoAtual = Number(servico.preco || 0);
+    const novoPrecoTexto = prompt(
+        "Preço do serviço (use ponto para centavos, se necessário):",
+        String(precoAtual)
+    );
 
-async function excluirProcedimentoPainel(id) {
-    const item = itensServicos[id];
-    if (!item || !confirm(`Excluir o procedimento \"${item.nome}\"?`)) return;
+    if (novoPrecoTexto === null) return;
+
+    const preco = Number(novoPrecoTexto);
+
+    if (!Number.isFinite(preco) || preco < 0 || preco > 99999) {
+        mostrarMensagemServicos("Informe um preço válido.", true);
+        return;
+    }
+
     try {
-        await remove(ref(db, `${caminhoItensServicos()}/${id}`));
-        mostrarMensagemServicos("Procedimento excluído.");
-        await carregarServicosPainel();
-    } catch (erro) { console.error(erro); mostrarMensagemServicos("Não foi possível excluir o procedimento.", true); }
+        await update(ref(db, `${caminhoItensServicos()}/${servicoId}`), {
+            nome,
+            preco
+        });
+
+        mostrarMensagemServicos("Serviço atualizado.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao editar serviço:", erro);
+        mostrarMensagemServicos("Não foi possível editar o serviço.", true);
+    }
+}
+
+/* Excluir serviço */
+
+async function excluirItemServico(servicoId) {
+    const servico = itensServicos[servicoId];
+    if (!servico) return;
+
+    if (!confirm(`Excluir o serviço "${servico.nome}"?`)) return;
+
+    try {
+        await remove(ref(db, `${caminhoItensServicos()}/${servicoId}`));
+        mostrarMensagemServicos("Serviço excluído.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao excluir serviço:", erro);
+        mostrarMensagemServicos("Não foi possível excluir o serviço.", true);
+    }
 }
 
 
@@ -839,22 +1032,23 @@ onAuthStateChanged(
 
         if (!usuario) {
 
-            window.location.href = "login.html";
+            window.location.href =
+                "login.html";
+
             return;
         }
 
         try {
 
-            // Descobrir o cliente
+            // =================================================
+            // DESCOBRIR CLIENTE
+            // =================================================
 
             let clienteId;
 
             try {
-
                 clienteId = await descobrirCliente();
-
             } catch (erro) {
-
                 console.warn(
                     "Não foi possível descobrir o cliente vinculado:",
                     erro.message
@@ -869,7 +1063,10 @@ onAuthStateChanged(
             );
 
 
-            // Definir caminho
+
+            // =================================================
+            // CAMINHO
+            // =================================================
 
             CAMINHO_BARBEIRO =
                 `barbeiros/${clienteId}`;
@@ -880,16 +1077,20 @@ onAuthStateChanged(
             );
 
 
-            // Carregar configuração
+            // =================================================
+            // CONFIGURAÇÃO
+            // =================================================
 
-            await carregarConfiguracaoCliente();
+                await carregarConfiguracaoCliente();
 
-            aplicarConfiguracaoCliente();
+                aplicarConfiguracaoCliente();
 
-            await carregarServicosPainel();
+                await carregarServicos();
 
 
-            // Preparar notificações
+            // =================================================
+            // NOTIFICAÇÕES
+            // =================================================
 
             await prepararNotificacoes();
 
@@ -898,12 +1099,19 @@ onAuthStateChanged(
             );
 
             console.log(
+                "TESTE NOTIFICAÇÃO:",
+                Notification.permission
+            );
+
+            console.log(
                 "notificacoesAtivas:",
                 notificacoesAtivas
             );
 
 
-            // Carregar painel
+            // =================================================
+            // CARREGAR PAINEL
+            // =================================================
 
             await limparHorariosPassados();
 
@@ -921,6 +1129,7 @@ onAuthStateChanged(
             );
 
             if (mensagem) {
+
                 mensagem.textContent =
                     "Erro ao identificar o cliente.";
             }
@@ -934,8 +1143,7 @@ onAuthStateChanged(
 // =========================================================
 
 function mostrarNotificacaoAgendamento(
-    agendamento,
-    id
+    agendamento
 ) {
 
     if (!notificacoesAtivas) {
@@ -948,8 +1156,7 @@ function mostrarNotificacaoAgendamento(
     }
 
     console.log(
-        "MOSTRANDO NOTIFICAÇÃO:",
-        id,
+        "MOSTRANDO NOTIFICAÇÃO REAL:",
         agendamento
     );
 
@@ -960,39 +1167,44 @@ function mostrarNotificacaoAgendamento(
             CONFIG.nome ||
             "Barbearia";
 
+            
+
+
         const titulo =
             `✂️ Novo agendamento — ${nomeBarbeariaAtual}`;
 
         const corpo =
             `${agendamento.nome || "Cliente"} agendou ${agendamento.servico || "um serviço"} às ${agendamento.horario || "--:--"}.`;
 
-        const notificacao = new Notification(
-            titulo,
-            {
-                body: corpo,
+        const notificacao =
+            new Notification(
+                titulo,
+                {
+                    body: corpo,
 
-                // Identificação estável, sem Date.now()
-                tag: `novo-${id}`,
+                    tag:
+                        `novo-${agendamento.data}-${agendamento.horario}-${Date.now()}`,
 
-                // Não solicitar novo alerta para a mesma tag
-                renotify: false
-            }
-        );
+                    renotify: true
+                }
+            );
 
         console.log(
-            "NOTIFICAÇÃO CRIADA:",
+            "✅ NOTIFICAÇÃO CRIADA:",
             notificacao
         );
 
         notificacao.onclick = () => {
+
             window.focus();
+
             notificacao.close();
         };
 
     } catch (erro) {
 
         console.error(
-            "ERRO AO CRIAR NOTIFICAÇÃO:",
+            "💥 ERRO AO CRIAR NOTIFICAÇÃO:",
             erro
         );
     }
@@ -1009,36 +1221,23 @@ function monitorarNovosAgendamentos() {
         return;
     }
 
-    // Evitar criar listeners duplicados
-
-    if (monitoramentoIniciado) {
-
-        console.log(
-            "Monitoramento já iniciado."
+    const agendamentosRef =
+        ref(
+            db,
+            `${CAMINHO_BARBEIRO}/agendamentos`
         );
 
-        return;
-    }
-
-    monitoramentoIniciado = true;
-
-    const agendamentosRef = ref(
-        db,
-        `${CAMINHO_BARBEIRO}/agendamentos`
-    );
-
-    pararMonitoramento = onValue(
+    onValue(
         agendamentosRef,
-
         (snapshot) => {
-
-            // Se não houver agendamentos
 
             if (!snapshot.exists()) {
 
-                idsAgendamentosConhecidos = new Set();
+                idsAgendamentosConhecidos =
+                    new Set();
 
-                primeiraLeituraAgendamentos = false;
+                primeiraLeituraAgendamentos =
+                    false;
 
                 console.log(
                     "Nenhum agendamento encontrado."
@@ -1047,21 +1246,28 @@ function monitorarNovosAgendamentos() {
                 return;
             }
 
-            const dados = snapshot.val();
+            const dados =
+                snapshot.val();
 
-            const idsAtuais = new Set(
-                Object.keys(dados)
-            );
+            const idsAtuais =
+                new Set(
+                    Object.keys(dados)
+                );
 
 
-            // Primeira leitura: registrar os existentes
-            // sem notificar reservas antigas
+            // =================================================
+            // PRIMEIRA LEITURA
+            // =================================================
 
-            if (primeiraLeituraAgendamentos) {
+            if (
+                primeiraLeituraAgendamentos
+            ) {
 
-                idsAgendamentosConhecidos = idsAtuais;
+                idsAgendamentosConhecidos =
+                    idsAtuais;
 
-                primeiraLeituraAgendamentos = false;
+                primeiraLeituraAgendamentos =
+                    false;
 
                 console.log(
                     "Monitoramento de agendamentos iniciado."
@@ -1071,59 +1277,48 @@ function monitorarNovosAgendamentos() {
             }
 
 
-            // Procurar novos agendamentos
+            // =================================================
+            // PROCURAR NOVOS
+            // =================================================
 
-            idsAtuais.forEach((id) => {
+            idsAtuais.forEach(
+                (id) => {
 
-                if (idsAgendamentosConhecidos.has(id)) {
-                    return;
+                    if (
+                        !idsAgendamentosConhecidos.has(
+                            id
+                        )
+                    ) {
+
+                        const agendamento =
+                            dados[id];
+
+                        if (
+                            agendamento &&
+                            agendamento.status ===
+                                "confirmado"
+                        ) {
+
+                            console.log(
+                                "NOVO AGENDAMENTO:",
+                                agendamento
+                            );
+
+                            mostrarNotificacaoAgendamento(
+                                agendamento
+                            );
+
+                            carregarAgendamentos();
+
+                            carregarHorarios();
+                        }
+                    }
                 }
-
-                const agendamento = dados[id];
-
-                if (
-                    !agendamento ||
-                    agendamento.status !== "confirmado"
-                ) {
-                    return;
-                }
-
-                // Impedir notificação repetida do mesmo ID
-
-                if (idsAgendamentosNotificados.has(id)) {
-
-                    console.log(
-                        "Agendamento já notificado:",
-                        id
-                    );
-
-                    return;
-                }
-
-                // Registrar ANTES de mostrar a notificação
-
-                idsAgendamentosNotificados.add(id);
-
-                console.log(
-                    "NOVO AGENDAMENTO:",
-                    id,
-                    agendamento
-                );
-
-                mostrarNotificacaoAgendamento(
-                    agendamento,
-                    id
-                );
-
-                carregarAgendamentos();
-
-                carregarHorarios();
-            });
+            );
 
 
-            // Atualizar IDs conhecidos
-
-            idsAgendamentosConhecidos = idsAtuais;
+            idsAgendamentosConhecidos =
+                idsAtuais;
         },
 
         (erro) => {
@@ -1151,7 +1346,8 @@ if (sair) {
 
                 await signOut(auth);
 
-                window.location.href = "index.html";
+                window.location.href =
+                    "index.html";
 
             } catch (erro) {
 
@@ -1161,6 +1357,7 @@ if (sair) {
                 );
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Erro ao sair da conta.";
                 }
@@ -1180,23 +1377,31 @@ async function carregarAgendamentos() {
         return;
     }
 
-    const data = String(
-        dataPainel?.value || obterDataHoje()
-    );
+    const data =
+        String(
+            dataPainel?.value || obterDataHoje()
+        );
 
     if (listaAgendamentos) {
+
         listaAgendamentos.innerHTML =
             "<p class='vazio'>Carregando...</p>";
     }
 
     try {
 
-        const snapshot = await get(
-            ref(
-                db,
-                `${CAMINHO_BARBEIRO}/agendamentos`
-            )
-        );
+        const snapshot =
+            await get(
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/agendamentos`
+                )
+            );
+
+
+        // =================================================
+        // DEBUG
+        // =================================================
 
         console.log(
             "=== DEBUG AGENDAMENTOS ==="
@@ -1223,29 +1428,43 @@ async function carregarAgendamentos() {
         );
 
 
-        // Nenhum agendamento
+        // =================================================
+        // NENHUM AGENDAMENTO
+        // =================================================
 
         if (!snapshot.exists()) {
 
             if (listaAgendamentos) {
+
                 listaAgendamentos.innerHTML =
                     "<p class='vazio'>Nenhum agendamento para esta data.</p>";
             }
 
             if (totalAgendados) {
-                totalAgendados.textContent = "0";
+
+                totalAgendados.textContent =
+                    "0";
             }
 
             return;
         }
 
-        const dados = snapshot.val();
+
+        const dados =
+            snapshot.val();
+
+
+        // =================================================
+        // TRANSFORMAR EM ARRAY
+        // =================================================
 
         const todosAgendamentos =
             Object.entries(dados);
 
 
-        // Filtrar pela data e excluir cancelados
+        // =================================================
+        // FILTRAR PELA DATA
+        // =================================================
 
         const agendamentos =
             todosAgendamentos.filter(
@@ -1256,7 +1475,9 @@ async function carregarAgendamentos() {
                     }
 
                     const dataAgendamento =
-                        String(agendamento.data || "");
+                        String(
+                            agendamento.data || ""
+                        );
 
                     const status =
                         String(
@@ -1271,7 +1492,15 @@ async function carregarAgendamentos() {
             );
 
 
-        // Ordenar por horário
+        console.log(
+            "AGENDAMENTOS FILTRADOS:",
+            agendamentos
+        );
+
+
+        // =================================================
+        // ORDENAR POR HORÁRIO
+        // =================================================
 
         agendamentos.sort(
             ([, agendamentoA], [, agendamentoB]) => {
@@ -1286,29 +1515,45 @@ async function carregarAgendamentos() {
                         agendamentoB?.horario || "99:99"
                     );
 
-                return horarioA.localeCompare(horarioB);
+                return horarioA.localeCompare(
+                    horarioB
+                );
             }
         );
 
 
-        // Total agendados
+        // =================================================
+        // TOTAL AGENDADOS
+        // =================================================
 
         if (totalAgendados) {
 
             totalAgendados.textContent =
-                String(agendamentos.length);
+                String(
+                    agendamentos.length
+                );
 
-            totalAgendados.style.display = "block";
-            totalAgendados.style.visibility = "visible";
-            totalAgendados.style.opacity = "1";
+            totalAgendados.style.display =
+                "block";
+
+            totalAgendados.style.visibility =
+                "visible";
+
+            totalAgendados.style.opacity =
+                "1";
         }
 
 
-        // Nenhum agendamento nesta data
+        // =================================================
+        // NENHUM AGENDAMENTO NA DATA
+        // =================================================
 
-        if (agendamentos.length === 0) {
+        if (
+            agendamentos.length === 0
+        ) {
 
             if (listaAgendamentos) {
+
                 listaAgendamentos.innerHTML =
                     "<p class='vazio'>Nenhum agendamento para esta data.</p>";
             }
@@ -1317,135 +1562,197 @@ async function carregarAgendamentos() {
         }
 
 
-        // Limpar lista
+        // =================================================
+        // LIMPAR LISTA
+        // =================================================
 
         if (listaAgendamentos) {
             listaAgendamentos.innerHTML = "";
         }
 
 
-        // Criar cards
+        // =================================================
+        // CRIAR CARDS
+        // =================================================
 
-        agendamentos.forEach(([id, agendamento]) => {
+        agendamentos.forEach(
+            ([id, agendamento]) => {
 
-            if (!listaAgendamentos) {
-                return;
-            }
+                if (!listaAgendamentos) {
+                    return;
+                }
 
-            const card = document.createElement("div");
 
-            card.className = "agendamento";
+                const card =
+                    document.createElement(
+                        "div"
+                    );
 
-            const horario =
-                String(agendamento.horario || "--:--");
+                card.className =
+                    "agendamento";
 
-            const nome =
-                String(agendamento.nome || "Cliente");
 
-            const servico =
-                String(agendamento.servico || "Não informado");
+                // =================================================
+                // DADOS
+                // =================================================
 
-            const telefoneOriginal =
-                String(agendamento.telefone || "");
+                const horario =
+                    String(
+                        agendamento.horario || "--:--"
+                    );
 
-            const telefone =
-                telefoneOriginal.replace(/\D/g, "");
+                const nome =
+                    String(
+                        agendamento.nome || "Cliente"
+                    );
 
-            let whatsapp = telefone;
+                const servico =
+                    String(
+                        agendamento.servico || "Não informado"
+                    );
 
-            if (
-                whatsapp &&
-                !whatsapp.startsWith("55")
-            ) {
-                whatsapp = "55" + whatsapp;
-            }
+                const telefoneOriginal =
+                    String(
+                        agendamento.telefone || ""
+                    );
 
-            let linkWhatsApp = "#";
+                const telefone =
+                    telefoneOriginal.replace(
+                        /\D/g,
+                        ""
+                    );
 
-            if (whatsapp) {
-                linkWhatsApp =
-                    `https://wa.me/${whatsapp}`;
-            }
+                let whatsapp =
+                    telefone;
 
-            card.innerHTML = `
+                if (
+                    whatsapp &&
+                    !whatsapp.startsWith("55")
+                ) {
+                    whatsapp =
+                        "55" + whatsapp;
+                }
 
-                <div class="horario">
-                    ${horario}
-                </div>
 
-                <div class="cliente">
-                    ${nome}
-                </div>
+                // =================================================
+                // LINK WHATSAPP
+                // =================================================
 
-                <div class="detalhes-agendamento">
+                let linkWhatsApp = "#";
 
-                    <div>
-                        <span>Serviço</span>
-                        <strong>${servico}</strong>
+                if (whatsapp) {
+
+                    linkWhatsApp =
+                        `https://wa.me/${whatsapp}`;
+                }
+
+
+                // =================================================
+                // CARD
+                // =================================================
+
+                card.innerHTML = `
+
+                    <div class="horario">
+                        ${horario}
                     </div>
 
-                    <div>
-                        <span>WhatsApp</span>
-                        <strong>${telefoneOriginal || "Não informado"}</strong>
+                    <div class="cliente">
+                        ${nome}
                     </div>
 
-                </div>
+                    <div class="detalhes-agendamento">
 
-                <div class="botoes">
+                        <div>
+                            <span>Serviço</span>
 
-                    ${
-                        whatsapp
-                            ? `
-                                <a
-                                    class="whatsapp"
-                                    href="${linkWhatsApp}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    WhatsApp ↗
-                                </a>
-                            `
-                            : `
-                                <span class="whatsapp" style="opacity:0.5;">
-                                    Sem WhatsApp
-                                </span>
-                            `
-                    }
+                            <strong>
+                                ${servico}
+                            </strong>
+                        </div>
 
-                    <button
-                        class="cancelar"
-                        type="button"
-                    >
-                        Cancelar
-                    </button>
+                        <div>
+                            <span>WhatsApp</span>
 
-                </div>
-            `;
+                            <strong>
+                                ${telefoneOriginal || "Não informado"}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div class="botoes">
+
+                        ${
+                            whatsapp
+                                ? `
+                                    <a
+                                        class="whatsapp"
+                                        href="${linkWhatsApp}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        WhatsApp ↗
+                                    </a>
+                                `
+                                : `
+                                    <span class="whatsapp" style="opacity:0.5;">
+                                        Sem WhatsApp
+                                    </span>
+                                `
+                        }
+
+                        <button
+                            class="cancelar"
+                            type="button"
+                        >
+                            Cancelar
+                        </button>
+
+                    </div>
+                `;
 
 
-            // Botão cancelar
+                // =================================================
+                // BOTÃO CANCELAR
+                // =================================================
 
-            const botaoCancelar =
-                card.querySelector(".cancelar");
+                const botaoCancelar =
+                    card.querySelector(
+                        ".cancelar"
+                    );
 
-            if (botaoCancelar) {
+                if (botaoCancelar) {
 
-                botaoCancelar.addEventListener(
-                    "click",
-                    () => {
+                    botaoCancelar.addEventListener(
+                        "click",
+                        () => {
 
-                        cancelarAgendamento(
-                            id,
-                            agendamento.data,
-                            agendamento.horario
-                        );
-                    }
+                            cancelarAgendamento(
+                                id,
+                                agendamento.data,
+                                agendamento.horario
+                            );
+
+                        }
+                    );
+                }
+
+
+                // =================================================
+                // ADICIONAR CARD
+                // =================================================
+
+                listaAgendamentos.appendChild(
+                    card
                 );
             }
+        );
 
-            listaAgendamentos.appendChild(card);
-        });
 
+        // =================================================
+        // DEBUG FINAL
+        // =================================================
 
         console.log(
             "CARDS CRIADOS:",
@@ -1467,6 +1774,7 @@ async function carregarAgendamentos() {
         );
 
         if (listaAgendamentos) {
+
             listaAgendamentos.innerHTML =
                 "<p class='vazio'>Erro ao carregar agendamentos.</p>";
         }
@@ -1484,76 +1792,147 @@ async function carregarHorarios() {
         return;
     }
 
-    const data = String(
-        dataPainel?.value || obterDataHoje()
-    );
+    const data =
+        String(
+            dataPainel?.value || obterDataHoje()
+        );
 
     if (listaHorarios) {
+
         listaHorarios.innerHTML =
             "<p class='vazio'>Carregando...</p>";
     }
 
     try {
 
-        const horariosSnapshot = await get(
-            ref(
-                db,
-                `${CAMINHO_BARBEIRO}/horarios/${data}`
-            )
-        );
+        // =================================================
+        // BUSCAR HORÁRIOS
+        // =================================================
 
-        const agendamentosSnapshot = await get(
-            ref(
-                db,
-                `${CAMINHO_BARBEIRO}/agendamentos`
-            )
-        );
+        const horariosSnapshot =
+            await get(
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/horarios/${data}`
+                )
+            );
+
+
+        // =================================================
+        // BUSCAR AGENDAMENTOS
+        // =================================================
+
+        const agendamentosSnapshot =
+            await get(
+                ref(
+                    db,
+                    `${CAMINHO_BARBEIRO}/agendamentos`
+                )
+            );
+
 
         const horarios =
             horariosSnapshot.exists()
-                ? Object.entries(horariosSnapshot.val())
+                ? Object.entries(
+                    horariosSnapshot.val()
+                )
                 : [];
+
 
         const agendamentos =
             agendamentosSnapshot.exists()
-                ? Object.values(agendamentosSnapshot.val())
+                ? Object.values(
+                    agendamentosSnapshot.val()
+                )
                 : [];
 
 
-        // Horários ocupados
+        // =================================================
+        // HORÁRIOS OCUPADOS
+        // =================================================
 
         const horariosOcupados =
             agendamentos
-                .filter((agendamento) => {
+                .filter(
+                    (agendamento) => {
 
-                    return (
-                        String(agendamento?.data || "") === data &&
-                        String(
-                            agendamento?.status || ""
-                        ).toLowerCase() === "confirmado"
-                    );
-                })
-                .map((agendamento) => {
-                    return String(agendamento.horario || "");
-                });
+                        return (
+                            String(
+                                agendamento?.data || ""
+                            ) === data &&
+
+                            String(
+                                agendamento?.status || ""
+                            ).toLowerCase() ===
+                                "confirmado"
+                        );
+                    }
+                )
+                .map(
+                    (agendamento) => {
+
+                        return String(
+                            agendamento.horario || ""
+                        );
+                    }
+                );
 
 
-        // Ordenar horários
+        // =================================================
+        // ORDENAR HORÁRIOS
+        // =================================================
 
-        horarios.sort(([horarioA], [horarioB]) => {
+        horarios.sort(
+            ([horarioA], [horarioB]) => {
 
-            const [horaA, minutoA] =
-                String(horarioA).split(":").map(Number);
+                const [
+                    horaA,
+                    minutoA
+                ] =
+                    String(
+                        horarioA
+                    )
+                        .split(":")
+                        .map(Number);
 
-            const [horaB, minutoB] =
-                String(horarioB).split(":").map(Number);
+                const [
+                    horaB,
+                    minutoB
+                ] =
+                    String(
+                        horarioB
+                    )
+                        .split(":")
+                        .map(Number);
 
-            return (
-                horaA * 60 + minutoA -
-                (horaB * 60 + minutoB)
-            );
-        });
+                const minutosA =
+                    horaA * 60 +
+                    minutoA;
 
+                const minutosB =
+                    horaB * 60 +
+                    minutoB;
+
+                return (
+                    minutosA -
+                    minutosB
+                );
+            }
+        );
+
+
+        // =================================================
+        // DEBUG DOS HORÁRIOS
+        // =================================================
+
+        console.log(
+            "========== DEBUG HORÁRIOS =========="
+        );
+
+        console.log(
+            "DATA:",
+            data
+        );
 
         console.log(
             "HORÁRIOS ENCONTRADOS:",
@@ -1565,102 +1944,246 @@ async function carregarHorarios() {
             horariosOcupados
         );
 
+        console.log(
+            "TOTAL DE HORÁRIOS:",
+            horarios.length
+        );
 
-        // Contadores
+        console.log(
+            "===================================="
+        );
 
-        let quantidadeDisponiveis = 0;
-        let quantidadeOcupados = 0;
 
-        horarios.forEach(([horario, dados]) => {
+        // =================================================
+        // CONTADORES
+        // =================================================
 
-            const ocupado =
-                horariosOcupados.includes(String(horario));
+        let quantidadeDisponiveis =
+            0;
 
-            if (ocupado) {
-                quantidadeOcupados++;
-                return;
+        let quantidadeOcupados =
+            0;
+
+
+        horarios.forEach(
+            ([horario, dados]) => {
+
+                const horarioString =
+                    String(horario);
+
+                const ocupado =
+                    horariosOcupados.includes(
+                        horarioString
+                    );
+
+
+                if (ocupado) {
+
+                    quantidadeOcupados++;
+
+                    return;
+                }
+
+
+                if (
+                    dados &&
+                    dados.disponivel === true
+                ) {
+
+                    quantidadeDisponiveis++;
+
+                } else {
+
+                    quantidadeOcupados++;
+                }
             }
-
-            if (dados && dados.disponivel === true) {
-                quantidadeDisponiveis++;
-            } else {
-                quantidadeOcupados++;
-            }
-        });
+        );
 
 
-        // Atualizar agendados
+        // =================================================
+        // DEBUG DOS CONTADORES
+        // =================================================
+
+        console.log(
+            "========== RESUMO =========="
+        );
+
+        console.log(
+            "Total:",
+            horarios.length
+        );
+
+        console.log(
+            "Disponíveis:",
+            quantidadeDisponiveis
+        );
+
+        console.log(
+            "Ocupados:",
+            quantidadeOcupados
+        );
+
+        console.log(
+            "Soma:",
+            quantidadeDisponiveis +
+            quantidadeOcupados
+        );
+
+        console.log(
+            "============================"
+        );
+
+
+        // =================================================
+        // ATUALIZAR RESUMO
+        // =================================================
 
         const elementoAgendados =
-            document.getElementById("totalAgendados");
+            document.getElementById(
+                "totalAgendados"
+            );
 
         const elementoDisponiveis =
-            document.getElementById("totalDisponiveis");
+            document.getElementById(
+                "totalDisponiveis"
+            );
 
         const elementoOcupados =
-            document.getElementById("totalOcupados");
+            document.getElementById(
+                "totalOcupados"
+            );
 
+
+        // =================================================
+        // AGENDADOS
+        // =================================================
 
         if (elementoAgendados) {
 
             const quantidadeAgendados =
-                agendamentos.filter((agendamento) => {
+                agendamentos.filter(
+                    (agendamento) => {
 
-                    return (
-                        String(agendamento?.data || "") === data &&
-                        String(
-                            agendamento?.status || ""
-                        ).toLowerCase() !== "cancelado"
-                    );
-                }).length;
+                        return (
+                            String(
+                                agendamento?.data || ""
+                            ) === data &&
+
+                            String(
+                                agendamento?.status || ""
+                            ).toLowerCase() !==
+                                "cancelado"
+                        );
+                    }
+                ).length;
 
             elementoAgendados.textContent =
-                String(quantidadeAgendados);
+                String(
+                    quantidadeAgendados
+                );
 
-            elementoAgendados.style.display = "block";
-            elementoAgendados.style.visibility = "visible";
-            elementoAgendados.style.opacity = "1";
+            elementoAgendados.style.display =
+                "block";
+
+            elementoAgendados.style.visibility =
+                "visible";
+
+            elementoAgendados.style.opacity =
+                "1";
         }
 
 
-        // Atualizar disponíveis
+        // =================================================
+        // DISPONÍVEIS
+        // =================================================
 
         if (elementoDisponiveis) {
 
             elementoDisponiveis.textContent =
-                String(quantidadeDisponiveis);
+                String(
+                    quantidadeDisponiveis
+                );
 
-            elementoDisponiveis.style.display = "block";
-            elementoDisponiveis.style.visibility = "visible";
-            elementoDisponiveis.style.opacity = "1";
+            elementoDisponiveis.style.display =
+                "block";
+
+            elementoDisponiveis.style.visibility =
+                "visible";
+
+            elementoDisponiveis.style.opacity =
+                "1";
         }
 
 
-        // Atualizar ocupados
+        // =================================================
+        // OCUPADOS
+        // =================================================
 
         if (elementoOcupados) {
 
             elementoOcupados.textContent =
-                String(quantidadeOcupados);
+                String(
+                    quantidadeOcupados
+                );
 
-            elementoOcupados.style.display = "block";
-            elementoOcupados.style.visibility = "visible";
-            elementoOcupados.style.opacity = "1";
+            elementoOcupados.style.display =
+                "block";
+
+            elementoOcupados.style.visibility =
+                "visible";
+
+            elementoOcupados.style.opacity =
+                "1";
         }
 
 
-        // Limpar lista
+        // =================================================
+        // DEBUG FINAL DOS ELEMENTOS
+        // =================================================
+
+        console.log(
+            "========== CONTADORES DOM =========="
+        );
+
+        console.log(
+            "Agendados:",
+            elementoAgendados?.textContent
+        );
+
+        console.log(
+            "Disponíveis:",
+            elementoDisponiveis?.textContent
+        );
+
+        console.log(
+            "Ocupados:",
+            elementoOcupados?.textContent
+        );
+
+        console.log(
+            "===================================="
+        );
+
+
+        // =================================================
+        // LIMPAR LISTA
+        // =================================================
 
         if (listaHorarios) {
             listaHorarios.innerHTML = "";
         }
 
 
-        // Nenhum horário
+        // =================================================
+        // NENHUM HORÁRIO
+        // =================================================
 
-        if (horarios.length === 0) {
+        if (
+            horarios.length === 0
+        ) {
 
             if (listaHorarios) {
+
                 listaHorarios.innerHTML =
                     "<p class='vazio'>Nenhum horário cadastrado para esta data.</p>";
             }
@@ -1669,69 +2192,105 @@ async function carregarHorarios() {
         }
 
 
-        // Mostrar horários
+        // =================================================
+        // MOSTRAR HORÁRIOS
+        // =================================================
 
-        horarios.forEach(([horario, dados]) => {
+        horarios.forEach(
+            ([horario, dados]) => {
 
-            const ocupado =
-                horariosOcupados.includes(String(horario));
+                const ocupado =
+                    horariosOcupados.includes(
+                        String(horario)
+                    );
 
-            const disponivel =
-                !ocupado &&
-                dados &&
-                dados.disponivel === true;
 
-            const card = document.createElement("div");
+                const disponivel =
+                    !ocupado &&
+                    dados &&
+                    dados.disponivel === true;
 
-            card.className = "horario-card";
 
-            card.innerHTML = `
+                const card =
+                    document.createElement(
+                        "div"
+                    );
 
-                <strong>${horario}</strong>
+                card.className =
+                    "horario-card";
 
-                <span class="${
-                    disponivel
-                        ? "disponivel"
-                        : "ocupado"
-                }">
+
+                card.innerHTML = `
+
+                    <strong>
+                        ${horario}
+                    </strong>
+
+                    <span class="${
+                        disponivel
+                            ? "disponivel"
+                            : "ocupado"
+                    }">
+
+                        ${
+                            disponivel
+                                ? "Disponível"
+                                : "Ocupado"
+                        }
+
+                    </span>
+
                     ${
                         disponivel
-                            ? "Disponível"
-                            : "Ocupado"
+                            ? `
+                                <button
+                                    class="remover-horario"
+                                    type="button"
+                                >
+                                    Remover
+                                </button>
+                            `
+                            : ""
                     }
-                </span>
 
-                ${
-                    disponivel
-                        ? `
-                            <button
-                                class="remover-horario"
-                                type="button"
-                            >
-                                Remover
-                            </button>
-                        `
-                        : ""
+                `;
+
+
+                if (listaHorarios) {
+
+                    listaHorarios.appendChild(
+                        card
+                    );
                 }
-            `;
 
-            if (listaHorarios) {
-                listaHorarios.appendChild(card);
+
+                // =================================================
+                // REMOVER HORÁRIO
+                // =================================================
+
+                const botaoRemover =
+                    card.querySelector(
+                        ".remover-horario"
+                    );
+
+
+                if (botaoRemover) {
+
+                    botaoRemover.addEventListener(
+                        "click",
+                        () => {
+
+                            removerHorario(
+                                data,
+                                horario
+                            );
+
+                        }
+                    );
+                }
+
             }
-
-            const botaoRemover =
-                card.querySelector(".remover-horario");
-
-            if (botaoRemover) {
-
-                botaoRemover.addEventListener(
-                    "click",
-                    () => {
-                        removerHorario(data, horario);
-                    }
-                );
-            }
-        });
+        );
 
     } catch (erro) {
 
@@ -1741,6 +2300,7 @@ async function carregarHorarios() {
         );
 
         if (listaHorarios) {
+
             listaHorarios.innerHTML =
                 "<p class='vazio'>Erro ao carregar horários.</p>";
         }
@@ -1758,15 +2318,20 @@ async function cancelarAgendamento(
     horario
 ) {
 
-    const confirmar = confirm(
-        "Cancelar este agendamento?"
-    );
+    const confirmar =
+        confirm(
+            "Cancelar este agendamento?"
+        );
 
     if (!confirmar) {
         return;
     }
 
     try {
+
+        // =================================================
+        // CANCELAR AGENDAMENTO
+        // =================================================
 
         await update(
             ref(
@@ -1779,7 +2344,9 @@ async function cancelarAgendamento(
         );
 
 
-        // Liberar horário
+        // =================================================
+        // LIBERAR HORÁRIO
+        // =================================================
 
         await update(
             ref(
@@ -1793,9 +2360,11 @@ async function cancelarAgendamento(
 
 
         if (mensagem) {
+
             mensagem.textContent =
                 "✓ Agendamento cancelado.";
         }
+
 
         await carregarAgendamentos();
 
@@ -1809,6 +2378,7 @@ async function cancelarAgendamento(
         );
 
         if (mensagem) {
+
             mensagem.textContent =
                 "Erro ao cancelar o agendamento.";
         }
@@ -1830,13 +2400,17 @@ if (adicionarHorario) {
                 return;
             }
 
-            const data = dataPainel.value;
+            const data =
+                dataPainel.value;
 
-            const horario = novoHorario.value;
+            const horario =
+                novoHorario.value;
+
 
             if (!data || !horario) {
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Escolha um horário.";
                 }
@@ -1844,24 +2418,33 @@ if (adicionarHorario) {
                 return;
             }
 
+
             try {
 
-                const horarioRef = ref(
-                    db,
-                    `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
-                );
+                const horarioRef =
+                    ref(
+                        db,
+                        `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
+                    );
 
-                const snapshot = await get(horarioRef);
+
+                const snapshot =
+                    await get(
+                        horarioRef
+                    );
+
 
                 if (snapshot.exists()) {
 
                     if (mensagem) {
+
                         mensagem.textContent =
                             "Esse horário já existe.";
                     }
 
                     return;
                 }
+
 
                 await update(
                     horarioRef,
@@ -1870,12 +2453,16 @@ if (adicionarHorario) {
                     }
                 );
 
-                novoHorario.value = "";
+
+                novoHorario.value =
+                    "";
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "✓ Horário adicionado.";
                 }
+
 
                 await carregarHorarios();
 
@@ -1887,12 +2474,15 @@ if (adicionarHorario) {
                 );
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Erro ao adicionar horário.";
                 }
             }
+
         }
     );
+
 }
 
 
@@ -1910,12 +2500,17 @@ if (gerarHorarios) {
                 return;
             }
 
-            const inicio = horaInicio.value;
 
-            const fim = horaFim.value;
+            const inicio =
+                horaInicio.value;
+
+            const fim =
+                horaFim.value;
 
             const intervalo =
-                Number(intervaloHorario.value);
+                Number(
+                    intervaloHorario.value
+                );
 
             const pausaInicioValor =
                 pausaInicio.value;
@@ -1924,11 +2519,14 @@ if (gerarHorarios) {
                 pausaFim.value;
 
 
-            // Validações
+            // =================================================
+            // VALIDAÇÕES
+            // =================================================
 
             if (!inicio || !fim) {
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Preencha o início e o fim.";
                 }
@@ -1936,9 +2534,14 @@ if (gerarHorarios) {
                 return;
             }
 
-            if (!intervalo || intervalo <= 0) {
+
+            if (
+                !intervalo ||
+                intervalo <= 0
+            ) {
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Escolha um intervalo válido.";
                 }
@@ -1946,21 +2549,34 @@ if (gerarHorarios) {
                 return;
             }
 
+
             const inicioPartes =
-                inicio.split(":").map(Number);
+                inicio
+                    .split(":")
+                    .map(Number);
 
             const fimPartes =
-                fim.split(":").map(Number);
+                fim
+                    .split(":")
+                    .map(Number);
+
 
             const inicioMinutos =
-                inicioPartes[0] * 60 + inicioPartes[1];
+                inicioPartes[0] * 60 +
+                inicioPartes[1];
 
             const fimMinutos =
-                fimPartes[0] * 60 + fimPartes[1];
+                fimPartes[0] * 60 +
+                fimPartes[1];
 
-            if (inicioMinutos >= fimMinutos) {
+
+            if (
+                inicioMinutos >=
+                fimMinutos
+            ) {
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "O horário final deve ser maior que o inicial.";
                 }
@@ -1969,11 +2585,16 @@ if (gerarHorarios) {
             }
 
 
-            // Pausa
+            // =================================================
+            // PAUSA
+            // =================================================
 
-            let pausaInicioMinutos = null;
+            let pausaInicioMinutos =
+                null;
 
-            let pausaFimMinutos = null;
+            let pausaFimMinutos =
+                null;
+
 
             if (
                 pausaInicioValor &&
@@ -1981,10 +2602,15 @@ if (gerarHorarios) {
             ) {
 
                 const pausaInicioPartes =
-                    pausaInicioValor.split(":").map(Number);
+                    pausaInicioValor
+                        .split(":")
+                        .map(Number);
 
                 const pausaFimPartes =
-                    pausaFimValor.split(":").map(Number);
+                    pausaFimValor
+                        .split(":")
+                        .map(Number);
+
 
                 pausaInicioMinutos =
                     pausaInicioPartes[0] * 60 +
@@ -1994,11 +2620,14 @@ if (gerarHorarios) {
                     pausaFimPartes[0] * 60 +
                     pausaFimPartes[1];
 
+
                 if (
-                    pausaInicioMinutos >= pausaFimMinutos
+                    pausaInicioMinutos >=
+                    pausaFimMinutos
                 ) {
 
                     if (mensagem) {
+
                         mensagem.textContent =
                             "O fim da pausa deve ser maior que o início.";
                     }
@@ -2008,97 +2637,165 @@ if (gerarHorarios) {
             }
 
 
-            // Gerar horários
+            // =================================================
+            // GERAR
+            // =================================================
 
             try {
 
-                gerarHorarios.disabled = true;
+                gerarHorarios.disabled =
+                    true;
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Gerando horários para 7 dias...";
                 }
 
+
                 const atualizacoes = {};
 
-                let totalHorarios = 0;
-
-                const hoje = new Date();
-
-                hoje.setHours(0, 0, 0, 0);
+                let totalHorarios =
+                    0;
 
 
-                // Gerar os próximos 7 dias
+                // =================================================
+                // HOJE
+                // =================================================
 
-                for (let dia = 0; dia < 7; dia++) {
+                const hoje =
+                    new Date();
 
-                    const data = new Date(hoje);
+                hoje.setHours(
+                    0,
+                    0,
+                    0,
+                    0
+                );
 
-                    data.setDate(hoje.getDate() + dia);
 
-                    const ano = data.getFullYear();
+                // =================================================
+                // 7 DIAS
+                // =================================================
 
-                    const mes = String(
-                        data.getMonth() + 1
-                    ).padStart(2, "0");
+                for (
+                    let dia = 0;
+                    dia < 7;
+                    dia++
+                ) {
 
-                    const numeroDia = String(
-                        data.getDate()
-                    ).padStart(2, "0");
+                    const data =
+                        new Date(hoje);
+
+
+                    data.setDate(
+                        hoje.getDate() +
+                        dia
+                    );
+
+
+                    const ano =
+                        data.getFullYear();
+
+                    const mes =
+                        String(
+                            data.getMonth() + 1
+                        ).padStart(
+                            2,
+                            "0"
+                        );
+
+                    const numeroDia =
+                        String(
+                            data.getDate()
+                        ).padStart(
+                            2,
+                            "0"
+                        );
+
 
                     const dataFirebase =
                         `${ano}-${mes}-${numeroDia}`;
 
 
-                    // Horários do dia
+                    // =================================================
+                    // HORÁRIOS DO DIA
+                    // =================================================
 
                     for (
-                        let minutos = inicioMinutos;
-                        minutos < fimMinutos;
-                        minutos += intervalo
+                        let minutos =
+                            inicioMinutos;
+
+                        minutos <
+                        fimMinutos;
+
+                        minutos +=
+                            intervalo
                     ) {
 
-                        // Pular pausa
+
+                        // =================================================
+                        // PAUSA
+                        // =================================================
 
                         if (
                             pausaInicioMinutos !== null &&
                             pausaFimMinutos !== null &&
-                            minutos >= pausaInicioMinutos &&
-                            minutos < pausaFimMinutos
+                            minutos >=
+                                pausaInicioMinutos &&
+                            minutos <
+                                pausaFimMinutos
                         ) {
+
                             continue;
                         }
 
+
                         const hora =
-                            Math.floor(minutos / 60);
+                            Math.floor(
+                                minutos / 60
+                            );
 
                         const minuto =
                             minutos % 60;
 
+
                         const horario =
                             `${String(hora).padStart(2, "0")}:${String(minuto).padStart(2, "0")}`;
+
+
+                        // =================================================
+                        // CAMINHO
+                        // =================================================
 
                         const caminho =
                             `${CAMINHO_BARBEIRO}/horarios/${dataFirebase}/${horario}/disponivel`;
 
-                        atualizacoes[caminho] = true;
+
+                        atualizacoes[caminho] =
+                            true;
 
                         totalHorarios++;
                     }
                 }
 
 
-                // Salvar no Firebase
+                // =================================================
+                // SALVAR
+                // =================================================
 
                 await update(
                     ref(db),
                     atualizacoes
                 );
 
+
                 if (mensagem) {
+
                     mensagem.textContent =
                         `✓ 7 dias gerados com sucesso. ${totalHorarios} horários criados.`;
                 }
+
 
                 await carregarAgendamentos();
 
@@ -2112,16 +2809,20 @@ if (gerarHorarios) {
                 );
 
                 if (mensagem) {
+
                     mensagem.textContent =
                         "Erro ao gerar os horários. Veja o console.";
                 }
 
             } finally {
 
-                gerarHorarios.disabled = false;
+                gerarHorarios.disabled =
+                    false;
             }
+
         }
     );
+
 }
 
 
@@ -2138,8 +2839,10 @@ if (atualizar) {
             await carregarAgendamentos();
 
             await carregarHorarios();
+
         }
     );
+
 }
 
 
@@ -2156,8 +2859,10 @@ if (dataPainel) {
             await carregarAgendamentos();
 
             await carregarHorarios();
+
         }
     );
+
 }
 
 
@@ -2170,31 +2875,47 @@ async function removerHorario(
     horario
 ) {
 
-    const confirmar = confirm(
-        `Remover o horário ${horario}?`
-    );
+    const confirmar =
+        confirm(
+            `Remover o horário ${horario}?`
+        );
+
 
     if (!confirmar) {
         return;
     }
 
+
     try {
 
-        const horarioRef = ref(
-            db,
-            `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
+        const horarioRef =
+            ref(
+                db,
+                `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}`
+            );
+
+
+        await remove(
+            horarioRef
         );
 
-        await remove(horarioRef);
+
+        // =================================================
+        // VERIFICAR REMOÇÃO
+        // =================================================
+
+        const verificar =
+            await get(
+                horarioRef
+            );
 
 
-        // Verificar remoção
-
-        const verificar = await get(horarioRef);
-
-        if (verificar.exists()) {
+        if (
+            verificar.exists()
+        ) {
 
             if (mensagem) {
+
                 mensagem.textContent =
                     "Não foi possível remover o horário.";
             }
@@ -2202,10 +2923,13 @@ async function removerHorario(
             return;
         }
 
+
         if (mensagem) {
+
             mensagem.textContent =
                 "✓ Horário removido.";
         }
+
 
         await carregarHorarios();
 
@@ -2217,6 +2941,7 @@ async function removerHorario(
         );
 
         if (mensagem) {
+
             mensagem.textContent =
                 "Erro ao remover horário.";
         }
