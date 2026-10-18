@@ -1397,350 +1397,1533 @@ input[type="time"] {
 #totalOcupados {
     color: #f4f0e8 !important;
 }
+/* ==========================================
+   KAREN LEÃO ESTÉTICA — IDENTIDADE DO PAINEL
+   ========================================== */
 
-
-/* ========================================
-   GESTÃO DE SERVIÇOS
-======================================== */
-
-.secao-servicos {
-    margin-top: 32px;
+:root {
+    --painel-fundo: #F8F3EC;
+    --painel-superficie: #FFFDFA;
+    --painel-superficie-secundaria: #F0E6DC;
+    --painel-marsala: #793747;
+    --painel-marsala-escuro: #4E2631;
+    --painel-dourado: #AE8B5D;
+    --painel-texto: #34252A;
+    --painel-texto-suave: #786B6B;
+    --painel-borda: #E5D8CE;
 }
 
-.secao-servicos > h2 {
-    margin-bottom: 8px;
+/* Fundo e texto */
+body {
+    background: var(--painel-fundo);
+    color: var(--painel-texto);
 }
 
-.secao-servicos > .subtitulo {
-    margin-bottom: 26px;
-    line-height: 1.6;
-    color: #888;
-    font-size: 14px;
+/* Cabeçalho */
+.cabecalho {
+    border-bottom-color: var(--painel-borda);
 }
 
-/* Formulários */
+.cabecalho h1,
+.secao h2,
+.gerador-horarios h3 {
+    color: var(--painel-marsala-escuro);
+}
 
-.form-servicos {
+.subtitulo {
+    color: var(--painel-texto-suave);
+}
+
+/* Campos */
+input,
+select,
+.campos-horario input,
+.campos-horario select {
+    background: var(--painel-superficie);
+    color: var(--painel-texto);
+    border-color: var(--painel-borda);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--painel-marsala);
+    box-shadow: 0 0 0 3px rgba(121, 55, 71, .10);
+}
+
+input[type="date"],
+input[type="time"] {
+    color-scheme: light;
+}
+
+/* Cartões de resumo */
+.resumo-card {
+    background: var(--painel-superficie);
+    border-color: var(--painel-borda);
+}
+
+.resumo-card:hover {
+    background: #FFFFFF;
+    border-color: #D6B9BC;
+}
+
+.resumo-card span {
+    color: var(--painel-texto-suave);
+}
+
+.resumo-card strong,
+#totalAgendados,
+#totalDisponiveis,
+#totalOcupados {
+    color: var(--painel-marsala-escuro) !important;
+}
+
+.resumo-card:first-child strong,
+#totalAgendados {
+    color: var(--painel-marsala) !important;
+}
+
+.resumo-card::after {
+    background: rgba(121, 55, 71, .06);
+}
+
+/* Botões principais */
+#atualizar,
+#gerarHorarios {
+    background: var(--painel-marsala);
+    color: #FFFFFF;
+    border-color: var(--painel-marsala);
+}
+
+#atualizar:hover,
+#gerarHorarios:hover {
+    background: var(--painel-marsala-escuro);
+    box-shadow: 0 8px 20px rgba(78, 38, 49, .12);
+}
+
+/* Botão sair */
+.botao-sair {
+    background: var(--painel-superficie);
+    color: var(--painel-marsala);
+    border-color: var(--painel-borda);
+}
+
+.botao-sair:hover {
+    background: var(--painel-superficie-secundaria);
+    color: var(--painel-marsala-escuro);
+    border-color: var(--painel-marsala);
+}
+
+/* Agendamentos */
+.agendamento {
+    background: var(--painel-superficie);
+    border-color: var(--painel-borda);
+}
+
+.agendamento:hover {
+    background: #FFFFFF;
+    border-color: #D6B9BC;
+}
+
+.agendamento .cliente {
+    color: var(--painel-marsala-escuro);
+}
+
+.agendamento .detalhes-agendamento strong {
+    color: var(--painel-texto);
+}
+
+.agendamento .detalhes-agendamento span {
+    color: var(--painel-texto-suave);
+}
+
+.agendamento .horario {
+    background: #F5EAE8;
+    border-color: #E5C9CE;
+    color: var(--painel-marsala);
+}
+
+.agendamento::before,
+.secao h2::before {
+    background: var(--painel-marsala);
+}
+
+.agendamento .whatsapp {
+    background: var(--painel-marsala);
+    color: #FFFFFF;
+}
+
+.agendamento .whatsapp:hover {
+    background: var(--painel-marsala-escuro);
+}
+
+.agendamento .cancelar {
+    color: var(--painel-texto-suave);
+    border-color: var(--painel-borda);
+}
+
+.agendamento .cancelar:hover {
+    background: var(--painel-superficie-secundaria);
+    color: var(--painel-marsala-escuro);
+    border-color: var(--painel-borda);
+}
+
+/* Cartões de horários */
+.horario-card {
+    background: var(--painel-superficie);
+    border-color: var(--painel-borda);
+}
+
+.horario-card:hover {
+    border-color: #D6B9BC;
+}
+
+.horario-card strong {
+    color: var(--painel-marsala-escuro);
+}
+
+.disponivel {
+    color: #497451;
+}
+
+.ocupado {
+    color: #A34F58;
+}
+
+/* Gerador de horários */
+.gerador-horarios {
+    background: var(--painel-superficie);
+    border-color: var(--painel-borda);
+}
+
+.gerador-horarios::after {
+    color: var(--painel-texto-suave);
+}
+
+.campos-horario label {
+    color: var(--painel-texto-suave);
+}
+
+/* Adicionar horário */
+.adicionar-manual button {
+    background: var(--painel-marsala);
+    color: #FFFFFF;
+    border-color: var(--painel-marsala);
+}
+
+.adicionar-manual button:hover {
+    background: var(--painel-marsala-escuro);
+}
+
+.mensagem {
+    color: var(--painel-marsala);
+}
+
+.vazio {
+    background: var(--painel-superficie);
+    border-color: var(--painel-borda);
+    color: var(--painel-texto-suave);
+}
+
+.remover-horario {
+    border-color: var(--painel-borda);
+    color: var(--painel-marsala);
+}
+
+.remover-horario:hover {
+    background: #F5EAE8;
+    color: var(--painel-marsala-escuro);
+    border-color: #D6B9BC;
+}
+
+
+/* Gestão de procedimentos da Karen */
+.secao-servicos > .cabecalho-servicos { margin-bottom: 22px; }
+.cabecalho-servicos h2 { margin-bottom: 6px; }
+.cabecalho-servicos p { color: var(--painel-texto-suave); line-height: 1.6; margin: 0; }
+.form-servicos { background: var(--painel-superficie); border: 1px solid var(--painel-borda); border-radius: 16px; padding: 20px; margin: 18px 0; }
+.form-servicos h3 { margin: 0 0 16px; }
+.form-servicos label { display: block; font-size: 0.9rem; font-weight: 600; margin: 0 0 7px; color: var(--painel-texto); }
+.form-servicos input, .form-servicos select, .form-servicos textarea { width: 100%; min-width: 0; box-sizing: border-box; padding: 12px 13px; border: 1px solid var(--painel-borda); border-radius: 10px; background: #fff; color: var(--painel-texto); font: inherit; }
+.form-servicos textarea { resize: vertical; line-height: 1.5; }
+.linha-categoria { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.grade-form-servico { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; }
+.campo-largo { grid-column: 1 / -1; }
+.form-servicos button { border: 1px solid var(--painel-marsala); border-radius: 10px; padding: 12px 16px; background: var(--painel-marsala); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.form-servicos button:hover { background: var(--painel-marsala-escuro); }
+.form-servicos button:disabled { opacity: .55; cursor: not-allowed; }
+.mensagem-servicos { margin: 12px 0; }
+.mensagem-erro { color: #b42318 !important; }
+.grupo-servicos-painel { border: 1px solid var(--painel-borda); border-radius: 15px; overflow: hidden; margin: 18px 0; background: var(--painel-superficie); }
+.topo-grupo-servicos { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px 18px; background: var(--painel-superficie-secundaria); border-bottom: 1px solid var(--painel-borda); }
+.topo-grupo-servicos h3 { margin: 0; }
+.acoes-servicos-painel { display: flex; gap: 8px; flex-wrap: wrap; }
+.botao-secundario { padding: 8px 11px; border: 1px solid var(--painel-borda); border-radius: 9px; background: #fff; color: var(--painel-texto); font: inherit; cursor: pointer; }
+.botao-secundario:hover { border-color: #D6B9BC; }
+.procedimento-painel { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 17px 18px; border-bottom: 1px solid var(--painel-borda); }
+.procedimento-painel:last-child { border-bottom: 0; }
+.procedimento-painel-conteudo { min-width: 0; }
+.procedimento-painel-conteudo h4 { margin: 0 0 6px; font-size: 1rem; }
+.procedimento-meta { margin: 0 0 8px; font-weight: 700; color: var(--painel-marsala); }
+.procedimento-descricao-painel { margin: 0 0 8px; line-height: 1.55; color: var(--painel-texto-suave); }
+.procedimento-painel ul { padding-left: 20px; margin: 8px 0 0; color: var(--painel-texto-suave); line-height: 1.55; }
+.texto-vazio-servicos { margin: 0; padding: 16px 18px; color: var(--painel-texto-suave); }
+@media (max-width: 640px) {
+  .form-servicos { padding: 15px; }
+  .linha-categoria, .grade-form-servico { grid-template-columns: 1fr; }
+  .campo-largo { grid-column: auto; }
+  .procedimento-painel { flex-direction: column; }
+  .procedimento-painel > .acoes-servicos-painel { width: 100%; }
+  .procedimento-painel > .acoes-servicos-painel button { flex: 1; }
+}
+
+
+/* ==========================================
+   MODAL DE EDIÇÃO DE PROCEDIMENTOS
+========================================== */
+
+.modal-procedimento[hidden] {
+    display: none !important;
+}
+
+.modal-procedimento {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 24px;
-    margin-top: 20px;
-    background: #111;
-    border: 1px solid #292929;
-    border-radius: 14px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
-.form-servicos h3 {
-    margin: 0 0 20px;
-    font-size: 18px;
-    font-weight: 600;
+.modal-procedimento-fundo {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
 }
 
-.campos-servicos {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 20px;
+.modal-procedimento-conteudo {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 680px);
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #171717;
+    color: #f4f0e9;
+    border: 1px solid #36332f;
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 28px 100px rgba(0, 0, 0, 0.5);
+    animation: entradaModalProcedimento 0.2s ease-out;
 }
 
-.campos-servicos > div {
+@keyframes entradaModalProcedimento {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-procedimento-cabecalho {
     display: flex;
-    flex-direction: column;
-    gap: 9px;
-    min-width: 0;
-}
-
-.campos-servicos label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #bdbdbd;
-}
-
-.campos-servicos input,
-.campos-servicos select {
-    width: 100%;
-    min-width: 0;
-    min-height: 46px;
-    padding: 12px 14px;
-    color: #f5f5f5;
-    background: #191919;
-    border: 1px solid #363636;
-    border-radius: 9px;
-    font: inherit;
-    font-size: 14px;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.campos-servicos input:focus,
-.campos-servicos select:focus {
-    border-color: #d6ff3f;
-    box-shadow: 0 0 0 3px rgb(214 255 63 / 10%);
-}
-
-.campos-servicos input::placeholder {
-    color: #707070;
-}
-
-.campos-servicos select option {
-    color: #fff;
-    background: #191919;
-}
-
-/* Botões dos formulários */
-
-.form-servicos > button {
-    min-height: 45px;
-    padding: 12px 20px;
-    color: #111;
-    background: #d6ff3f;
-    border: 0;
-    border-radius: 9px;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.2s;
-}
-
-.form-servicos > button:hover {
-    transform: translateY(-1px);
-}
-
-.form-servicos > button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.separador-servicos {
-    height: 1px;
-    margin: 26px 0;
-    background: #292929;
-}
-
-/* Mensagens */
-
-#mensagemServicos {
-    margin: 18px 0;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* Lista de categorias */
-
-.lista-categorias-servicos {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-top: 28px;
-}
-
-.categoria-servicos {
-    overflow: hidden;
-    background: #111;
-    border: 1px solid #292929;
-    border-radius: 14px;
-}
-
-.cabecalho-categoria {
-    display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 16px;
-    padding: 20px 22px;
-    background: #181818;
-    border-bottom: 1px solid #292929;
+    gap: 20px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #33302c;
 }
 
-.cabecalho-categoria h3 {
+.modal-etiqueta {
+    display: block;
+    margin-bottom: 10px;
+    color: #c9a779;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.modal-procedimento-cabecalho h2 {
     margin: 0;
-    font-size: 17px;
-    font-weight: 700;
-    overflow-wrap: anywhere;
+    font-size: clamp(23px, 4vw, 30px);
+    line-height: 1.2;
+    letter-spacing: -0.8px;
 }
 
-.acoes-categoria,
-.acoes-servico {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.modal-procedimento-cabecalho p {
+    margin: 10px 0 0;
+    color: #aaa49b;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
-.acoes-categoria button,
-.acoes-servico button {
-    min-height: 36px;
-    padding: 8px 12px;
-    border: 1px solid #363636;
-    border-radius: 8px;
-    color: #e5e5e5;
-    background: #202020;
-    font: inherit;
-    font-size: 12px;
-    font-weight: 600;
+.modal-fechar {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #393630;
+    border-radius: 12px;
+    background: #22211f;
+    color: #f4f0e9;
+    font-size: 27px;
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
 }
 
-.acoes-categoria button:hover,
-.acoes-servico button:hover {
-    background: #2b2b2b;
-    border-color: #555;
+.modal-fechar:hover {
+    background: #34312c;
+    border-color: #c9a779;
 }
 
-.acoes-categoria .excluir-categoria,
-.acoes-servico .excluir-servico {
-    color: #ff8b8b;
+.modal-procedimento-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 21px 17px;
 }
 
-.acoes-categoria .excluir-categoria:hover,
-.acoes-servico .excluir-servico:hover {
-    background: #321d1d;
-    border-color: #704040;
-}
-
-/* Cada serviço */
-
-.item-servico {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 20px 22px;
-    border-bottom: 1px solid #252525;
-}
-
-.item-servico:last-child {
-    border-bottom: 0;
-}
-
-.info-servico {
+.campo-modal {
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 7px;
-    min-width: 0;
+    gap: 9px;
 }
 
-.info-servico strong {
-    color: #f5f5f5;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
+.campo-modal-largo {
+    grid-column: 1 / -1;
 }
 
-.preco-servico {
-    color: #d6ff3f;
-    font-size: 15px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-}
-
-.categoria-servicos .vazio {
-    padding: 20px 22px;
-    color: #888;
+.campo-modal label {
+    color: #e9e2d8;
     font-size: 13px;
+    font-weight: 700;
+}
+
+.campo-modal input,
+.campo-modal select,
+.campo-modal textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 13px 14px;
+    border: 1px solid #403c36;
+    border-radius: 12px;
+    outline: none;
+    background: #101010;
+    color: #f4f0e9;
+    font: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo-modal textarea {
+    min-height: 115px;
+    resize: vertical;
     line-height: 1.6;
 }
 
-/* ========================================
-   RESPONSIVIDADE
-======================================== */
+.campo-modal input:focus,
+.campo-modal select:focus,
+.campo-modal textarea:focus {
+    border-color: #c9a779;
+    box-shadow: 0 0 0 3px rgba(201, 167, 121, 0.13);
+}
 
-@media (max-width: 760px) {
-    .secao-servicos {
-        margin-top: 24px;
+.campo-modal input::placeholder,
+.campo-modal textarea::placeholder {
+    color: #777169;
+}
+
+.campo-modal small {
+    color: #a9a198;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.modal-procedimento-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 25px;
+    margin-top: 26px;
+    border-top: 1px solid #33302c;
+}
+
+.modal-procedimento-acoes button {
+    min-height: 47px;
+    padding: 0 20px;
+    border-radius: 12px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s, background 0.2s;
+}
+
+.modal-procedimento-acoes button:hover {
+    transform: translateY(-1px);
+}
+
+.modal-procedimento-acoes button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+.botao-modal-cancelar {
+    border: 1px solid #45413b;
+    background: transparent;
+    color: #eee7dd;
+}
+
+.botao-modal-cancelar:hover {
+    background: #292723;
+}
+
+.botao-modal-salvar {
+    border: 1px solid #c9a779;
+    background: #c9a779;
+    color: #17130e;
+}
+
+.botao-modal-salvar:hover {
+    background: #ddbd91;
+}
+
+body.modal-procedimento-aberto {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .modal-procedimento {
+        align-items: flex-end;
+        padding: 0;
     }
 
-    .form-servicos {
-        padding: 18px;
-        border-radius: 12px;
-    }
-
-    .campos-servicos {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .form-servicos > button {
+    .modal-procedimento-conteudo {
         width: 100%;
-        min-height: 48px;
+        max-height: 94dvh;
+        border-radius: 22px 22px 0 0;
+        padding: 23px 19px max(22px, env(safe-area-inset-bottom));
+        border-bottom: 0;
     }
 
-    .cabecalho-categoria {
-        align-items: flex-start;
-        padding: 17px;
+    .modal-procedimento-cabecalho {
+        gap: 12px;
+        padding-bottom: 19px;
+        margin-bottom: 20px;
     }
 
-    .cabecalho-categoria h3 {
-        padding-top: 7px;
+    .modal-procedimento-cabecalho p {
+        font-size: 13px;
+    }
+
+    .modal-fechar {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .modal-procedimento-campos {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .campo-modal-largo {
+        grid-column: auto;
+    }
+
+    .campo-modal input,
+    .campo-modal select,
+    .campo-modal textarea {
         font-size: 16px;
     }
 
-    .acoes-categoria {
-        flex-shrink: 0;
-        gap: 6px;
+    .modal-procedimento-acoes {
+        display: grid;
+        grid-template-columns: 1fr 1.35fr;
+        gap: 10px;
+        padding-top: 19px;
+        margin-top: 22px;
     }
 
-    .acoes-categoria button,
-    .acoes-servico button {
-        min-height: 40px;
-        padding: 9px 10px;
+    .modal-procedimento-acoes button {
+        min-width: 0;
+        min-height: 49px;
+        padding: 0 10px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-procedimento-conteudo {
+        animation: none;
     }
 
-    .item-servico {
-        align-items: flex-start;
-        padding: 17px;
+    .modal-procedimento-acoes button {
+        transition: none;
+    }
+}
+
+/* ==========================================
+   PROCEDIMENTOS — VISUAL REFINADO
+   Cadastro + lista responsiva para celular
+========================================== */
+
+.secao-servicos {
+    min-width: 0;
+}
+
+.secao-servicos > .cabecalho-servicos {
+    margin-bottom: 26px;
+}
+
+.cabecalho-servicos h2 {
+    font-size: clamp(25px, 3vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: #f4f0e8;
+}
+
+.cabecalho-servicos p {
+    max-width: 620px;
+    margin-top: 10px;
+    color: #aaa49b;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Formulários */
+.secao-servicos .form-servicos {
+    margin: 22px 0;
+    padding: clamp(18px, 3vw, 30px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 20px;
+    background: linear-gradient(
+        145deg,
+        #171715 0%,
+        #111110 100%
+    );
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+}
+
+.secao-servicos .form-servicos h3 {
+    margin: 0 0 24px;
+    color: #f4f0e8;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+}
+
+.secao-servicos .form-servicos label {
+    margin-bottom: 9px;
+    color: #d7d0c5;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.015em;
+}
+
+.secao-servicos .form-servicos input,
+.secao-servicos .form-servicos select,
+.secao-servicos .form-servicos textarea {
+    min-height: 49px;
+    padding: 13px 15px;
+    border: 1px solid #383631;
+    border-radius: 12px;
+    outline: none;
+    background: #20201d;
+    color: #f6f2eb;
+    font-size: 15px;
+    line-height: 1.5;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.secao-servicos .form-servicos textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.secao-servicos .form-servicos input::placeholder,
+.secao-servicos .form-servicos textarea::placeholder {
+    color: #817d74;
+}
+
+.secao-servicos .form-servicos input:focus,
+.secao-servicos .form-servicos select:focus,
+.secao-servicos .form-servicos textarea:focus {
+    border-color: #c5a46d;
+    background: #24231f;
+    box-shadow: 0 0 0 3px rgba(197, 164, 109, 0.13);
+}
+
+.secao-servicos .grade-form-servico {
+    gap: 21px 18px;
+    margin-bottom: 24px;
+}
+
+/* Botões principais */
+.secao-servicos .form-servicos button {
+    min-height: 49px;
+    padding: 13px 20px;
+    border: 1px solid #c5a46d;
+    border-radius: 12px;
+    background: #c5a46d;
+    color: #17140f;
+    font-size: 14px;
+    font-weight: 750;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.secao-servicos .form-servicos button:hover {
+    background: #d6b981;
+    box-shadow: 0 7px 20px rgba(197, 164, 109, 0.15);
+    transform: translateY(-1px);
+}
+
+.secao-servicos .form-servicos button:active {
+    transform: translateY(0);
+}
+
+.secao-servicos .form-servicos button:disabled {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Campo de nova categoria */
+.secao-servicos .form-categoria {
+    padding: 22px 25px;
+    background: #141412;
+}
+
+.secao-servicos .form-categoria h3 {
+    margin-bottom: 16px;
+    font-size: 18px;
+}
+
+.secao-servicos .linha-categoria {
+    align-items: end;
+    gap: 12px;
+}
+
+/* Grupos de procedimentos */
+.lista-servicos {
+    min-width: 0;
+    margin-top: 26px;
+}
+
+.grupo-servicos-painel {
+    margin: 22px 0;
+    overflow: hidden;
+    border: 1px solid #33312c;
+    border-radius: 18px;
+    background: #141412;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.13);
+}
+
+.topo-grupo-servicos {
+    padding: 20px 22px;
+    background: #1b1a17;
+    border-bottom: 1px solid #33312c;
+}
+
+.topo-grupo-servicos h3 {
+    color: #f4f0e8;
+    font-size: 19px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+.acoes-servicos-painel {
+    gap: 8px;
+}
+
+/* Procedimentos individuais */
+.procedimento-painel {
+    align-items: flex-start;
+    gap: 22px;
+    padding: 23px 22px;
+    border-bottom: 1px solid #302f2a;
+    background: #141412;
+    transition: background 0.2s;
+}
+
+.procedimento-painel:hover {
+    background: #191916;
+}
+
+.procedimento-painel-conteudo {
+    flex: 1;
+    min-width: 0;
+}
+
+.procedimento-painel-conteudo h4 {
+    margin: 0 0 10px;
+    color: #f4f0e8;
+    font-size: 17px;
+    font-weight: 750;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.procedimento-meta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 12px;
+    color: #d9b77b;
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.6;
+}
+
+.procedimento-descricao-painel {
+    margin: 0 0 12px;
+    color: #b4afa5;
+    font-size: 14px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+
+.procedimento-painel ul {
+    margin: 12px 0 0;
+    padding-left: 19px;
+    color: #b4afa5;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.procedimento-painel li {
+    padding-left: 3px;
+    margin-bottom: 4px;
+}
+
+/* Botões secundários */
+.secao-servicos .botao-secundario {
+    min-height: 41px;
+    padding: 10px 14px;
+    border: 1px solid #454139;
+    border-radius: 10px;
+    background: #22211d;
+    color: #eee8dd;
+    font-size: 13px;
+    font-weight: 650;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.secao-servicos .botao-secundario:hover {
+    border-color: #c5a46d;
+    background: #2b2923;
+}
+
+/* Mensagens e estados vazios */
+.secao-servicos .mensagem-servicos {
+    padding: 0 2px;
+    line-height: 1.6;
+}
+
+.secao-servicos .texto-vazio-servicos {
+    padding: 22px;
+    color: #969087;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Acessibilidade */
+.secao-servicos button:focus-visible {
+    outline: 2px solid #d9b77b;
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   CELULAR
+========================================== */
+
+@media (max-width: 640px) {
+    .secao-servicos {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .secao-servicos > .cabecalho-servicos {
+        margin-bottom: 20px;
+    }
+
+    .cabecalho-servicos h2 {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .cabecalho-servicos p {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .secao-servicos .form-servicos {
+        margin: 16px 0;
+        padding: 19px 16px;
+        border-radius: 17px;
+    }
+
+    .secao-servicos .form-servicos h3 {
+        margin-bottom: 21px;
+        font-size: 20px;
+    }
+
+    .secao-servicos .grade-form-servico {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 19px;
+        margin-bottom: 22px;
+    }
+
+    .secao-servicos .campo-largo {
+        grid-column: auto;
+    }
+
+    .secao-servicos .form-servicos input,
+    .secao-servicos .form-servicos select,
+    .secao-servicos .form-servicos textarea {
+        width: 100%;
+        min-height: 51px;
+        padding: 14px;
+        border-radius: 12px;
+        font-size: 16px;
+    }
+
+    .secao-servicos .form-servicos textarea {
+        min-height: 115px;
+    }
+
+    .secao-servicos .form-servicos button {
+        min-height: 50px;
+        font-size: 14px;
+    }
+
+    .secao-servicos #salvarServico {
+        width: 100%;
+    }
+
+    .secao-servicos .form-categoria {
+        padding: 18px 16px;
+    }
+
+    .secao-servicos .linha-categoria {
+        grid-template-columns: minmax(0, 1fr);
         gap: 12px;
     }
 
-    .info-servico strong {
-        font-size: 14px;
+    .secao-servicos #salvarCategoria {
+        width: 100%;
     }
 
-    .preco-servico {
-        font-size: 14px;
+    .lista-servicos {
+        margin-top: 20px;
     }
 
-    .acoes-servico {
-        flex-shrink: 0;
+    .grupo-servicos-painel {
+        margin: 16px 0;
+        border-radius: 15px;
+    }
+
+    .topo-grupo-servicos {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 13px;
+        padding: 17px 15px;
+    }
+
+    .topo-grupo-servicos h3 {
+        font-size: 18px;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .topo-grupo-servicos .acoes-servicos-painel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: 100%;
+    }
+
+    .procedimento-painel {
+        display: flex;
         flex-direction: column;
         align-items: stretch;
+        gap: 17px;
+        padding: 19px 15px;
     }
 
-    .acoes-servico button {
-        min-width: 68px;
+    .procedimento-painel-conteudo h4 {
+        font-size: 17px;
+        line-height: 1.45;
+    }
+
+    .procedimento-meta {
+        font-size: 14px;
+    }
+
+    .procedimento-descricao-painel {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .procedimento-painel ul {
+        font-size: 13px;
+    }
+
+    .procedimento-painel > .acoes-servicos-painel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        width: 100%;
+        gap: 10px;
+    }
+
+    .secao-servicos .botao-secundario {
+        min-width: 0;
+        min-height: 45px;
+        padding: 11px 8px;
+        font-size: 13px;
+        white-space: normal;
     }
 }
 
-@media (max-width: 380px) {
-    .cabecalho-categoria {
-        flex-direction: column;
-        gap: 12px;
+/* Celulares muito estreitos */
+@media (max-width: 360px) {
+    .secao-servicos .form-servicos {
+        padding: 16px 12px;
     }
 
-    .acoes-categoria {
-        width: 100%;
+    .topo-grupo-servicos,
+    .procedimento-painel {
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
-    .acoes-categoria button {
-        flex: 1;
-    }
-
-    .item-servico {
-        flex-direction: column;
-    }
-
-    .acoes-servico {
-        flex-direction: row;
-        width: 100%;
-    }
-
-    .acoes-servico button {
-        flex: 1;
+    .secao-servicos .botao-secundario {
+        font-size: 12px;
     }
 }
 
-.servico-legado {
-    font-size: 0.75rem;
-    color: #888;
+/* ==========================================
+   KAREN LEÃO ESTÉTICA
+   Paleta: bege + marsala + dourado
+========================================== */
+
+.secao-servicos {
+    --kl-bege: #f6eee4;
+    --kl-bege-claro: #fffaf4;
+    --kl-bege-medio: #e8d6c2;
+    --kl-marsala: #702b40;
+    --kl-marsala-escuro: #4d1c2c;
+    --kl-dourado: #bd9655;
+    --kl-dourado-claro: #dfc18b;
+    --kl-texto: #402d30;
+    --kl-texto-suave: #806b68;
+    --kl-borda: #e3d0c0;
+}
+
+/* Cabeçalhos */
+.secao-servicos .cabecalho-servicos h2,
+.secao-servicos .form-servicos h3 {
+    color: var(--kl-marsala-escuro);
+}
+
+.secao-servicos .cabecalho-servicos p {
+    color: var(--kl-texto-suave);
+}
+
+/* Cartões e formulários */
+.secao-servicos .form-servicos {
+    background: var(--kl-bege-claro);
+    border: 1px solid var(--kl-borda);
+    box-shadow: 0 10px 28px rgba(77, 28, 44, 0.07);
+}
+
+.secao-servicos .form-categoria {
+    background: var(--kl-bege);
+}
+
+.secao-servicos .form-servicos label {
+    color: var(--kl-texto);
+}
+
+/* Campos de preenchimento */
+.secao-servicos .form-servicos input,
+.secao-servicos .form-servicos select,
+.secao-servicos .form-servicos textarea {
+    color: var(--kl-texto);
+    background: #fffdf9;
+    border-color: var(--kl-borda);
+}
+
+.secao-servicos .form-servicos input::placeholder,
+.secao-servicos .form-servicos textarea::placeholder {
+    color: #a18d85;
+}
+
+.secao-servicos .form-servicos input:focus,
+.secao-servicos .form-servicos select:focus,
+.secao-servicos .form-servicos textarea:focus {
+    border-color: var(--kl-dourado);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(189, 150, 85, 0.16);
+}
+
+/* Botão principal: marsala */
+.secao-servicos .form-servicos button,
+.secao-servicos #salvarServico,
+.secao-servicos #salvarCategoria {
+    color: #fffaf4;
+    background: var(--kl-marsala);
+    border-color: var(--kl-marsala);
+}
+
+.secao-servicos .form-servicos button:hover,
+.secao-servicos #salvarServico:hover,
+.secao-servicos #salvarCategoria:hover {
+    color: #ffffff;
+    background: var(--kl-marsala-escuro);
+    border-color: var(--kl-dourado);
+    box-shadow: 0 6px 18px rgba(77, 28, 44, 0.15);
+}
+
+/* Categorias de procedimentos */
+.secao-servicos .grupo-servicos-painel {
+    background: var(--kl-bege-claro);
+    border-color: var(--kl-borda);
+    box-shadow: 0 8px 24px rgba(77, 28, 44, 0.06);
+}
+
+.secao-servicos .topo-grupo-servicos {
+    background: var(--kl-marsala);
+    border-color: var(--kl-marsala);
+}
+
+.secao-servicos .topo-grupo-servicos h3 {
+    color: #fff8f0;
+}
+
+/* Procedimentos individuais */
+.secao-servicos .procedimento-painel {
+    background: var(--kl-bege-claro);
+    border-color: var(--kl-borda);
+}
+
+.secao-servicos .procedimento-painel:hover {
+    background: var(--kl-bege);
+}
+
+.secao-servicos .procedimento-painel-conteudo h4 {
+    color: var(--kl-marsala-escuro);
+}
+
+.secao-servicos .procedimento-meta {
+    color: #98703a;
+}
+
+.secao-servicos .procedimento-descricao-painel,
+.secao-servicos .procedimento-painel ul {
+    color: var(--kl-texto-suave);
+}
+
+/* Botões secundários: bege e dourado */
+.secao-servicos .botao-secundario {
+    color: var(--kl-marsala);
+    background: #fffaf4;
+    border-color: var(--kl-bege-medio);
+}
+
+.secao-servicos .botao-secundario:hover {
+    color: var(--kl-marsala-escuro);
+    background: #f0e2d2;
+    border-color: var(--kl-dourado);
+}
+
+/* Mensagens */
+.secao-servicos .mensagem-servicos,
+.secao-servicos .texto-vazio-servicos {
+    color: var(--kl-texto-suave);
+}
+
+/* Modal de edição */
+#modalEditarProcedimento .modal-procedimento-conteudo {
+    color: var(--kl-texto);
+    background: var(--kl-bege-claro);
+    border-color: var(--kl-borda);
+}
+
+#modalEditarProcedimento .modal-procedimento-cabecalho {
+    border-color: var(--kl-borda);
+}
+
+#modalEditarProcedimento .modal-procedimento-cabecalho h2,
+#modalEditarProcedimento .modal-procedimento-cabecalho h3 {
+    color: var(--kl-marsala);
+}
+
+#modalEditarProcedimento .campo-modal label {
+    color: var(--kl-texto);
+}
+
+#modalEditarProcedimento .campo-modal input,
+#modalEditarProcedimento .campo-modal select,
+#modalEditarProcedimento .campo-modal textarea {
+    color: var(--kl-texto);
+    background: #fffdf9;
+    border-color: var(--kl-borda);
+}
+
+#modalEditarProcedimento .campo-modal input:focus,
+#modalEditarProcedimento .campo-modal select:focus,
+#modalEditarProcedimento .campo-modal textarea:focus {
+    border-color: var(--kl-dourado);
+    box-shadow: 0 0 0 3px rgba(189, 150, 85, 0.16);
+}
+
+#modalEditarProcedimento #salvarEdicaoProcedimento {
+    color: #fffaf4;
+    background: var(--kl-marsala);
+    border-color: var(--kl-marsala);
+}
+
+#modalEditarProcedimento #salvarEdicaoProcedimento:hover {
+    background: var(--kl-marsala-escuro);
+}
+
+/* Foco acessível */
+.secao-servicos button:focus-visible,
+#modalEditarProcedimento button:focus-visible {
+    outline: 2px solid var(--kl-dourado);
+    outline-offset: 3px;
+}
+
+/* ==========================================
+   KAREN LEÃO — MODAL DE EDIÇÃO PREMIUM
+========================================== */
+
+#modalEditarProcedimento {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+}
+
+#modalEditarProcedimento[hidden] {
+    display: none !important;
+}
+
+/* Fundo da janela */
+#modalEditarProcedimento .modal-procedimento-fundo {
+    position: absolute;
+    inset: 0;
+    background: rgba(45, 19, 29, 0.68);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+/* Caixa principal */
+#modalEditarProcedimento .modal-procedimento-conteudo {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 650px);
+    max-height: min(88dvh, 850px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0;
+    border: 1px solid #e5d1bd;
+    border-radius: 24px;
+    background: #fffaf4;
+    color: #402d30;
+    box-shadow: 0 28px 90px rgba(35, 10, 19, 0.30);
+    animation: klModalEntrada 0.22s ease-out;
+}
+
+/* Cabeçalho */
+#modalEditarProcedimento .modal-procedimento-cabecalho {
+    position: relative;
+    padding: 27px 30px 23px;
+    border-bottom: 1px solid #eadbcd;
+    background: linear-gradient(135deg, #f8eee4, #fffaf4);
+}
+
+#modalEditarProcedimento .modal-procedimento-cabecalho::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 54px;
+    height: 4px;
+    border-radius: 0 0 5px 5px;
+    background: #bd9655;
+}
+
+#modalEditarProcedimento .modal-procedimento-cabecalho h2,
+#modalEditarProcedimento .modal-procedimento-cabecalho h3 {
+    margin: 7px 0 8px;
+    color: #702b40;
+    font-size: 25px;
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.7px;
+}
+
+#modalEditarProcedimento .modal-procedimento-cabecalho p {
+    margin: 0;
+    color: #806b68;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Botão fechar */
+#modalEditarProcedimento #fecharModalProcedimento {
+    position: absolute;
+    top: 19px;
+    right: 20px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid #e5d1bd;
+    border-radius: 12px;
+    background: #fffaf4;
+    color: #702b40;
+    font-size: 22px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+#modalEditarProcedimento #fecharModalProcedimento:hover {
+    background: #f0dfd0;
+    border-color: #bd9655;
+}
+
+/* Formulário */
+#modalEditarProcedimento #formEditarProcedimento {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 27px 30px 30px;
+}
+
+#modalEditarProcedimento .modal-procedimento-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 17px;
+}
+
+#modalEditarProcedimento .campo-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+#modalEditarProcedimento .campo-modal-largo {
+    grid-column: 1 / -1;
+}
+
+/* Rótulos */
+#modalEditarProcedimento .campo-modal label {
+    color: #54363b;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+}
+
+/* Inputs */
+#modalEditarProcedimento .campo-modal input,
+#modalEditarProcedimento .campo-modal select,
+#modalEditarProcedimento .campo-modal textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 49px;
+    padding: 13px 15px;
+    border: 1px solid #e3d0c0;
+    border-radius: 12px;
+    outline: none;
+    background: #ffffff;
+    color: #402d30;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#modalEditarProcedimento .campo-modal textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#modalEditarProcedimento .campo-modal input::placeholder,
+#modalEditarProcedimento .campo-modal textarea::placeholder {
+    color: #aa9690;
+}
+
+#modalEditarProcedimento .campo-modal input:focus,
+#modalEditarProcedimento .campo-modal select:focus,
+#modalEditarProcedimento .campo-modal textarea:focus {
+    border-color: #bd9655;
+    box-shadow: 0 0 0 3px rgba(189, 150, 85, 0.15);
+}
+
+/* Área de ações */
+#modalEditarProcedimento .modal-procedimento-acoes {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 21px;
+    border-top: 1px solid #eadbcd;
+}
+
+#modalEditarProcedimento .modal-procedimento-acoes button {
+    min-height: 47px;
+    padding: 12px 20px;
+    border: 1px solid #e3d0c0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+#modalEditarProcedimento #cancelarEdicaoProcedimento {
+    background: #fffaf4;
+    color: #702b40;
+}
+
+#modalEditarProcedimento #cancelarEdicaoProcedimento:hover {
+    background: #f0e2d5;
+}
+
+#modalEditarProcedimento #salvarEdicaoProcedimento {
+    min-width: 175px;
+    background: #702b40;
+    color: #fffaf4;
+    border-color: #702b40;
+}
+
+#modalEditarProcedimento #salvarEdicaoProcedimento:hover {
+    background: #4d1c2c;
+    transform: translateY(-1px);
+}
+
+#modalEditarProcedimento #salvarEdicaoProcedimento:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
+}
+
+/* Animação discreta */
+@keyframes klModalEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Celular */
+@media (max-width: 600px) {
+    #modalEditarProcedimento {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    #modalEditarProcedimento .modal-procedimento-conteudo {
+        width: 100%;
+        max-height: 92dvh;
+        border-radius: 23px 23px 0 0;
+        border-bottom: 0;
+        animation: klModalEntradaMobile 0.23s ease-out;
+    }
+
+    #modalEditarProcedimento .modal-procedimento-cabecalho {
+        padding: 25px 20px 20px;
+    }
+
+    #modalEditarProcedimento .modal-procedimento-cabecalho::before {
+        left: 20px;
+    }
+
+    #modalEditarProcedimento .modal-procedimento-cabecalho h2,
+    #modalEditarProcedimento .modal-procedimento-cabecalho h3 {
+        max-width: calc(100% - 43px);
+        font-size: 22px;
+    }
+
+    #modalEditarProcedimento #fecharModalProcedimento {
+        top: 17px;
+        right: 16px;
+        width: 38px;
+        height: 38px;
+    }
+
+    #modalEditarProcedimento #formEditarProcedimento {
+        gap: 20px;
+        padding: 22px 20px max(24px, env(safe-area-inset-bottom));
+    }
+
+    #modalEditarProcedimento .modal-procedimento-campos {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    #modalEditarProcedimento .campo-modal-largo {
+        grid-column: auto;
+    }
+
+    #modalEditarProcedimento .campo-modal input,
+    #modalEditarProcedimento .campo-modal select,
+    #modalEditarProcedimento .campo-modal textarea {
+        min-height: 51px;
+        font-size: 16px;
+    }
+
+    #modalEditarProcedimento .modal-procedimento-acoes {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    #modalEditarProcedimento .modal-procedimento-acoes button {
+        width: 100%;
+        min-height: 49px;
+    }
+}
+
+@keyframes klModalEntradaMobile {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #modalEditarProcedimento .modal-procedimento-conteudo {
+        animation: none;
+    }
 }

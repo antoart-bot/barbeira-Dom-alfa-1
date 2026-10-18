@@ -7,8 +7,30 @@ import {
     set
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-import { db } from "./firebase.js";
-import { CONFIG } from "./config.js";
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+import {
+    db,
+    auth
+} from "./firebase.js";
+
+import {
+    CONFIG
+} from "./config.js";
+
+
+// ========================================
+// VERIFICAR AUTENTICAÇÃO
+// ========================================
+
+onAuthStateChanged(auth, (user) => {
+    console.log(
+        "USUÁRIO AUTENTICADO NO AGENDAMENTO:",
+        user ? user.uid : "VISITANTE SEM LOGIN"
+    );
+});
 
 
 // ========================================
@@ -28,7 +50,6 @@ let CAMINHO_BARBEIRO =
 // ========================================
 
 function descobrirCliente() {
-
     const parametros =
         new URLSearchParams(
             window.location.search
@@ -50,7 +71,6 @@ function descobrirCliente() {
 // ========================================
 
 async function carregarConfiguracaoCliente() {
-
     const clienteId =
         descobrirCliente();
 
@@ -68,7 +88,6 @@ async function carregarConfiguracaoCliente() {
     );
 
     try {
-
         const configuracoesRef =
             ref(
                 db,
@@ -80,25 +99,10 @@ async function carregarConfiguracaoCliente() {
                 configuracoesRef
             );
 
-        if (
-            snapshot.exists()
-        ) {
-
-            const dados =
-                snapshot.val();
-
-            CONFIG_CLIENTE = {
-                ...CONFIG,
-                ...dados
-            };
-
-            console.log(
-                "CONFIGURAÇÃO DO AGENDAMENTO:",
-                CONFIG_CLIENTE
-            );
-
+        if (snapshot.exists()) {
+            const dados = snapshot.val();
+            CONFIG_CLIENTE = { ...CONFIG, ...dados, cores: CONFIG.cores };
         } else {
-
             console.warn(
                 "Configuração do cliente não encontrada. Usando CONFIG padrão."
             );
@@ -106,11 +110,8 @@ async function carregarConfiguracaoCliente() {
             CONFIG_CLIENTE = {
                 ...CONFIG
             };
-
         }
-
     } catch (erro) {
-
         console.error(
             "Erro ao carregar configuração do cliente:",
             erro
@@ -119,7 +120,37 @@ async function carregarConfiguracaoCliente() {
         CONFIG_CLIENTE = {
             ...CONFIG
         };
+    }
 
+    // Usa a lista gerenciada no painel. Se ainda não houver registros, mantém o catálogo antigo.
+    try {
+        const [categoriasSnap, itensSnap] = await Promise.all([
+            get(ref(db, `${CAMINHO_BARBEIRO}/servicos/categorias`)),
+            get(ref(db, `${CAMINHO_BARBEIRO}/servicos/itens`))
+        ]);
+        const categorias = categoriasSnap.exists() ? categoriasSnap.val() : {};
+        const itens = itensSnap.exists() ? itensSnap.val() : {};
+        const servicosFirebase = Object.entries(itens)
+            .filter(([, item]) => item && item.nome)
+            .map(([id, item]) => ({
+                ...item,
+                id,
+                valor: item.valor || id,
+                categoria: categorias[item.categoriaId]?.nome || item.categoria || "Procedimentos",
+                duracao: item.duracao || (item.minutos ? `${item.minutos} minutos` : "Definida na avaliação"),
+                minutos: item.minutos === undefined ? null : item.minutos,
+                detalhes: Array.isArray(item.detalhes) ? item.detalhes : []
+            }));
+        if (servicosFirebase.length) {
+            CONFIG_CLIENTE.servicos = servicosFirebase;
+        } else if (clienteId === CONFIG.id) {
+            CONFIG_CLIENTE.servicos = CONFIG.servicos;
+        } else if (!Array.isArray(dados?.servicos)) {
+            CONFIG_CLIENTE.servicos = [];
+        }
+    } catch (erroServicos) {
+        console.warn("Não foi possível carregar os procedimentos do Firebase; usando configuração local.", erroServicos);
+        if (clienteId !== CONFIG.id && CONFIG_CLIENTE.servicos === CONFIG.servicos) CONFIG_CLIENTE.servicos = [];
     }
 
 }
@@ -168,7 +199,6 @@ let horarioSelecionado =
 // ========================================
 
 function obterDataHoje() {
-
     const hoje =
         new Date();
 
@@ -207,14 +237,10 @@ dataInput.value =
 // ========================================
 
 function formatarData(data) {
-
     const partes =
         data.split("-");
 
-    if (
-        partes.length !== 3
-    ) {
-
+    if (partes.length !== 3) {
         return data;
     }
 
@@ -232,10 +258,8 @@ function mostrarConfirmacao({
     data,
     horario
 }) {
-
     return new Promise(
         (resolve) => {
-
             const modal =
                 document.createElement(
                     "div"
@@ -271,24 +295,22 @@ function mostrarConfirmacao({
 
                         <div class="resumo-item">
                             <span>Cliente</span>
-                            <strong>${nome}</strong>
+                            <strong></strong>
                         </div>
 
                         <div class="resumo-item">
                             <span>Serviço</span>
-                            <strong>${servico}</strong>
+                            <strong></strong>
                         </div>
 
                         <div class="resumo-item">
                             <span>Data</span>
-                            <strong>
-                                ${formatarData(data)}
-                            </strong>
+                            <strong></strong>
                         </div>
 
                         <div class="resumo-item">
                             <span>Horário</span>
-                            <strong>${horario}</strong>
+                            <strong></strong>
                         </div>
 
                     </div>
@@ -314,103 +336,75 @@ function mostrarConfirmacao({
                 </div>
             `;
 
+            const valores =
+                modal.querySelectorAll(
+                    ".resumo-item strong"
+                );
+
+            valores[0].textContent = nome;
+            valores[1].textContent = servico;
+            valores[2].textContent = formatarData(data);
+            valores[3].textContent = horario;
+
             document.body.appendChild(
                 modal
             );
 
             requestAnimationFrame(
                 () => {
-
                     modal.classList.add(
                         "ativo"
                     );
-
                 }
             );
 
             const fechar =
                 (resultado) => {
-
                     modal.classList.remove(
                         "ativo"
                     );
 
                     setTimeout(
                         () => {
-
                             modal.remove();
-
                         },
                         200
                     );
 
-                    resolve(
-                        resultado
-                    );
-
+                    resolve(resultado);
                 };
 
-
             modal
-                .querySelector(
-                    ".modal-fechar"
-                )
+                .querySelector(".modal-fechar")
                 .addEventListener(
                     "click",
-                    () => {
-
-                        fechar(false);
-
-                    }
+                    () => fechar(false)
                 );
-
 
             modal
-                .querySelector(
-                    ".modal-cancelar"
-                )
+                .querySelector(".modal-cancelar")
                 .addEventListener(
                     "click",
-                    () => {
-
-                        fechar(false);
-
-                    }
+                    () => fechar(false)
                 );
-
 
             modal
-                .querySelector(
-                    ".modal-confirmar"
-                )
+                .querySelector(".modal-confirmar")
                 .addEventListener(
                     "click",
-                    () => {
-
-                        fechar(true);
-
-                    }
+                    () => fechar(true)
                 );
-
 
             modal.addEventListener(
                 "click",
                 (e) => {
-
-                    if (
-                        e.target === modal
-                    ) {
-
+                    if (e.target === modal) {
                         fechar(false);
-
                     }
-
                 }
             );
-
         }
     );
-
 }
 
 
@@ -425,13 +419,11 @@ function mostrarSucesso({
     data,
     horario
 }) {
-
     const nomeBarbearia =
         String(
             CONFIG_CLIENTE.nome ||
             CONFIG.nome
         );
-
 
     const mensagemWhatsApp =
         encodeURIComponent(
@@ -445,62 +437,82 @@ function mostrarSucesso({
             `Agendamento realizado pelo site.`
         );
 
-
     const numeroWhatsApp =
         CONFIG_CLIENTE.whatsapp ||
         CONFIG.whatsapp;
 
-
     const linkWhatsApp =
         `https://wa.me/${numeroWhatsApp}?text=${mensagemWhatsApp}`;
 
+    mensagem.innerHTML = "";
 
-    mensagem.innerHTML = `
+    const caixa =
+        document.createElement("div");
 
-        <div class="sucesso-agendamento">
+    caixa.className =
+        "sucesso-agendamento";
 
-            <div class="sucesso-icone">
-                ✓
-            </div>
+    const icone =
+        document.createElement("div");
 
-            <h3>
-                Agendamento confirmado!
-            </h3>
+    icone.className =
+        "sucesso-icone";
 
-            <p>
-                Seu horário está reservado para:
-            </p>
+    icone.textContent = "✓";
 
-            <strong>
-                ${formatarData(data)}
-                às
-                ${horario}
-            </strong>
+    const titulo =
+        document.createElement("h3");
 
-            <p>
-                Serviço:
-                <strong>${servico}</strong>
-            </p>
+    titulo.textContent =
+        "Agendamento confirmado!";
 
-            <span>
-                Aguardamos você na
-                ${CONFIG_CLIENTE.nome || CONFIG.nome}.
-                ✂️
-            </span>
+    const descricao =
+        document.createElement("p");
 
-            <a
-                href="${linkWhatsApp}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="botao-whatsapp-agendamento"
-            >
-                💬 Avisar pelo WhatsApp
-            </a>
+    descricao.textContent =
+        "Seu horário está reservado para:";
 
-        </div>
+    const dataHorario =
+        document.createElement("strong");
 
-    `;
+    dataHorario.textContent =
+        `${formatarData(data)} às ${horario}`;
 
+    const servicoTexto =
+        document.createElement("p");
+
+    servicoTexto.textContent =
+        `Serviço: ${servico}`;
+
+    const estabelecimento =
+        document.createElement("span");
+
+    estabelecimento.textContent =
+        `Aguardamos você na ${CONFIG_CLIENTE.nome || CONFIG.nome}. ✂️`;
+
+    const link =
+        document.createElement("a");
+
+    link.href = linkWhatsApp;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.className =
+        "botao-whatsapp-agendamento";
+
+    link.textContent =
+        "💬 Avisar pelo WhatsApp";
+
+    caixa.append(
+        icone,
+        titulo,
+        descricao,
+        dataHorario,
+        servicoTexto,
+        estabelecimento,
+        link
+    );
+
+    mensagem.appendChild(caixa);
 }
 
 
@@ -509,208 +521,122 @@ function mostrarSucesso({
 // ========================================
 
 async function carregarHorarios() {
-
     const data =
         dataInput.value;
 
     horarioSelecionado =
         null;
 
-    listaHorarios.innerHTML =
-        "";
-
+    listaHorarios.innerHTML = "";
 
     if (!data) {
-
         listaHorarios.innerHTML =
             "<p>Escolha uma data.</p>";
 
         return;
     }
 
-
     listaHorarios.innerHTML =
         "<p>Carregando horários...</p>";
 
-
     try {
-
         const horariosRef =
             ref(
                 db,
                 `${CAMINHO_BARBEIRO}/horarios/${data}`
             );
 
-
         const snapshot =
-            await get(
-                horariosRef
-            );
+            await get(horariosRef);
 
-
-        if (
-            !snapshot.exists()
-        ) {
-
+        if (!snapshot.exists()) {
             listaHorarios.innerHTML =
                 "<p>Nenhum horário disponível para esta data.</p>";
 
             return;
         }
 
-
         const horarios =
             snapshot.val();
 
-
         const horariosOrdenados =
-            Object.entries(
-                horarios
-            ).sort(
-                (
-                    [horarioA],
-                    [horarioB]
-                ) => {
-
+            Object.entries(horarios).sort(
+                ([horarioA], [horarioB]) => {
                     const [horaA, minutoA] =
-                        horarioA
-                            .split(":")
-                            .map(Number);
+                        horarioA.split(":").map(Number);
 
                     const [horaB, minutoB] =
-                        horarioB
-                            .split(":")
-                            .map(Number);
-
+                        horarioB.split(":").map(Number);
 
                     const minutosA =
-                        horaA * 60 +
-                        minutoA;
-
+                        horaA * 60 + minutoA;
 
                     const minutosB =
-                        horaB * 60 +
-                        minutoB;
+                        horaB * 60 + minutoB;
 
-
-                    return (
-                        minutosA -
-                        minutosB
-                    );
-
+                    return minutosA - minutosB;
                 }
             );
 
+        listaHorarios.innerHTML = "";
 
-        listaHorarios.innerHTML =
-            "";
-
-
-        let encontrouHorario =
-            false;
-
+        let encontrouHorario = false;
 
         horariosOrdenados.forEach(
             ([horario, dados]) => {
-
                 if (
                     !dados ||
                     dados.disponivel !== true
                 ) {
-
                     return;
-
                 }
 
-
-                encontrouHorario =
-                    true;
-
+                encontrouHorario = true;
 
                 const botao =
-                    document.createElement(
-                        "button"
-                    );
+                    document.createElement("button");
 
-
-                botao.type =
-                    "button";
-
-
-                botao.className =
-                    "horario";
-
-
-                botao.textContent =
-                    horario;
-
+                botao.type = "button";
+                botao.className = "horario";
+                botao.textContent = horario;
 
                 botao.addEventListener(
                     "click",
                     () => {
-
                         document
-                            .querySelectorAll(
-                                ".horario"
-                            )
-                            .forEach(
-                                (btn) => {
-
-                                    btn.classList.remove(
-                                        "selecionado"
-                                    );
-
-                                }
-                            );
-
+                            .querySelectorAll(".horario")
+                            .forEach((btn) => {
+                                btn.classList.remove(
+                                    "selecionado"
+                                );
+                            });
 
                         botao.classList.add(
                             "selecionado"
                         );
 
-
-                        horarioSelecionado =
-                            horario;
-
-
-                        mensagem.innerHTML =
-                            "";
-
+                        horarioSelecionado = horario;
+                        mensagem.innerHTML = "";
                     }
                 );
 
-
-                listaHorarios.appendChild(
-                    botao
-                );
-
+                listaHorarios.appendChild(botao);
             }
         );
 
-
-        if (
-            !encontrouHorario
-        ) {
-
+        if (!encontrouHorario) {
             listaHorarios.innerHTML =
                 "<p>Não há horários disponíveis para esta data.</p>";
-
         }
-
-
     } catch (erro) {
-
         console.error(
             "Erro ao carregar horários:",
             erro
         );
 
-
         listaHorarios.innerHTML =
             "<p>Erro ao carregar os horários.</p>";
-
     }
-
 }
 
 
@@ -728,36 +654,24 @@ dataInput.addEventListener(
 // BOTÃO ABRIR AGENDAMENTO
 // ========================================
 
-if (
-    abrirAgendamento
-) {
-
+if (abrirAgendamento) {
     abrirAgendamento.addEventListener(
         "click",
         () => {
-
             const secaoAgendamento =
                 document.getElementById(
                     "agendamento"
                 );
 
-
-            if (
-                secaoAgendamento
-            ) {
-
+            if (secaoAgendamento) {
                 secaoAgendamento.scrollIntoView({
                     behavior: "smooth"
                 });
-
             }
 
-
             carregarHorarios();
-
         }
     );
-
 }
 
 
@@ -768,52 +682,38 @@ if (
 confirmar.addEventListener(
     "click",
     async () => {
-
-        if (
-            confirmar.disabled
-        ) {
-
+        if (confirmar.disabled) {
             return;
         }
 
-
         const nome =
             document
-                .getElementById(
-                    "nomeCliente"
-                )
+                .getElementById("nomeCliente")
                 .value
                 .trim();
-
 
         const telefone =
             document
-                .getElementById(
-                    "telefoneCliente"
-                )
+                .getElementById("telefoneCliente")
                 .value
                 .trim();
 
+        const servicoId =
+            document
+                .getElementById("servicoCliente")
+                .value;
 
-        
-const selectServico = document.getElementById("servicoCliente");
-const opcaoServico = selectServico.selectedOptions[0];
+        const servicoConfigurado =
+            (CONFIG_CLIENTE.servicos || [])
+                .find(item => item.valor === servicoId);
 
-const servicoId = selectServico.value;
-
-const servico = opcaoServico?.dataset.nomeServico
-    || opcaoServico?.textContent
-    || "";
-
-
+        const servico =
+            servicoConfigurado
+                ? servicoConfigurado.nome
+                : servicoId;
 
         const data =
             dataInput.value;
-
-
-        // ========================================
-        // VALIDAR CAMPOS
-        // ========================================
 
         if (
             !nome ||
@@ -822,21 +722,14 @@ const servico = opcaoServico?.dataset.nomeServico
             !data ||
             !horarioSelecionado
         ) {
-
             mensagem.textContent =
                 "Preencha todos os campos e escolha um horário.";
 
             return;
         }
 
-
         const horario =
             horarioSelecionado;
-
-
-        // ========================================
-        // CONFIRMAÇÃO
-        // ========================================
 
         const usuarioConfirmou =
             await mostrarConfirmacao({
@@ -846,58 +739,30 @@ const servico = opcaoServico?.dataset.nomeServico
                 horario
             });
 
-
-        if (
-            !usuarioConfirmou
-        ) {
-
+        if (!usuarioConfirmou) {
             mensagem.textContent =
                 "Agendamento cancelado.";
 
             return;
         }
 
-
         mensagem.textContent =
             "Confirmando agendamento...";
 
-
-        confirmar.disabled =
-            true;
-
+        confirmar.disabled = true;
 
         try {
-
-            // ========================================
-            // REFERÊNCIA DO HORÁRIO
-            // ========================================
-
             const disponivelRef =
                 ref(
                     db,
                     `${CAMINHO_BARBEIRO}/horarios/${data}/${horario}/disponivel`
                 );
 
-
-            // ========================================
-            // VERIFICAR DISPONIBILIDADE
-            // ========================================
-
             const disponibilidadeAtual =
-                await get(
-                    disponivelRef
-                );
+                await get(disponivelRef);
 
-
-            console.log(
-                "DATA:",
-                data
-            );
-
-            console.log(
-                "HORÁRIO:",
-                horario
-            );
+            console.log("DATA:", data);
+            console.log("HORÁRIO:", horario);
 
             console.log(
                 "CAMINHO:",
@@ -909,53 +774,26 @@ const servico = opcaoServico?.dataset.nomeServico
                 disponibilidadeAtual.val()
             );
 
-
-            if (
-                !disponibilidadeAtual.exists()
-            ) {
-
+            if (!disponibilidadeAtual.exists()) {
                 mensagem.textContent =
                     "Esse horário não existe no banco de dados.";
 
                 await carregarHorarios();
-
                 return;
             }
 
-
-            if (
-                disponibilidadeAtual.val() !== true
-            ) {
-
+            if (disponibilidadeAtual.val() !== true) {
                 mensagem.textContent =
                     "Esse horário não está mais disponível.";
 
                 await carregarHorarios();
-
                 return;
             }
 
+            // ATENÇÃO:
+            // Esta gravação ainda depende das Rules do Firebase.
+            // O diagnóstico de autenticação não altera as permissões.
 
-            // ========================================
-            // RESERVAR HORÁRIO
-            // ========================================
-
-            const horarioAtual =
-                disponibilidadeAtual.val();
-
-            if (horarioAtual !== true) {
-
-                mensagem.textContent =
-                    "Esse horário não está mais disponível.";
-
-                await carregarHorarios();
-
-                return;
-            }
-
-            // Reserva o horário antes de criar o agendamento.
-            // As Rules do Firebase exigem que o horário esteja
-            // indisponível para permitir a criação anônima do agendamento.
             await set(
                 disponivelRef,
                 false
@@ -966,151 +804,87 @@ const servico = opcaoServico?.dataset.nomeServico
                 horario
             );
 
-
-            // ========================================
-            // CRIAR AGENDAMENTO
-            // ========================================
-
             const agendamentosRef =
                 ref(
                     db,
                     `${CAMINHO_BARBEIRO}/agendamentos`
                 );
 
+            const novoAgendamento =
+                push(agendamentosRef);
 
-            
-const novoAgendamento =
-    push(
-        agendamentosRef
-    );
-
-try {
-    await update(
-        novoAgendamento,
-        {
-            nome: nome,
-            telefone: telefone,
-
-            servico: servico,
-            servicoId: servicoId,
-
-            data: data,
-            horario: horario,
-            status: "confirmado",
-            criadoEm: new Date().toISOString()
-        }
-    );
-
-
-
-                // ========================================
-                // NOTIFICAÇÃO PARA O BARBEIRO
-                // ========================================
+            try {
+                await update(
+                    novoAgendamento,
+                    {
+                        nome,
+                        telefone,
+                        servico,
+                        servicoId,
+                        duracaoMinutos: servicoConfigurado?.minutos ?? null,
+                        data,
+                        horario,
+                        status: "confirmado",
+                        criadoEm: new Date().toISOString()
+                    }
+                );
 
                 try {
-
                     const respostaNotificacao =
                         await fetch(
                             "https://plain-credit-3c23.vitorarthurxxx.workers.dev/",
                             {
-
-                                method:
-                                    "POST",
+                                method: "POST",
 
                                 headers: {
-
-                                    "Content-Type":
-                                        "application/json"
-
+                                    "Content-Type": "application/json"
                                 },
 
-                                body:
-                                    JSON.stringify({
-
-                                        nome:
-                                            nome,
-
-                                        servico:
-                                            servico,
-
-                                        data:
-                                            data,
-
-                                        horario:
-                                            horario
-
-                                    })
-
+                                body: JSON.stringify({
+                                    nome,
+                                    servico,
+                                    data,
+                                    horario
+                                })
                             }
                         );
 
-
                     const resultadoNotificacao =
                         await respostaNotificacao.json();
-
 
                     console.log(
                         "Resultado da notificação:",
                         resultadoNotificacao
                     );
-
-
-                } catch (
-                    erroNotificacao
-                ) {
-
+                } catch (erroNotificacao) {
                     console.error(
                         "Erro ao enviar notificação:",
                         erroNotificacao
                     );
-
                 }
-
-
-            } catch (
-                erroAgendamento
-            ) {
-
+            } catch (erroAgendamento) {
                 console.error(
                     "Erro ao criar agendamento:",
                     erroAgendamento
                 );
 
-
-                // ========================================
-                // LIBERAR HORÁRIO
-                // ========================================
-
                 try {
-
                     await set(
                         disponivelRef,
                         true
                     );
-
-                } catch (
-                    erroLiberar
-                ) {
-
+                } catch (erroLiberar) {
                     console.error(
                         "Erro ao liberar horário:",
                         erroLiberar
                     );
-
                 }
-
 
                 mensagem.textContent =
                     "Não foi possível concluir o agendamento. Tente novamente.";
 
                 return;
-
             }
-
-
-            // ========================================
-            // SUCESSO
-            // ========================================
 
             mostrarSucesso({
                 nome,
@@ -1120,61 +894,32 @@ try {
                 horario
             });
 
-
-            // ========================================
-            // LIMPAR CAMPOS
-            // ========================================
-
             document
-                .getElementById(
-                    "nomeCliente"
-                )
+                .getElementById("nomeCliente")
                 .value = "";
 
-
             document
-                .getElementById(
-                    "telefoneCliente"
-                )
+                .getElementById("telefoneCliente")
                 .value = "";
 
-
             document
-                .getElementById(
-                    "servicoCliente"
-                )
+                .getElementById("servicoCliente")
                 .value = "";
 
-
-            horarioSelecionado =
-                null;
-
-
-            // ========================================
-            // ATUALIZAR HORÁRIOS
-            // ========================================
+            horarioSelecionado = null;
 
             await carregarHorarios();
-
-
         } catch (erro) {
-
             console.error(
                 "ERRO COMPLETO AO AGENDAR:",
                 erro
             );
 
-
             mensagem.textContent =
                 "Não foi possível realizar o agendamento. Tente novamente.";
-
         } finally {
-
-            confirmar.disabled =
-                false;
-
+            confirmar.disabled = false;
         }
-
     }
 );
 
@@ -1184,11 +929,8 @@ try {
 // ========================================
 
 async function iniciarAgendamento() {
-
     await carregarConfiguracaoCliente();
-
     await carregarHorarios();
-
 }
 
 

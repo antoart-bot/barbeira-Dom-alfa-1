@@ -1,456 +1,460 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Login — Karen Leão Estética</title>
 
-    <title>Login — Dom Alfa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================
+           IDENTIDADE VISUAL
+        ========================= */
 
-        /* =====================================================
-           RESET
-           ===================================================== */
+        :root {
+            --marsala: #702F42;
+            --marsala-escuro: #542231;
+            --bege: #F5F0E8;
+            --dourado: #A48664;
+            --branco: #FFFFFF;
+            --texto: #302B26;
+            --texto-suave: #82786F;
+            --borda: #E9E0D6;
+            --campo: #FCFAF7;
+        }
 
         * {
             box-sizing: border-box;
         }
 
-
-        /* =====================================================
-           BODY
-           ===================================================== */
+        /* =========================
+           FUNDO
+        ========================= */
 
         body {
-
             margin: 0;
-
             min-height: 100vh;
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
+            padding: 24px;
 
-            padding: 25px;
-
-            font-family:
-                "DM Sans",
-                "Inter",
-                Arial,
-                sans-serif;
-
-            color: #f4f0e8;
+            font-family: "DM Sans", sans-serif;
+            color: var(--texto);
 
             background:
-
                 radial-gradient(
-                    circle at 50% 0%,
-                    rgba(185, 138, 82, 0.14),
+                    circle at 10% 10%,
+                    rgba(164, 134, 100, 0.13),
                     transparent 35%
                 ),
-
                 radial-gradient(
-                    circle at 0% 100%,
-                    rgba(185, 138, 82, 0.05),
-                    transparent 30%
+                    circle at 90% 90%,
+                    rgba(112, 47, 66, 0.08),
+                    transparent 35%
                 ),
-
-                #090909;
+                var(--bege);
         }
 
-
-        /* =====================================================
-           CONTAINER
-           ===================================================== */
+        /* =========================
+           CARTÃO DE LOGIN
+        ========================= */
 
         .login {
-
+            position: relative;
             width: 100%;
+            max-width: 420px;
+            padding: 42px 38px 30px;
 
-            max-width: 430px;
-
-            padding: 38px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #171717,
-                    #101010
-                );
-
-            border: 1px solid rgba(255, 255, 255, 0.08);
-
+            background: var(--branco);
+            border: 1px solid rgba(112, 47, 66, 0.08);
             border-radius: 14px;
 
             box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.45);
-
-            position: relative;
-
-            overflow: hidden;
+                0 20px 65px rgba(67, 43, 35, 0.09),
+                0 2px 8px rgba(67, 43, 35, 0.03);
         }
 
-
-        /* linha dourada superior */
-
         .login::before {
-
             content: "";
-
             position: absolute;
-
             top: 0;
             left: 0;
             right: 0;
+            height: 4px;
 
-            height: 3px;
+            background: linear-gradient(
+                90deg,
+                var(--marsala),
+                var(--dourado),
+                var(--marsala)
+            );
 
-            background: #b98a52;
+            border-radius: 14px 14px 0 0;
         }
 
+        /* =========================
+           MARCA
+        ========================= */
 
-        /* =====================================================
-           LOGO
-           ===================================================== */
-
-        .logo {
-
-            margin-bottom: 7px;
-
-            color: #f5f1e9;
-
-            font-size: 32px;
-
-            line-height: 1;
-
-            font-weight: 900;
-
-            letter-spacing: -0.045em;
+        .marca {
+            margin-bottom: 38px;
         }
 
+        .marca-simbolo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-        /* detalhe dourado */
-
-        .logo::after {
-
-            content: "";
-
-            display: block;
-
-            width: 32px;
-            height: 3px;
-
-            margin-top: 12px;
-
-            background: #b98a52;
-
-            border-radius: 3px;
-        }
-
-
-        /* =====================================================
-           SUBTÍTULO
-           ===================================================== */
-
-        .subtitulo {
-
-            margin: 18px 0 32px;
-
-            color: #77736d;
-
-            font-size: 14px;
-
-            font-weight: 500;
-        }
-
-
-        /* =====================================================
-           LABEL
-           ===================================================== */
-
-        label {
-
-            display: block;
-
+            width: 48px;
+            height: 48px;
             margin-bottom: 20px;
 
-            color: #aaa59d;
+            border: 1px solid rgba(112, 47, 66, 0.35);
+            border-radius: 50%;
 
-            font-size: 12px;
+            color: var(--marsala);
+            background: var(--bege);
 
+            font-family: "Manrope", sans-serif;
+            font-size: 17px;
             font-weight: 800;
+            letter-spacing: -1.5px;
+        }
 
-            letter-spacing: 0.05em;
+        .marca-nome {
+            margin: 0;
 
+            color: var(--marsala);
+
+            font-family: "Manrope", sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .marca-nome span {
+            color: var(--dourado);
+        }
+
+        .marca-descricao {
+            margin: 8px 0 0;
+
+            color: var(--texto-suave);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
+        /* =========================
+           TÍTULOS
+        ========================= */
 
-        /* =====================================================
-           INPUT
-           ===================================================== */
+        .titulo {
+            margin: 0;
+
+            color: var(--texto);
+
+            font-family: "Manrope", sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .subtitulo {
+            margin: 9px 0 28px;
+
+            color: var(--texto-suave);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           CAMPOS
+        ========================= */
+
+        label {
+            display: block;
+            margin-bottom: 19px;
+
+            color: var(--texto);
+            font-size: 12px;
+            font-weight: 700;
+        }
 
         input {
-
+            display: block;
             width: 100%;
-
-            height: 54px;
-
+            height: 52px;
             margin-top: 9px;
+            padding: 0 15px;
 
-            padding: 0 16px;
-
-            border: 1px solid #303030;
-
-            border-radius: 8px;
-
-            background: #0c0c0c;
-
-            color: #f4f0e8;
-
-            font-family: inherit;
-
-            font-size: 15px;
+            border: 1px solid var(--borda);
+            border-radius: 7px;
 
             outline: none;
+            background: var(--campo);
+            color: var(--texto);
+
+            font-family: inherit;
+            font-size: 14px;
 
             transition:
                 border-color 0.2s ease,
-                background 0.2s ease,
-                box-shadow 0.2s ease;
+                box-shadow 0.2s ease,
+                background 0.2s ease;
         }
-
 
         input::placeholder {
-
-            color: #55524e;
+            color: #A59A90;
         }
 
+        input:hover {
+            border-color: #D7C5B9;
+        }
 
         input:focus {
-
-            background: #111;
-
-            border-color: #b98a52;
+            border-color: var(--marsala);
+            background: var(--branco);
 
             box-shadow:
-                0 0 0 3px
-                rgba(185, 138, 82, 0.09);
+                0 0 0 3px rgba(112, 47, 66, 0.09);
         }
 
-
-        /* =====================================================
+        /* =========================
            BOTÃO
-           ===================================================== */
+        ========================= */
 
         button {
-
+            display: block;
             width: 100%;
-
-            height: 54px;
-
+            min-height: 52px;
             margin-top: 5px;
+            padding: 12px 18px;
 
-            border: none;
+            border: 1px solid var(--marsala);
+            border-radius: 7px;
 
-            border-radius: 8px;
-
-            background: #b98a52;
-
-            color: #111;
+            background: var(--marsala);
+            color: var(--branco);
 
             font-family: inherit;
-
-            font-size: 14px;
-
-            font-weight: 900;
-
-            letter-spacing: 0.02em;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
 
             cursor: pointer;
 
             transition:
                 background 0.2s ease,
+                border-color 0.2s ease,
                 transform 0.2s ease,
                 box-shadow 0.2s ease;
         }
 
-
         button:hover {
-
-            background: #d0a46b;
-
-            transform: translateY(-2px);
+            background: var(--marsala-escuro);
+            border-color: var(--marsala-escuro);
 
             box-shadow:
-                0 12px 28px
-                rgba(185, 138, 82, 0.15);
-        }
+                0 7px 18px rgba(112, 47, 66, 0.16);
 
+            transform: translateY(-1px);
+        }
 
         button:active {
-
             transform: translateY(0);
+            box-shadow: none;
         }
 
+        button:focus-visible {
+            outline: 2px solid var(--dourado);
+            outline-offset: 4px;
+        }
 
-        /* =====================================================
+        button:disabled {
+            cursor: wait;
+            opacity: 0.7;
+            transform: none;
+        }
+
+        /* =========================
            MENSAGEM
-           ===================================================== */
+        ========================= */
 
         #mensagem {
-
             min-height: 20px;
+            margin: 15px 0 0;
 
-            margin: 17px 0 0;
-
-            color: #c48279;
-
+            color: #A43F46;
             font-size: 13px;
-
-            font-weight: 700;
-
+            font-weight: 600;
+            line-height: 1.5;
             text-align: center;
         }
 
+        /* =========================
+           RODAPÉ
+        ========================= */
 
-        /* =====================================================
-           CELULAR
-           ===================================================== */
+        .rodape {
+            margin: 27px 0 0;
+            padding-top: 19px;
 
-        @media (max-width: 500px) {
+            border-top: 1px solid var(--borda);
 
+            color: var(--texto-suave);
+            font-size: 11px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .rodape span {
+            color: var(--dourado);
+        }
+
+        /* =========================
+           RESPONSIVIDADE
+        ========================= */
+
+        @media (max-width: 480px) {
             body {
-
-                padding: 15px;
+                padding: 16px;
             }
 
             .login {
-
-                padding: 30px 22px;
-
+                padding: 32px 23px 25px;
                 border-radius: 12px;
             }
 
-            .logo {
+            .marca {
+                margin-bottom: 31px;
+            }
 
-                font-size: 29px;
+            .marca-nome {
+                font-size: 23px;
+            }
+
+            .titulo {
+                font-size: 21px;
             }
 
             .subtitulo {
-
-                margin-bottom: 27px;
+                margin-bottom: 25px;
             }
-
         }
 
-
-        /* =====================================================
-           CELULAR PEQUENO
-           ===================================================== */
-
         @media (max-width: 360px) {
-
             .login {
-
-                padding: 27px 18px;
+                padding: 28px 18px 22px;
             }
 
-            .logo {
-
-                font-size: 27px;
+            .marca-nome {
+                font-size: 21px;
             }
 
             input,
             button {
-
-                height: 51px;
+                height: 49px;
             }
-
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
-
     <main class="login">
 
+        <header class="marca">
 
-        <div class="logo">
-            DOM ALFA
-        </div>
+            <div class="marca-simbolo" aria-hidden="true">
+                KL
+            </div>
 
+            <h1 class="marca-nome">
+                KAREN LEÃO<span>.</span>
+            </h1>
 
-        <div class="subtitulo">
-            Acesso do barbeiro
-        </div>
+            <p class="marca-descricao">
+                Estética &amp; Beleza
+            </p>
 
+        </header>
 
-        <form id="formLogin">
+        <section>
 
+            <h2 class="titulo">
+                Área profissional
+            </h2>
 
-            <label>
+            <p class="subtitulo">
+                Acesse seu painel para acompanhar os atendimentos e os agendamentos.
+            </p>
 
-                E-mail
+            <form id="formLogin">
 
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="seu@email.com"
-                    autocomplete="email"
-                    required
-                >
+                <label for="email">
+                    E-mail
 
-            </label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="seu@email.com"
+                        autocomplete="username"
+                        required
+                    >
+                </label>
 
+                <label for="senha">
+                    Senha
 
-            <label>
+                    <input
+                        type="password"
+                        id="senha"
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                        required
+                    >
+                </label>
 
-                Senha
+                <button type="submit">
+                    Entrar no painel
+                </button>
 
-                <input
-                    type="password"
-                    id="senha"
-                    placeholder="Sua senha"
-                    autocomplete="current-password"
-                    required
-                >
+            </form>
 
-            </label>
+            <p
+                id="mensagem"
+                role="status"
+                aria-live="polite"
+            ></p>
 
+        </section>
 
-            <button type="submit">
-                Entrar
-            </button>
-
-
-        </form>
-
-
-        <p id="mensagem"></p>
-
+        <footer class="rodape">
+            Acesso exclusivo à profissional responsável.
+            <br>
+            <span>Karen Leão Estética</span>
+        </footer>
 
     </main>
 
-
-    <script
-        type="module"
-        src="login.js"
-    ></script>
-
+    <script type="module" src="login.js"></script>
 
 </body>
-
 </html>

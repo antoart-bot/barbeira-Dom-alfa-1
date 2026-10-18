@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="painel.css">
 
-    <title>Painel — <span id="nomeBarbeariaTitulo">Barbearia</span></title>
+    <title>Painel — Karen Leão Estética</title>
 </head>
 
 <body>
@@ -67,98 +67,64 @@
 
         <h2>Agendamentos</h2>
 
-        
-
         <div id="listaAgendamentos">
             Carregando...
         </div>
 
     </section>
 
-    
     <section class="secao secao-servicos">
-
-        <h2>Meus serviços</h2>
-
-        <p class="subtitulo">
-            Organize seus procedimentos por categorias e gerencie os preços.
-        </p>
-
-        <form id="formCategoria" class="form-servicos">
-            <h3>Nova categoria</h3>
-
-            <div class="campos-servicos">
-                <div>
-                    <label for="nomeCategoria">Nome da categoria</label>
-                    <input
-                        type="text"
-                        id="nomeCategoria"
-                        placeholder="Ex.: Cortes"
-                        maxlength="60"
-                        required
-                    >
-                </div>
+        <div class="cabecalho-servicos">
+            <div>
+                <h2>Procedimentos e categorias</h2>
+                <p>Cadastre os procedimentos, valores, duração e orientações exibidas no site.</p>
             </div>
+        </div>
 
-            <button type="submit" id="salvarCategoria">
-                + Criar categoria
-            </button>
+        <form id="formCategoria" class="form-servicos form-categoria">
+            <h3>Nova categoria</h3>
+            <label for="nomeCategoria">Nome da categoria</label>
+            <div class="linha-categoria">
+                <input id="nomeCategoria" type="text" maxlength="70" placeholder="Ex.: Procedimentos faciais" required>
+                <button id="salvarCategoria" type="submit">Adicionar categoria</button>
+            </div>
         </form>
 
-        <div class="separador-servicos"></div>
-
         <form id="formServico" class="form-servicos">
-            <h3>Adicionar serviço</h3>
-
-            <div class="campos-servicos">
-                <div>
+            <h3>Novo procedimento</h3>
+            <div class="grade-form-servico">
+                <div class="campo-servico campo-largo">
                     <label for="categoriaServico">Categoria</label>
                     <select id="categoriaServico" required>
                         <option value="">Carregando categorias...</option>
                     </select>
                 </div>
-
-                <div>
-                    <label for="nomeServico">Nome do serviço</label>
-                    <input
-                        type="text"
-                        id="nomeServico"
-                        placeholder="Ex.: Corte tradicional"
-                        maxlength="80"
-                        required
-                    >
+                <div class="campo-servico campo-largo">
+                    <label for="nomeServico">Nome do procedimento</label>
+                    <input id="nomeServico" type="text" maxlength="100" placeholder="Ex.: Limpeza de pele premium" required>
                 </div>
-
-                <div>
+                <div class="campo-servico">
                     <label for="precoServico">Preço (R$)</label>
-                    <input
-                        type="number"
-                        id="precoServico"
-                        placeholder="40,00"
-                        min="0"
-                        max="99999"
-                        step="0.01"
-                        required
-                    >
+                    <input id="precoServico" type="number" min="0" max="99999" step="0.01" placeholder="Deixe vazio se for após avaliação">
+                </div>
+                <div class="campo-servico">
+                    <label for="duracaoServico">Duração (minutos)</label>
+                    <input id="duracaoServico" type="number" min="1" max="1440" step="1" placeholder="Ex.: 60">
+                </div>
+                <div class="campo-servico campo-largo">
+                    <label for="descricaoServico">Descrição do procedimento</label>
+                    <textarea id="descricaoServico" rows="3" maxlength="600" placeholder="Explique como é o procedimento e para que serve."></textarea>
+                </div>
+                <div class="campo-servico campo-largo">
+                    <label for="detalhesServico">Detalhes e orientações (um por linha)</label>
+                    <textarea id="detalhesServico" rows="3" maxlength="1200" placeholder="Ex.: Inclui hidratação; trazer uma toalha; retorno em até 15 dias"></textarea>
                 </div>
             </div>
-
-            <button type="submit" id="salvarServico">
-                + Adicionar serviço
-            </button>
+            <button id="salvarServico" type="submit">Adicionar procedimento</button>
         </form>
 
-        <p
-            class="mensagem"
-            id="mensagemServicos"
-            role="status"
-            aria-live="polite"
-        ></p>
-
-        <div class="lista-categorias-servicos" id="listaServicos">
-            Carregando serviços...
-        </div>
-
+        <p id="mensagemServicos" class="mensagem mensagem-servicos" role="status"></p>
+        <div id="listaServicos" class="lista-servicos">Carregando procedimentos...</div>
     </section>
 
 
@@ -282,10 +248,117 @@
 
 </div>
 
-<script
-    type="module"
-    src="painel.js"
-></script>
+
+<!-- JANELA DE EDIÇÃO DE PROCEDIMENTO -->
+<div id="modalEditarProcedimento" class="modal-procedimento" hidden>
+    <div class="modal-procedimento-fundo" data-fechar-modal></div>
+
+    <section
+        class="modal-procedimento-conteudo"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloModalProcedimento"
+    >
+        <header class="modal-procedimento-cabecalho">
+            <div>
+                <span class="modal-etiqueta">CATÁLOGO DE SERVIÇOS</span>
+                <h2 id="tituloModalProcedimento">Editar procedimento</h2>
+                <p>Atualize as informações que suas clientes vão visualizar.</p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-fechar"
+                id="fecharModalProcedimento"
+                aria-label="Fechar janela"
+            >×</button>
+        </header>
+
+        <form id="formEditarProcedimento">
+            <div class="modal-procedimento-campos">
+                <div class="campo-modal">
+                    <label for="editarNomeProcedimento">Nome do procedimento</label>
+                    <input
+                        id="editarNomeProcedimento"
+                        type="text"
+                        maxlength="100"
+                        placeholder="Ex.: Limpeza de pele"
+                        required
+                    >
+                </div>
+
+                <div class="campo-modal">
+                    <label for="editarCategoriaProcedimento">Categoria</label>
+                    <select id="editarCategoriaProcedimento" required></select>
+                </div>
+
+                <div class="campo-modal">
+                    <label for="editarPrecoProcedimento">Preço (R$)</label>
+                    <input
+                        id="editarPrecoProcedimento"
+                        type="number"
+                        min="0"
+                        max="99999"
+                        step="0.01"
+                        placeholder="Deixe vazio para avaliação"
+                    >
+                    <small>Deixe vazio se o preço depender de avaliação.</small>
+                </div>
+
+                <div class="campo-modal">
+                    <label for="editarDuracaoProcedimento">Duração (minutos)</label>
+                    <input
+                        id="editarDuracaoProcedimento"
+                        type="number"
+                        min="1"
+                        max="1440"
+                        step="1"
+                        placeholder="Ex.: 60"
+                    >
+                    <small>Deixe vazio se não houver duração definida.</small>
+                </div>
+
+                <div class="campo-modal campo-modal-largo">
+                    <label for="editarDescricaoProcedimento">Descrição</label>
+                    <textarea
+                        id="editarDescricaoProcedimento"
+                        rows="4"
+                        maxlength="600"
+                        placeholder="Explique o procedimento, seus benefícios e como funciona."
+                    ></textarea>
+                </div>
+
+                <div class="campo-modal campo-modal-largo">
+                    <label for="editarDetalhesProcedimento">Detalhes e orientações</label>
+                    <textarea
+                        id="editarDetalhesProcedimento"
+                        rows="4"
+                        maxlength="1200"
+                        placeholder="Escreva uma orientação por linha."
+                    ></textarea>
+                    <small>Ex.: cuidados antes da sessão, etapas incluídas e recomendações.</small>
+                </div>
+            </div>
+
+            <div class="modal-procedimento-acoes">
+                <button
+                    type="button"
+                    id="cancelarEdicaoProcedimento"
+                    class="botao-modal-cancelar"
+                >Cancelar</button>
+
+                <button
+                    type="submit"
+                    id="salvarEdicaoProcedimento"
+                    class="botao-modal-salvar"
+                >Salvar alterações</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+
+<script type="module" src="./painel.js"></script>
 
 </body>
 

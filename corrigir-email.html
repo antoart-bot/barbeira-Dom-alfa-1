@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corrigir e-mail — Karen Leão</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #F5F0E8;
+      color: #302B26;
+      font-family: Arial, sans-serif;
+    }
+    main {
+      width: min(360px, calc(100% - 40px));
+      padding: 28px;
+      background: white;
+      border-radius: 16px;
+      box-sizing: border-box;
+    }
+    h1 { color: #702F42; font-size: 23px; }
+    p { line-height: 1.5; }
+    button {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      background: #702F42;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #mensagem { overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Corrigir e-mail</h1>
+    <p>Conta da Karen Leão</p>
+    <p id="atual">Verificando login...</p>
+    <button id="corrigir" hidden>Corrigir para o e-mail certo</button>
+    <p id="mensagem"></p>
+  </main>
+
+  <script type="module">
+    import {
+      onAuthStateChanged,
+      verifyBeforeUpdateEmail
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+    import { auth } from "./firebase.js";
+
+    const atual = document.getElementById("atual");
+    const botao = document.getElementById("corrigir");
+    const mensagem = document.getElementById("mensagem");
+
+    onAuthStateChanged(auth, (usuario) => {
+      if (!usuario) {
+        atual.textContent =
+          "Você não está conectado. Entre primeiro no site com a conta atual e abra esta página novamente.";
+        return;
+      }
+
+      atual.textContent = "Conta conectada: " + usuario.email;
+
+      if (usuario.email?.toLowerCase() !== "lealkaren74@gmail.com") {
+        mensagem.textContent =
+          "A conta conectada não é o e-mail que queremos corrigir. Nenhuma alteração foi feita.";
+        return;
+      }
+
+      botao.hidden = false;
+    });
+
+    botao.addEventListener("click", async () => {
+      botao.disabled = true;
+      mensagem.textContent = "Solicitando confirmação...";
+
+      try {
+        await verifyBeforeUpdateEmail(
+          auth.currentUser,
+          "leaokaren74@gmail.com"
+        );
+
+        mensagem.textContent =
+          "O Firebase enviou uma mensagem de confirmação para o novo e-mail. Abra essa caixa de entrada e confirme a alteração antes de continuar.";
+      } catch (erro) {
+        console.error(erro);
+        mensagem.textContent =
+          "Não foi possível solicitar a alteração: " +
+          (erro.code || erro.message);
+        botao.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

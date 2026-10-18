@@ -1,0 +1,25 @@
+KAREN LEÃO ESTÉTICA — ARQUIVOS ATUALIZADOS
+
+Arquivos alterados:
+- index.html: texto da seção de serviços ajustado e erro de texto residual removido.
+- config.js: catálogo completo dos procedimentos faciais, corporais e avaliação estética.
+- config-site.js: catálogo por categoria, preços, durações, descrições, detalhes e links de agendamento; os procedimentos deste site vêm do config.js.
+- agendamento.js: traduz o identificador selecionado para o nome do procedimento e grava também servicoId e duracaoMinutos no agendamento.
+- style.css: estilos responsivos para o catálogo de procedimentos.
+
+Antes de publicar:
+1. Em config.js, substitua whatsapp "55DDDNUMERO" pelo número real da Karen (somente dígitos).
+2. Substitua o Instagram de exemplo pelo perfil real.
+3. Confirme a cidade e os horários reais.
+4. Teste o site, o agendamento e o painel com um horário de teste antes de divulgar.
+
+IMPORTANTE SOBRE A DURAÇÃO DOS PROCEDIMENTOS:
+O agendamento atual marca como ocupado apenas o horário de início escolhido. Apesar de a duração aparecer no catálogo e ser gravada no agendamento, o sistema ainda não bloqueia automaticamente os horários seguintes que se sobrepõem a um procedimento longo, nem os libera em conjunto ao cancelar. Antes de usar para clientes reais, é necessário atualizar também painel.js e a lógica de disponibilidade para bloquear/liberar a duração inteira de forma consistente.
+
+
+GESTÃO DE PROCEDIMENTOS
+- O painel agora permite criar categorias e procedimentos com preço opcional, duração em minutos, descrição e detalhes/orientações.
+- Ao abrir o painel da própria Karen, os procedimentos antigos de config.js são importados para barbeiros/karen-leao-002/servicos, sem repetir itens já existentes.
+- O catálogo público e a seleção de agendamento passam a ler os procedimentos do Firebase quando existirem.
+- A conta proprietária precisa ter permissão de escrita em barbeiros/karen-leao-002/servicos e leitura pública para o catálogo.
+- A duração fica salva no procedimento e no agendamento. A disponibilidade ainda usa os horários cadastrados; confira a grade de horários antes de usar durações maiores que o intervalo entre horários.
