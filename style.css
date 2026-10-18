@@ -2782,3 +2782,46 @@ header .book {
     background: #d0a46b;
     transform: translateY(-2px);
 }
+
+
+/* Categorias de serviços */
+.service-category-group {
+    grid-column: 1 / -1;
+    min-width: 0;
+    margin-bottom: 28px;
+}
+
+.service-category-title {
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.service-category-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.service-category-items .service {
+    min-width: 0;
+}
+
+.service-category-items .service h4 {
+    margin: 0;
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .service-category-items {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .service-category-group {
+        margin-bottom: 20px;
+    }
+}

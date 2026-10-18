@@ -795,12 +795,16 @@ confirmar.addEventListener(
                 .trim();
 
 
-        const servico =
-            document
-                .getElementById(
-                    "servicoCliente"
-                )
-                .value;
+        
+const selectServico = document.getElementById("servicoCliente");
+const opcaoServico = selectServico.selectedOptions[0];
+
+const servicoId = selectServico.value;
+
+const servico = opcaoServico?.dataset.nomeServico
+    || opcaoServico?.textContent
+    || "";
+
 
 
         const data =
@@ -974,42 +978,29 @@ confirmar.addEventListener(
                 );
 
 
-            const novoAgendamento =
-                push(
-                    agendamentosRef
-                );
+            
+const novoAgendamento =
+    push(
+        agendamentosRef
+    );
 
+try {
+    await update(
+        novoAgendamento,
+        {
+            nome: nome,
+            telefone: telefone,
 
-            try {
+            servico: servico,
+            servicoId: servicoId,
 
-                await update(
-                    novoAgendamento,
-                    {
+            data: data,
+            horario: horario,
+            status: "confirmado",
+            criadoEm: new Date().toISOString()
+        }
+    );
 
-                        nome:
-                            nome,
-
-                        telefone:
-                            telefone,
-
-                        servico:
-                            servico,
-
-                        data:
-                            data,
-
-                        horario:
-                            horario,
-
-                        status:
-                            "confirmado",
-
-                        criadoEm:
-                            new Date()
-                                .toISOString()
-
-                    }
-                );
 
 
                 // ========================================

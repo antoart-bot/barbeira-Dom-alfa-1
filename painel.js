@@ -3,7 +3,9 @@ import {
     get,
     update,
     remove,
-    onValue
+    onValue,
+    push
+
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 import {
@@ -84,6 +86,21 @@ const gerarHorarios =
 
 const nomeBarbearia =
     document.getElementById("nomeBarbearia");
+
+    
+const formCategoria = document.getElementById("formCategoria");
+const nomeCategoria = document.getElementById("nomeCategoria");
+const salvarCategoria = document.getElementById("salvarCategoria");
+
+const formServico = document.getElementById("formServico");
+const categoriaServico = document.getElementById("categoriaServico");
+const nomeServico = document.getElementById("nomeServico");
+const precoServico = document.getElementById("precoServico");
+const salvarServico = document.getElementById("salvarServico");
+
+const listaServicos = document.getElementById("listaServicos");
+const mensagemServicos = document.getElementById("mensagemServicos");
+
 
 
 // =========================================================
@@ -345,6 +362,666 @@ async function prepararNotificacoes() {
 }
 
 
+
+/* =========================================================
+   GESTÃO DE CATEGORIAS E SERVIÇOS
+========================================================= */
+
+
+let categoriasServicos = {};
+let itensServicos = {};
+let servicosAntigosPainel = {};
+
+
+function identificarCategoriaAntiga(nomeServico) {
+    const nome = String(nomeServico || "")
+        .trim()
+        .toLocaleLowerCase("pt-BR");
+
+    // Combos primeiro, para "Corte + Barba" não virar apenas Corte.
+    if (
+        nome.includes("corte") &&
+        nome.includes("barba")
+    ) {
+        return "Combos";
+    }
+
+    if (nome.includes("barba")) {
+        return "Barba";
+    }
+
+    if (
+        nome.includes("acabamento") ||
+        nome.includes("pezinho") ||
+        nome.includes("sobrancelha")
+    ) {
+        return "Acabamentos";
+    }
+
+    if (
+        nome.includes("corte") ||
+        nome.includes("degradê") ||
+        nome.includes("social") ||
+        nome.includes("infantil") ||
+        nome.includes("máquina")
+    ) {
+        return "Cortes";
+    }
+
+    return "Outros";
+}
+
+async function garantirCategoriasAntigasNoFirebase() {
+    const nomesExistentes = new Set(
+        Object.values(categoriasServicos)
+            .filter(Boolean)
+            .map(categoria =>
+                String(categoria.nome || "")
+                    .trim()
+                    .toLocaleLowerCase("pt-BR")
+            )
+    );
+
+    for (const nome of Object.keys(servicosAntigosPainel)) {
+        const nomeNormalizado = nome
+            .trim()
+            .toLocaleLowerCase("pt-BR");
+
+        // Se já existe, não cria outra categoria.
+        if (nomesExistentes.has(nomeNormalizado)) {
+            continue;
+        }
+
+        const novaCategoriaRef = push(
+            ref(db, caminhoCategorias())
+        );
+
+        const novaCategoria = {
+            nome,
+            criadoEm: new Date().toISOString()
+        };
+
+        await update(novaCategoriaRef, novaCategoria);
+
+        // Atualiza a lista local sem precisar recarregar a página.
+        categoriasServicos[novaCategoriaRef.key] = novaCategoria;
+
+        nomesExistentes.add(nomeNormalizado);
+
+        console.log("Categoria criada:", nome);
+    }
+}
+
+
+
+function caminhoCategorias() {
+    return `${CAMINHO_BARBEIRO}/servicos/categorias`;
+}
+
+function caminhoItensServicos() {
+    return `${CAMINHO_BARBEIRO}/servicos/itens`;
+}
+
+function mostrarMensagemServicos(texto, erro = false) {
+    if (!mensagemServicos) return;
+
+    mensagemServicos.textContent = texto;
+    mensagemServicos.style.color = erro ? "#d9534f" : "";
+}
+
+function criarElemento(tag, classe, texto) {
+    const elemento = document.createElement(tag);
+
+    if (classe) elemento.className = classe;
+    if (texto !== undefined) elemento.textContent = texto;
+
+    return elemento;
+}
+
+function formatarPreco(preco) {
+    return Number(preco || 0).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+
+async function carregarServicos() {
+    if (!CAMINHO_BARBEIRO || !listaServicos) return;
+
+    listaServicos.textContent = "Carregando serviços...";
+
+    try {
+        const [categoriasSnapshot, itensSnapshot] = await Promise.all([
+            get(ref(db, caminhoCategorias())),
+            get(ref(db, caminhoItensServicos()))
+        ]);
+
+        categoriasServicos = categoriasSnapshot.exists()
+            ? categoriasSnapshot.val()
+            : {};
+
+        itensServicos = itensSnapshot.exists()
+            ? itensSnapshot.val()
+            : {};
+
+        // Usa serviços antigos salvos na configuração do cliente.
+        // Para o Dom Alfa original, também considera o config.js.
+        let origemAntiga = [];
+
+        if (Array.isArray(CONFIG_CLIENTE?.servicos)) {
+            origemAntiga = CONFIG_CLIENTE.servicos;
+        } else if (CAMINHO_BARBEIRO === `barbeiros/${CONFIG.id}`) {
+            origemAntiga = Array.isArray(CONFIG.servicos)
+                ? CONFIG.servicos
+                : [];
+        }
+
+        // Não repete os serviços que já existem na estrutura nova.
+        const nomesNovos = new Set(
+            Object.values(itensServicos)
+                .filter(Boolean)
+                .map(servico =>
+                    String(servico.nome || "")
+                        .trim()
+                        .toLocaleLowerCase("pt-BR")
+                )
+        );
+
+        servicosAntigosPainel = {};
+
+        origemAntiga.forEach((servico, indice) => {
+            if (!servico?.nome) return;
+
+            const nomeNormalizado = String(servico.nome)
+                .trim()
+                .toLocaleLowerCase("pt-BR");
+
+            if (nomesNovos.has(nomeNormalizado)) return;
+
+            const categoria = identificarCategoriaAntiga(servico.nome);
+
+            if (!servicosAntigosPainel[categoria]) {
+                servicosAntigosPainel[categoria] = [];
+            }
+
+            servicosAntigosPainel[categoria].push({
+                id: `antigo-${indice}`,
+                nome: servico.nome,
+                preco: Number(servico.preco) || 0
+            });
+        });
+
+            await garantirCategoriasAntigasNoFirebase();
+
+            atualizarSeletorCategorias();
+            renderizarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao carregar serviços:", erro);
+
+        listaServicos.textContent =
+            "Não foi possível carregar os serviços.";
+
+        mostrarMensagemServicos(
+            "Erro ao carregar. Verifique a conexão e as permissões do Firebase.",
+            true
+        );
+    }
+}
+
+
+function atualizarSeletorCategorias() {
+    if (!categoriaServico) return;
+
+    categoriaServico.replaceChildren();
+
+    const opcaoInicial = document.createElement("option");
+    opcaoInicial.value = "";
+    opcaoInicial.textContent = "Selecione uma categoria";
+    categoriaServico.appendChild(opcaoInicial);
+
+    Object.entries(categoriasServicos)
+        .sort((a, b) =>
+            String(a[1]?.nome || "").localeCompare(
+                String(b[1]?.nome || ""),
+                "pt-BR"
+            )
+        )
+        .forEach(([id, categoria]) => {
+            const opcao = document.createElement("option");
+            opcao.value = id;
+            opcao.textContent = categoria.nome || "Categoria sem nome";
+            categoriaServico.appendChild(opcao);
+        });
+
+    if (salvarServico) {
+        salvarServico.disabled =
+            Object.keys(categoriasServicos).length === 0;
+    }
+}
+
+
+function renderizarServicos() {
+    if (!listaServicos) return;
+
+    listaServicos.replaceChildren();
+
+    const categorias = Object.entries(categoriasServicos)
+        .map(([id, categoria]) => ({
+            id,
+            nome: categoria.nome || "Sem nome",
+            antiga: false
+        }));
+
+    // Acrescenta as categorias dos serviços antigos.
+    Object.keys(servicosAntigosPainel).forEach(nomeCategoria => {
+        const jaExiste = categorias.some(categoria =>
+            categoria.nome.trim().toLocaleLowerCase("pt-BR") ===
+            nomeCategoria.toLocaleLowerCase("pt-BR")
+        );
+
+        if (!jaExiste) {
+            categorias.push({
+                id: `antiga-${nomeCategoria}`,
+                nome: nomeCategoria,
+                antiga: true
+            });
+        }
+    });
+
+    categorias.sort((a, b) =>
+        a.nome.localeCompare(b.nome, "pt-BR")
+    );
+
+    if (categorias.length === 0) {
+        listaServicos.appendChild(
+            criarElemento(
+                "p",
+                "vazio",
+                "Nenhum serviço cadastrado."
+            )
+        );
+        return;
+    }
+
+    categorias.forEach(categoria => {
+        const grupo = criarElemento("div", "categoria-servicos");
+        const cabecalho = criarElemento("div", "cabecalho-categoria");
+        const titulo = criarElemento("h3", "", categoria.nome);
+        const botoesCategoria = criarElemento("div", "acoes-categoria");
+
+        // Categorias reais continuam editáveis.
+        if (!categoria.antiga) {
+            const editarCategoria = criarElemento(
+                "button",
+                "editar-categoria",
+                "Editar"
+            );
+
+            editarCategoria.type = "button";
+            editarCategoria.addEventListener("click", () => {
+                editarCategoriaServico(categoria.id);
+            });
+
+            const excluirCategoria = criarElemento(
+                "button",
+                "excluir-categoria",
+                "Excluir"
+            );
+
+            excluirCategoria.type = "button";
+            excluirCategoria.addEventListener("click", () => {
+                excluirCategoriaServico(categoria.id);
+            });
+
+            botoesCategoria.append(editarCategoria, excluirCategoria);
+        }
+
+        cabecalho.append(titulo, botoesCategoria);
+        grupo.appendChild(cabecalho);
+
+        const servicosDaCategoria = categoria.antiga
+            ? []
+            : Object.entries(itensServicos)
+                .filter(([, servico]) =>
+                    servico && servico.categoriaId === categoria.id
+                )
+                .map(([id, servico]) => ({
+                    id,
+                    nome: servico.nome || "Sem nome",
+                    preco: servico.preco,
+                    antigo: false
+                }));
+
+        // Se já existe uma categoria real com esse nome,
+        // os serviços antigos aparecem dentro dela também.
+        const categoriaAntigaCorrespondente =
+            Object.keys(servicosAntigosPainel).find(nome =>
+                nome.toLocaleLowerCase("pt-BR") ===
+                categoria.nome.trim().toLocaleLowerCase("pt-BR")
+            );
+
+        if (categoria.antiga) {
+            servicosDaCategoria.push(
+                ...(servicosAntigosPainel[categoria.nome] || [])
+                    .map(servico => ({ ...servico, antigo: true }))
+            );
+        } else if (categoriaAntigaCorrespondente) {
+            servicosDaCategoria.push(
+                ...(servicosAntigosPainel[categoriaAntigaCorrespondente] || [])
+                    .map(servico => ({ ...servico, antigo: true }))
+            );
+        }
+
+        servicosDaCategoria.sort((a, b) =>
+            a.nome.localeCompare(b.nome, "pt-BR")
+        );
+
+        if (servicosDaCategoria.length === 0) {
+            grupo.appendChild(
+                criarElemento("p", "vazio", "Nenhum serviço nesta categoria.")
+            );
+        }
+
+        servicosDaCategoria.forEach(servico => {
+            const linha = criarElemento("div", "item-servico");
+            const informacoes = criarElemento("div", "info-servico");
+            const nome = criarElemento("strong", "", servico.nome);
+            const preco = criarElemento(
+                "span",
+                "preco-servico",
+                formatarPreco(servico.preco)
+            );
+
+            informacoes.append(nome, preco);
+            linha.appendChild(informacoes);
+
+            if (servico.antigo) {
+                linha.appendChild(
+                    criarElemento(
+                        "span",
+                        "servico-legado",
+                        "Serviço existente"
+                    )
+                );
+            } else {
+                const acoes = criarElemento("div", "acoes-servico");
+
+                const editar = criarElemento(
+                    "button",
+                    "editar-servico",
+                    "Editar"
+                );
+
+                const excluir = criarElemento(
+                    "button",
+                    "excluir-servico",
+                    "Excluir"
+                );
+
+                editar.type = "button";
+                excluir.type = "button";
+
+                editar.addEventListener("click", () => {
+                    editarItemServico(servico.id);
+                });
+
+                excluir.addEventListener("click", () => {
+                    excluirItemServico(servico.id);
+                });
+
+                acoes.append(editar, excluir);
+                linha.appendChild(acoes);
+            }
+
+            grupo.appendChild(linha);
+        });
+
+        listaServicos.appendChild(grupo);
+    });
+}
+
+
+/* Criar categoria */
+
+if (formCategoria) {
+    formCategoria.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+
+        if (!CAMINHO_BARBEIRO) return;
+
+        const nome = nomeCategoria.value.trim();
+
+        if (!nome) {
+            mostrarMensagemServicos("Informe o nome da categoria.", true);
+            return;
+        }
+
+        const duplicada = Object.values(categoriasServicos).some(
+            categoria =>
+                String(categoria?.nome || "").trim().toLocaleLowerCase("pt-BR") ===
+                nome.toLocaleLowerCase("pt-BR")
+        );
+
+        if (duplicada) {
+            mostrarMensagemServicos("Já existe uma categoria com esse nome.", true);
+            return;
+        }
+
+        salvarCategoria.disabled = true;
+
+        try {
+            await push(ref(db, caminhoCategorias()), {
+                nome,
+                criadoEm: new Date().toISOString()
+            });
+
+            formCategoria.reset();
+            mostrarMensagemServicos("Categoria criada com sucesso.");
+            await carregarServicos();
+
+        } catch (erro) {
+            console.error("Erro ao criar categoria:", erro);
+            mostrarMensagemServicos(
+                "Não foi possível criar a categoria. Verifique as permissões.",
+                true
+            );
+        } finally {
+            salvarCategoria.disabled = false;
+        }
+    });
+}
+
+/* Editar categoria */
+
+async function editarCategoriaServico(categoriaId) {
+    const categoria = categoriasServicos[categoriaId];
+    if (!categoria) return;
+
+    const novoNome = prompt("Novo nome da categoria:", categoria.nome || "");
+    if (novoNome === null) return;
+
+    const nome = novoNome.trim();
+
+    if (!nome) {
+        mostrarMensagemServicos("O nome não pode ficar vazio.", true);
+        return;
+    }
+
+    const duplicada = Object.entries(categoriasServicos).some(
+        ([id, item]) =>
+            id !== categoriaId &&
+            String(item?.nome || "").trim().toLocaleLowerCase("pt-BR") ===
+            nome.toLocaleLowerCase("pt-BR")
+    );
+
+    if (duplicada) {
+        mostrarMensagemServicos("Já existe uma categoria com esse nome.", true);
+        return;
+    }
+
+    try {
+        await update(ref(db, `${caminhoCategorias()}/${categoriaId}`), {
+            nome
+        });
+
+        mostrarMensagemServicos("Categoria atualizada.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao editar categoria:", erro);
+        mostrarMensagemServicos("Não foi possível editar a categoria.", true);
+    }
+}
+
+/* Excluir categoria sem serviços vinculados */
+
+async function excluirCategoriaServico(categoriaId) {
+    const categoria = categoriasServicos[categoriaId];
+    if (!categoria) return;
+
+    const possuiServicos = Object.values(itensServicos).some(
+        servico => servico?.categoriaId === categoriaId
+    );
+
+    if (possuiServicos) {
+        mostrarMensagemServicos(
+            "Mova ou exclua os serviços desta categoria antes de excluí-la.",
+            true
+        );
+        return;
+    }
+
+    if (!confirm(`Excluir a categoria "${categoria.nome}"?`)) return;
+
+    try {
+        await remove(ref(db, `${caminhoCategorias()}/${categoriaId}`));
+        mostrarMensagemServicos("Categoria excluída.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao excluir categoria:", erro);
+        mostrarMensagemServicos("Não foi possível excluir a categoria.", true);
+    }
+}
+
+/* Criar serviço */
+
+if (formServico) {
+    formServico.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+
+        if (!CAMINHO_BARBEIRO) return;
+
+        const categoriaId = categoriaServico.value;
+        const nome = nomeServico.value.trim();
+        const preco = Number(precoServico.value);
+
+        if (!categoriasServicos[categoriaId]) {
+            mostrarMensagemServicos("Selecione uma categoria válida.", true);
+            return;
+        }
+
+        if (!nome || !Number.isFinite(preco) || preco < 0 || preco > 99999) {
+            mostrarMensagemServicos("Confira o nome e o preço informado.", true);
+            return;
+        }
+
+        salvarServico.disabled = true;
+
+        try {
+            await push(ref(db, caminhoItensServicos()), {
+                nome,
+                preco,
+                categoriaId,
+                criadoEm: new Date().toISOString()
+            });
+
+            formServico.reset();
+            atualizarSeletorCategorias();
+            mostrarMensagemServicos("Serviço adicionado com sucesso.");
+            await carregarServicos();
+
+        } catch (erro) {
+            console.error("Erro ao criar serviço:", erro);
+            mostrarMensagemServicos(
+                "Não foi possível adicionar o serviço. Verifique as permissões.",
+                true
+            );
+        } finally {
+            salvarServico.disabled =
+                Object.keys(categoriasServicos).length === 0;
+        }
+    });
+}
+
+/* Editar serviço */
+
+async function editarItemServico(servicoId) {
+    const servico = itensServicos[servicoId];
+    if (!servico) return;
+
+    const novoNome = prompt("Nome do serviço:", servico.nome || "");
+    if (novoNome === null) return;
+
+    const nome = novoNome.trim();
+
+    if (!nome) {
+        mostrarMensagemServicos("O nome não pode ficar vazio.", true);
+        return;
+    }
+
+    const precoAtual = Number(servico.preco || 0);
+    const novoPrecoTexto = prompt(
+        "Preço do serviço (use ponto para centavos, se necessário):",
+        String(precoAtual)
+    );
+
+    if (novoPrecoTexto === null) return;
+
+    const preco = Number(novoPrecoTexto);
+
+    if (!Number.isFinite(preco) || preco < 0 || preco > 99999) {
+        mostrarMensagemServicos("Informe um preço válido.", true);
+        return;
+    }
+
+    try {
+        await update(ref(db, `${caminhoItensServicos()}/${servicoId}`), {
+            nome,
+            preco
+        });
+
+        mostrarMensagemServicos("Serviço atualizado.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao editar serviço:", erro);
+        mostrarMensagemServicos("Não foi possível editar o serviço.", true);
+    }
+}
+
+/* Excluir serviço */
+
+async function excluirItemServico(servicoId) {
+    const servico = itensServicos[servicoId];
+    if (!servico) return;
+
+    if (!confirm(`Excluir o serviço "${servico.nome}"?`)) return;
+
+    try {
+        await remove(ref(db, `${caminhoItensServicos()}/${servicoId}`));
+        mostrarMensagemServicos("Serviço excluído.");
+        await carregarServicos();
+
+    } catch (erro) {
+        console.error("Erro ao excluir serviço:", erro);
+        mostrarMensagemServicos("Não foi possível excluir o serviço.", true);
+    }
+}
+
+
 // =========================================================
 // AUTENTICAÇÃO
 // =========================================================
@@ -404,9 +1081,11 @@ onAuthStateChanged(
             // CONFIGURAÇÃO
             // =================================================
 
-            await carregarConfiguracaoCliente();
+                await carregarConfiguracaoCliente();
 
-            aplicarConfiguracaoCliente();
+                aplicarConfiguracaoCliente();
+
+                await carregarServicos();
 
 
             // =================================================
@@ -487,6 +1166,9 @@ function mostrarNotificacaoAgendamento(
             CONFIG_CLIENTE?.nome ||
             CONFIG.nome ||
             "Barbearia";
+
+            
+
 
         const titulo =
             `✂️ Novo agendamento — ${nomeBarbeariaAtual}`;

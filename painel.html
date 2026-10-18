@@ -67,11 +67,100 @@
 
         <h2>Agendamentos</h2>
 
+        
+
         <div id="listaAgendamentos">
             Carregando...
         </div>
 
     </section>
+
+    
+    <section class="secao secao-servicos">
+
+        <h2>Meus serviços</h2>
+
+        <p class="subtitulo">
+            Organize seus procedimentos por categorias e gerencie os preços.
+        </p>
+
+        <form id="formCategoria" class="form-servicos">
+            <h3>Nova categoria</h3>
+
+            <div class="campos-servicos">
+                <div>
+                    <label for="nomeCategoria">Nome da categoria</label>
+                    <input
+                        type="text"
+                        id="nomeCategoria"
+                        placeholder="Ex.: Cortes"
+                        maxlength="60"
+                        required
+                    >
+                </div>
+            </div>
+
+            <button type="submit" id="salvarCategoria">
+                + Criar categoria
+            </button>
+        </form>
+
+        <div class="separador-servicos"></div>
+
+        <form id="formServico" class="form-servicos">
+            <h3>Adicionar serviço</h3>
+
+            <div class="campos-servicos">
+                <div>
+                    <label for="categoriaServico">Categoria</label>
+                    <select id="categoriaServico" required>
+                        <option value="">Carregando categorias...</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="nomeServico">Nome do serviço</label>
+                    <input
+                        type="text"
+                        id="nomeServico"
+                        placeholder="Ex.: Corte tradicional"
+                        maxlength="80"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="precoServico">Preço (R$)</label>
+                    <input
+                        type="number"
+                        id="precoServico"
+                        placeholder="40,00"
+                        min="0"
+                        max="99999"
+                        step="0.01"
+                        required
+                    >
+                </div>
+            </div>
+
+            <button type="submit" id="salvarServico">
+                + Adicionar serviço
+            </button>
+        </form>
+
+        <p
+            class="mensagem"
+            id="mensagemServicos"
+            role="status"
+            aria-live="polite"
+        ></p>
+
+        <div class="lista-categorias-servicos" id="listaServicos">
+            Carregando serviços...
+        </div>
+
+    </section>
+
 
     <section class="secao">
 

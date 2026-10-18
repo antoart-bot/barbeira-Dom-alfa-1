@@ -1397,3 +1397,350 @@ input[type="time"] {
 #totalOcupados {
     color: #f4f0e8 !important;
 }
+
+
+/* ========================================
+   GESTÃO DE SERVIÇOS
+======================================== */
+
+.secao-servicos {
+    margin-top: 32px;
+}
+
+.secao-servicos > h2 {
+    margin-bottom: 8px;
+}
+
+.secao-servicos > .subtitulo {
+    margin-bottom: 26px;
+    line-height: 1.6;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Formulários */
+
+.form-servicos {
+    padding: 24px;
+    margin-top: 20px;
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 14px;
+}
+
+.form-servicos h3 {
+    margin: 0 0 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.campos-servicos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.campos-servicos > div {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+.campos-servicos label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #bdbdbd;
+}
+
+.campos-servicos input,
+.campos-servicos select {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px 14px;
+    color: #f5f5f5;
+    background: #191919;
+    border: 1px solid #363636;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campos-servicos input:focus,
+.campos-servicos select:focus {
+    border-color: #d6ff3f;
+    box-shadow: 0 0 0 3px rgb(214 255 63 / 10%);
+}
+
+.campos-servicos input::placeholder {
+    color: #707070;
+}
+
+.campos-servicos select option {
+    color: #fff;
+    background: #191919;
+}
+
+/* Botões dos formulários */
+
+.form-servicos > button {
+    min-height: 45px;
+    padding: 12px 20px;
+    color: #111;
+    background: #d6ff3f;
+    border: 0;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.form-servicos > button:hover {
+    transform: translateY(-1px);
+}
+
+.form-servicos > button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.separador-servicos {
+    height: 1px;
+    margin: 26px 0;
+    background: #292929;
+}
+
+/* Mensagens */
+
+#mensagemServicos {
+    margin: 18px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Lista de categorias */
+
+.lista-categorias-servicos {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 28px;
+}
+
+.categoria-servicos {
+    overflow: hidden;
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 14px;
+}
+
+.cabecalho-categoria {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 22px;
+    background: #181818;
+    border-bottom: 1px solid #292929;
+}
+
+.cabecalho-categoria h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.acoes-categoria,
+.acoes-servico {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.acoes-categoria button,
+.acoes-servico button {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid #363636;
+    border-radius: 8px;
+    color: #e5e5e5;
+    background: #202020;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.acoes-categoria button:hover,
+.acoes-servico button:hover {
+    background: #2b2b2b;
+    border-color: #555;
+}
+
+.acoes-categoria .excluir-categoria,
+.acoes-servico .excluir-servico {
+    color: #ff8b8b;
+}
+
+.acoes-categoria .excluir-categoria:hover,
+.acoes-servico .excluir-servico:hover {
+    background: #321d1d;
+    border-color: #704040;
+}
+
+/* Cada serviço */
+
+.item-servico {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 22px;
+    border-bottom: 1px solid #252525;
+}
+
+.item-servico:last-child {
+    border-bottom: 0;
+}
+
+.info-servico {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.info-servico strong {
+    color: #f5f5f5;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.preco-servico {
+    color: #d6ff3f;
+    font-size: 15px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.categoria-servicos .vazio {
+    padding: 20px 22px;
+    color: #888;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
+
+@media (max-width: 760px) {
+    .secao-servicos {
+        margin-top: 24px;
+    }
+
+    .form-servicos {
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .campos-servicos {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-servicos > button {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    .cabecalho-categoria {
+        align-items: flex-start;
+        padding: 17px;
+    }
+
+    .cabecalho-categoria h3 {
+        padding-top: 7px;
+        font-size: 16px;
+    }
+
+    .acoes-categoria {
+        flex-shrink: 0;
+        gap: 6px;
+    }
+
+    .acoes-categoria button,
+    .acoes-servico button {
+        min-height: 40px;
+        padding: 9px 10px;
+    }
+
+    .item-servico {
+        align-items: flex-start;
+        padding: 17px;
+        gap: 12px;
+    }
+
+    .info-servico strong {
+        font-size: 14px;
+    }
+
+    .preco-servico {
+        font-size: 14px;
+    }
+
+    .acoes-servico {
+        flex-shrink: 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .acoes-servico button {
+        min-width: 68px;
+    }
+}
+
+@media (max-width: 380px) {
+    .cabecalho-categoria {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .acoes-categoria {
+        width: 100%;
+    }
+
+    .acoes-categoria button {
+        flex: 1;
+    }
+
+    .item-servico {
+        flex-direction: column;
+    }
+
+    .acoes-servico {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .acoes-servico button {
+        flex: 1;
+    }
+}
+
+.servico-legado {
+    font-size: 0.75rem;
+    color: #888;
+}

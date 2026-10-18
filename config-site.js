@@ -104,6 +104,104 @@ async function carregarConfiguracao() {
 }
 
 
+
+
+async function carregarServicosCliente(CONFIG_SITE) {
+    const clienteId = descobrirCliente();
+
+    
+const servicosAntigos = Array.isArray(CONFIG_SITE.servicos)
+    ? CONFIG_SITE.servicos.map(servico => {
+        const nome = String(servico.nome || "")
+            .trim()
+            .toLocaleLowerCase("pt-BR");
+
+        let categoria = "Outros";
+
+        if (nome === "corte" || nome === "acabamento") {
+            categoria = "Cortes";
+        } else if (nome === "barba") {
+            categoria = "Barba";
+        } else if (
+            nome === "corte + barba" ||
+            nome === "corte e barba"
+        ) {
+            categoria = "Combos";
+        }
+
+        return {
+            ...servico,
+            categoria
+        };
+    })
+    : [];
+
+
+    try {
+        const [categoriasSnapshot, itensSnapshot] = await Promise.all([
+            get(ref(db, `barbeiros/${clienteId}/servicos/categorias`)),
+            get(ref(db, `barbeiros/${clienteId}/servicos/itens`))
+        ]);
+
+        const categorias = categoriasSnapshot.exists()
+            ? categoriasSnapshot.val()
+            : {};
+
+        const itens = itensSnapshot.exists()
+            ? itensSnapshot.val()
+            : {};
+
+        const servicosNovos = Object.entries(itens)
+            .filter(([, servico]) =>
+                servico &&
+                typeof servico.nome === "string" &&
+                servico.nome.trim()
+            )
+            .map(([id, servico]) => ({
+                id,
+                nome: servico.nome,
+                preco: Number(servico.preco) || 0,
+                valor: servico.valor || id,
+                categoria: categorias[servico.categoriaId]?.nome || "Outros",
+                categoriaId: servico.categoriaId || ""
+            }));
+
+        // Se não existem serviços novos, mostra todos os antigos.
+        if (servicosNovos.length === 0) {
+            return servicosAntigos;
+        }
+
+        // Evita duplicar um serviço antigo caso ele já tenha sido
+        // cadastrado também na nova estrutura, com o mesmo nome.
+        const nomesNovos = new Set(
+            servicosNovos.map(servico =>
+                servico.nome.trim().toLocaleLowerCase("pt-BR")
+            )
+        );
+
+        const antigosRestantes = servicosAntigos.filter(servico =>
+            !nomesNovos.has(
+                String(servico.nome || "")
+                    .trim()
+                    .toLocaleLowerCase("pt-BR")
+            )
+        );
+
+        return [
+            ...antigosRestantes,
+            ...servicosNovos
+        ];
+
+    } catch (erro) {
+        console.error("Erro ao carregar serviços do cliente:", erro);
+
+        // Se o Firebase falhar, não esconde os serviços antigos.
+        return servicosAntigos;
+    }
+}
+
+
+
 // ========================================
 // FUNÇÃO AUXILIAR
 // ========================================
@@ -318,112 +416,143 @@ async function iniciarSite() {
     }
 
 
+    
     // ========================================
-    // SERVIÇOS
+    // SERVIÇOS E CATEGORIAS
     // ========================================
 
-    const listaServicos =
-        document.querySelector(
-            ".service-list"
-        );
+    const listaServicos = document.querySelector(".service-list");
 
-    const selectServicos =
-        document.getElementById(
-            "servicoCliente"
-        );
+    const selectServicos = document.getElementById("servicoCliente");
 
-    const servicos =
-        Array.isArray(
-            CONFIG_SITE.servicos
-        )
-            ? CONFIG_SITE.servicos
-            : [];
+    const servicos = await carregarServicosCliente(CONFIG_SITE);
 
+    // Agrupar serviços por categoria
+    const grupos = {};
+
+    servicos.forEach(servico => {
+        const categoria = servico.categoria || "Serviços";
+
+        if (!grupos[categoria]) {
+            grupos[categoria] = [];
+        }
+
+        grupos[categoria].push(servico);
+    });
 
     // ========================================
-    // LISTA DE SERVIÇOS
+    // LISTA VISUAL DE SERVIÇOS
     // ========================================
 
     if (listaServicos) {
+        listaServicos.replaceChildren();
 
-        listaServicos.innerHTML =
-            "";
+        if (servicos.length === 0) {
+            const aviso = document.createElement("p");
+            aviso.textContent = "Nenhum serviço cadastrado no momento.";
+            listaServicos.appendChild(aviso);
+        }
 
-        servicos.forEach(
-            (
-                servico,
-                index
-            ) => {
+        let indice = 1;
 
-                const link =
-                    document.createElement(
-                        "a"
-                    );
+        Object.entries(grupos).forEach(([categoria, itens]) => {
+            const grupo = document.createElement("section");
+            grupo.className = "service-category-group";
 
-                link.href =
-                    "#contato";
+            const titulo = document.createElement("h3");
+            titulo.className = "service-category-title";
+            titulo.textContent = categoria;
 
-                link.className =
-                    "service";
+            const lista = document.createElement("div");
+            lista.className = "service-category-items";
 
-                link.innerHTML = `
-                    <span class="service-index">
-                        ${String(index + 1).padStart(2, "0")}
-                    </span>
+            grupo.appendChild(titulo);
+            grupo.appendChild(lista);
 
-                    <h3>
-                        ${servico.nome}
-                    </h3>
+            itens.forEach(servico => {
+                const link = document.createElement("a");
+                link.href = "#contato";
+                link.className = "service";
 
-                    <span class="service-price">
-                        R$ ${servico.preco}
-                    </span>
+                const numero = document.createElement("span");
+                numero.className = "service-index";
+                numero.textContent = String(indice++).padStart(2, "0");
 
-                    <span class="service-arrow">
-                        ↗
-                    </span>
-                `;
+                const nome = document.createElement("h4");
+                nome.textContent = servico.nome;
 
-                listaServicos.appendChild(
-                    link
-                );
-            }
-        );
+                const preco = document.createElement("span");
+                preco.className = "service-price";
+                preco.textContent = Number(servico.preco || 0)
+                    .toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL"
+                    });
+
+                const seta = document.createElement("span");
+                seta.className = "service-arrow";
+                seta.textContent = "↗";
+
+                link.append(numero, nome, preco, seta);
+                lista.appendChild(link);
+            });
+
+            listaServicos.appendChild(grupo);
+        });
     }
 
-
     // ========================================
-    // SELECT DE SERVIÇOS
+    // SELECT DE AGENDAMENTO
     // ========================================
 
-    if (selectServicos) {
+    
+if (selectServicos) {
+    selectServicos.replaceChildren();
 
-        selectServicos.innerHTML = `
-            <option value="">
-                Escolha um serviço
-            </option>
-        `;
+    const opcaoInicial = document.createElement("option");
+    opcaoInicial.value = "";
+    opcaoInicial.textContent = "Escolha um serviço";
+    selectServicos.appendChild(opcaoInicial);
 
-        servicos.forEach(
-            (servico) => {
+    const grupos = {};
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+    servicos.forEach(servico => {
+        const categoria = servico.categoria || "Outros";
 
-                option.value =
-                    servico.valor;
+        if (!grupos[categoria]) {
+            grupos[categoria] = [];
+        }
 
+        grupos[categoria].push(servico);
+    });
+
+    Object.entries(grupos)
+        .sort(([a], [b]) => a.localeCompare(b, "pt-BR"))
+        .forEach(([categoria, itens]) => {
+            const grupo = document.createElement("optgroup");
+            grupo.label = categoria;
+
+            itens.forEach(servico => {
+                const option = document.createElement("option");
+
+                option.value = servico.valor || servico.id || servico.nome;
                 option.textContent =
-                    `${servico.nome} — R$ ${servico.preco}`;
+                    `${servico.nome} — ` +
+                    Number(servico.preco || 0).toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL"
+                    });
 
-                selectServicos.appendChild(
-                    option
-                );
-            }
-        );
-    }
+                option.dataset.nomeServico = servico.nome;
+                option.dataset.categoria = categoria;
+
+                grupo.appendChild(option);
+            });
+
+            selectServicos.appendChild(grupo);
+        });
+}
+
 
 
     // ========================================
