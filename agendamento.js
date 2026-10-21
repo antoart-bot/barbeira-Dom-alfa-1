@@ -9,6 +9,8 @@ import {
 
 import { db } from "./firebase.js";
 import { CONFIG } from "./config.js";
+// Proteção antirobô do Cloudflare Turnstile
+const TURNSTILE_SITE_KEY = "0x4AAAAAAFegvJxS3AhbDfPj";
 
 
 // ========================================
@@ -1003,11 +1005,54 @@ try {
 
 
 
-                // ========================================
-                // NOTIFICAÇÃO PARA O BARBEIRO
-                // ========================================
+               
+        // ========================================
+        // NOTIFICAÇÃO PARA O BARBEIRO
+        // ========================================
 
-               "https://plain-credit-3c23.vitorarthurxxx.workers.dev/"
+        try {
+            const turnstileToken =
+                window.turnstile &&
+                window.turnstile.getResponse();
+
+            if (turnstileToken) {
+                const respostaNotificacao = await fetch(
+                    "https://dom-alfa-whatsapp.arthurdev2010.workers.dev/agendamento",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            nome,
+                            servico,
+                            data,
+                            horario,
+                            valor: "0,00",
+                            turnstileToken,
+                        }),
+                    }
+                );
+
+                const resultadoNotificacao =
+                    await respostaNotificacao.json();
+
+                console.log(
+                    "Resultado da notificação:",
+                    resultadoNotificacao
+                );
+            } else {
+                console.warn(
+                    "Turnstile não foi concluído; notificação não enviada."
+                );
+            }
+        } catch (erroNotificacao) {
+            console.error(
+                "Erro ao enviar notificação:",
+                erroNotificacao
+            );
+        }
+
 
 
             } catch (
