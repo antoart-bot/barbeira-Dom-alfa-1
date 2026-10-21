@@ -11,6 +11,17 @@ import { db } from "./firebase.js";
 import { CONFIG } from "./config.js";
 // Proteção antirobô do Cloudflare Turnstile
 const TURNSTILE_SITE_KEY = "0x4AAAAAAFegvJxS3AhbDfPj";
+window.addEventListener("load", () => {
+    if (window.turnstile) {
+        const widget = document.querySelector(".cf-turnstile");
+
+        if (widget && !widget.hasChildNodes()) {
+            window.turnstile.render(widget, {
+                sitekey: TURNSTILE_SITE_KEY
+            });
+        }
+    }
+});
 
 
 // ========================================
